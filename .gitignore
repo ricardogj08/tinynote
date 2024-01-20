@@ -2,3 +2,4 @@ vendor/
 writable/**/*.db
 writable/**/*.sqlite
 .env
+pretty-php.phar
