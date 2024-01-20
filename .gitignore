@@ -1,0 +1,4 @@
+vendor/
+writable/**/*.db
+writable/**/*.sqlite
+.env

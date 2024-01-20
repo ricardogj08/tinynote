@@ -1,0 +1,22 @@
+{
+    "name": "ricardogj08/tinynote",
+    "description": "A simple markdown note taking application with encryption support built in PHP.",
+    "type": "project",
+    "license": "AGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ricardo García Jiménez",
+            "email": "ricardogj08@riseup.net"
+        }
+    ],
+    "require": {
+        "riverside/php-express": "^1.0",
+        "riverside/php-orm": "^1.1",
+        "gullevek/dotenv": "^2.0"
+    }
+}
