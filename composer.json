@@ -8,6 +8,19 @@
             "App\\": "app/"
         }
     },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "scripts": {
+        "migrations": "@php ./bin/simple-db-migrator.php",
+        "prettier": "@php ./pretty-php.phar",
+        "gendb-diagram": "erd -i ./docs/database/diagram.er -o ./docs/database/diagram.png"
+    },
+    "scripts-descriptions": {
+        "migrations": "Run database migrations.",
+        "prettier": "Format PHP code.",
+        "gendb-diagram": "Generate entity-relationship diagram."
+    },
     "authors": [
         {
             "name": "Ricardo García Jiménez",
