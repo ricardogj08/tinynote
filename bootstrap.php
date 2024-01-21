@@ -11,7 +11,7 @@ $_GET['_path_'] = $_SERVER['REQUEST_URI'] ?? '/';
 /*
  * Carga variables de entorno desde el archivo .env
  */
-\gullevek\dotEnv\DotEnv::readEnvFile(__DIR__);
+\App\Utils\Env::loadDotEnv();
 
 /**
  * Define la configuración de la base de datos

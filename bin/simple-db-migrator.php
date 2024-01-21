@@ -15,7 +15,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-\gullevek\dotEnv\DotEnv::readEnvFile(__DIR__ . '/../');
+\App\Utils\Env::loadDotEnv();
 
 $database = require __DIR__ . '/../config/database.php';
 
