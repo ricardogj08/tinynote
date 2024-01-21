@@ -2,6 +2,30 @@
 
 A simple markdown note taking application with encryption support built in PHP.
 
+## Installation
+
+Install dependencies:
+
+    composer install
+
+Copy the `env.example` file to `.env` and configure your application:
+
+    cp env.example .env
+
+Run database migrations:
+
+    composer run migrations -- --setup
+
+## Commands
+
+Format PHP code:
+
+    composer run prettier
+
+Generate entity-relationship diagram:
+
+    composer run gendb-diagram
+
 ## License
 
     tinynote - A simple markdown note taking application with encryption support built in PHP.
