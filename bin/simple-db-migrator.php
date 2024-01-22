@@ -19,7 +19,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $DB = new \App\Utils\DB();
 
-chdir('public');
+chdir(__DIR__ . '/../public');
 
 $dbConf = ['dsn' => $DB->getConnection()->getDsn(), 'user' => $DB->getConfig()->getUsername(), 'password' => $DB->getConfig()->getPassword()];
 // $dbConf = [ "dsn" => "mysql:host=172.20.1.3;dbname=migrationtest", "user" => "root", "password" => "xxxxxx", ];

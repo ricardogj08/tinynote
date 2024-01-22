@@ -5,5 +5,7 @@
  */
 
 $router->get('/api', function ($req, $res) {
-    $res->json(['message' => 'hello world']);
+    $res->json(['message' => 'Hello world!']);
 });
+
+$router->get('/api/v1/notes', '\App\Controllers\NoteController@create');
