@@ -17,24 +17,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 \App\Utils\Env::loadDotEnv();
 
-$database = require __DIR__ . '/../config/database.php';
+$DB = new \App\Utils\DB();
 
-$opts = $database['default'];
+chdir('public');
 
-$config = new \PhpOrm\Configuration(
-    $opts['username'],
-    $opts['password'],
-    $opts['database'],
-    $opts['host'],
-    $opts['port'],
-    $opts['driver'],
-    $opts['charset'],
-    $opts['collation']
-);
-
-$connection = new \PhpOrm\Connection($config);
-
-$dbConf = ['dsn' => $connection->getDsn(), 'user' => $config->getUsername(), 'password' => $config->getPassword()];
+$dbConf = ['dsn' => $DB->getConnection()->getDsn(), 'user' => $DB->getConfig()->getUsername(), 'password' => $DB->getConfig()->getPassword()];
 // $dbConf = [ "dsn" => "mysql:host=172.20.1.3;dbname=migrationtest", "user" => "root", "password" => "xxxxxx", ];
 // $dbConf = [ "dsn" => "pgsql:host=172.17.0.2;dbname=migrationtest", "user" => "postgres", "password" => "xxxxxx", ];
 $MIGRAION_ROOT = __DIR__ . '/../migrations';

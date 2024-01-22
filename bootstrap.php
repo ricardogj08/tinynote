@@ -13,7 +13,7 @@ $_GET['_path_'] = $_SERVER['REQUEST_URI'] ?? '/';
  */
 \App\Utils\Env::loadDotEnv();
 
-/**
+/*
  * Define la configuración de la base de datos
  * para el ORM de la aplicación.
  */
