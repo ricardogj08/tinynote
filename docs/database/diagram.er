@@ -8,6 +8,8 @@ entity {size: "16", font: "Courier"}
 id {label: "(PK1) TINYINT UNSIGNED NOT NULL"}
 name {label: "(UK1) VARCHAR(16) NOT NULL"}
 description {label: "VARCHAR(32) NOT NULL"}
+created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
 [users] {bgcolor: "#ececfc"}
 id {label: "(PK1) CHAR(36) NOT NULL"}
@@ -16,28 +18,35 @@ username {label: "(UK1) VARCHAR(32) NOT NULL"}
 email {label: "(UK2) VARCHAR(255) NOT NULL"}
 password {label: "VARCHAR(255) NOT NULL"}
 active {label: "BOOLEAN NOT NULL DEFAULT FALSE"}
-created_at {label: "DATETIME NOT NULL"}
-updated_at {label: "DATETIME NOT NULL"}
+created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+
+[notes] {bgcolor: "#fbfbdb"}
+id {label: "(PK1) CHAR(36) NOT NULL"}
+user_id {label: "(FK1) CHAR(36) NOT NULL"}
+title {label: "VARCHAR(255) NOT NULL"}
+body {label: "TEXT NOT NULL"}
+created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
 [tags] {bgcolor: "#d0e0d0"}
 id {label: "(PK1) CHAR(36) NOT NULL"}
 user_id {label: "(FK1, UK1) CHAR(36) NOT NULL"}
 name {label: "(UK1) VARCHAR(64) NOT NULL"}
-created_at {label: "DATETIME NOT NULL"}
-updated_at {label: "DATETIME NOT NULL"}
+created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
-[notes] {bgcolor: "#fbfbdb"}
+[notes_tags] {bgcolor: "#eee0a0"}
 id {label: "(PK1) CHAR(36) NOT NULL"}
-user_id {label: "(FK1) CHAR(36) NOT NULL"}
-tag_id {label: "(FK2) CHAR(36) NULL"}
-title {label: "VARCHAR(255) NOT NULL"}
-body {label: "TEXT NOT NULL"}
-created_at {label: "DATETIME NOT NULL"}
-updated_at {label: "DATETIME NOT NULL"}
+note_id {label: "(FK1, UK1) CHAR(36) NOT NULL"}
+tag_id {label: "(FK2, UK1) CHAR(36) NOT NULL"}
+created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
+updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
 # Relationships
 
 roles 1--+ users
 users 1--* notes
-tags ?--* notes
 users 1--* tags
+notes 1--* notes_tags
+tags  1--* notes_tags
