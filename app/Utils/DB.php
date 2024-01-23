@@ -20,14 +20,14 @@ class DB
         $options = require __DIR__ . '/../../config/database.php';
 
         if (!isset($options[$this->database])) {
-            throw new Exception('Connection not found.');
+            throw new Exception('Database connection not found.');
         }
 
         $opts = $options[$this->database];
 
         foreach (['username', 'password', 'database', 'host', 'port', 'driver', 'charset', 'collation'] as $key) {
             if (!array_key_exists($key, $opts)) {
-                throw new Exception("The '{$key}' index was not found in config.");
+                throw new Exception("The '{$key}' index was not found in database config.");
             }
         }
 
