@@ -17,6 +17,6 @@ class Env
      */
     public static function get(string $varname, $default = null)
     {
-        return $_ENV[$varname] ?? $dafault;
+        return $_ENV[$varname] ?? $default;
     }
 }
