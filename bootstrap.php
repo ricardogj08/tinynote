@@ -32,7 +32,9 @@ $router = new \PhpExpress\Router($app);
 /*
  * Carga opciones de configuración de la aplicación.
  */
-\App\Utils\Config::getFromFile('app');
+foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
+    \App\Utils\Env::set('APP_' . strtoupper($key), $value);
+}
 
 /*
  * Carga los archivos de definición de rutas.

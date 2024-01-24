@@ -22,4 +22,12 @@ class Env
     {
         return $_ENV[$varname] ?? $default;
     }
+
+    /*
+     * Establece el valor de una variable de entorno.
+     */
+    public static function set(string $varname, $value = null)
+    {
+        $_ENV[$varname] = $value;
+    }
 }
