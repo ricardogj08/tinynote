@@ -18,7 +18,7 @@ class DB
 
     private function mount()
     {
-        $config = Config::getFromFile(self::$configFile);
+        $config = Config::getFromFile($this->configFile);
 
         $options = $config[$this->database];
 
