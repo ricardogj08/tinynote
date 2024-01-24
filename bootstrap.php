@@ -30,6 +30,11 @@ $app = new \PhpExpress\Application();
 $router = new \PhpExpress\Router($app);
 
 /*
+ * Carga opciones de configuración de la aplicación.
+ */
+\App\Utils\Config::getFromFile('app');
+
+/*
  * Carga los archivos de definición de rutas.
  *
  * La variable $router se pasa en los archivos de la

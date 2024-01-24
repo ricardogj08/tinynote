@@ -6,8 +6,9 @@ use Exception;
 
 class DB
 {
+    private $configFile = 'database';
     private $database = 'default';
-    private $config;
+    private $configuration;
     private $connection;
 
     public function __construct()
@@ -17,32 +18,22 @@ class DB
 
     private function mount()
     {
-        $options = require __DIR__ . '/../../config/database.php';
+        $config = Config::getFromFile(self::$configFile);
 
-        if (!isset($options[$this->database])) {
-            throw new Exception('Database connection not found.');
-        }
+        $options = $config[$this->database];
 
-        $opts = $options[$this->database];
-
-        foreach (['username', 'password', 'database', 'host', 'port', 'driver', 'charset', 'collation'] as $key) {
-            if (!array_key_exists($key, $opts)) {
-                throw new Exception("The '{$key}' index was not found in database config.");
-            }
-        }
-
-        $this->config = new \PhpOrm\Configuration(
-            $opts['username'],
-            $opts['password'],
-            $opts['database'],
-            $opts['host'],
-            $opts['port'],
-            $opts['driver'],
-            $opts['charset'],
-            $opts['collation']
+        $this->configuration = new \PhpOrm\Configuration(
+            $options['username'],
+            $options['password'],
+            $options['database'],
+            $options['host'],
+            $options['port'],
+            $options['driver'],
+            $options['charset'],
+            $options['collation']
         );
 
-        $this->connection = new \PhpOrm\Connection($this->config);
+        $this->connection = new \PhpOrm\Connection($this->configuration);
     }
 
     /*
@@ -51,7 +42,7 @@ class DB
      */
     public function getConfig()
     {
-        return $this->config;
+        return $this->configuration;
     }
 
     /*

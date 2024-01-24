@@ -4,12 +4,15 @@ namespace App\Utils;
 
 class Env
 {
+    private static $path = __DIR__ . '/../../';
+    private static $filename = '.env';
+
     /*
      * Carga variables de entorno desde el archivo .env
      */
     public static function loadDotEnv()
     {
-        \gullevek\dotEnv\DotEnv::readEnvFile(__DIR__ . '/../../');
+        \gullevek\dotEnv\DotEnv::readEnvFile(self::$path, self::$filename);
     }
 
     /*
