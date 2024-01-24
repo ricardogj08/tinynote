@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use gullevek\dotEnv\DotEnv;
+
 class Env
 {
     private static $path = __DIR__ . '/../../';
@@ -12,7 +14,7 @@ class Env
      */
     public static function loadDotEnv()
     {
-        \gullevek\dotEnv\DotEnv::readEnvFile(self::$path, self::$filename);
+        DotEnv::readEnvFile(self::$path, self::$filename);
     }
 
     /*

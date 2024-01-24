@@ -2,7 +2,8 @@
 
 namespace App\Utils;
 
-use Exception;
+use PhpOrm\Configuration;
+use PhpOrm\Connection;
 
 class DB
 {
@@ -22,7 +23,7 @@ class DB
 
         $options = $config[$this->database];
 
-        $this->configuration = new \PhpOrm\Configuration(
+        $this->configuration = new Configuration(
             $options['username'],
             $options['password'],
             $options['database'],
@@ -33,7 +34,7 @@ class DB
             $options['collation']
         );
 
-        $this->connection = new \PhpOrm\Connection($this->configuration);
+        $this->connection = new Connection($this->configuration);
     }
 
     /*

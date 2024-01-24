@@ -28,7 +28,6 @@ class JWT
         if ($this->privateKey === false || $this->publicKey === false) {
             throw new Exception('JWT private or public key file not found.');
         }
-
     }
 
     public function encode(array $payload)

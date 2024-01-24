@@ -16,7 +16,7 @@ class Config
         $config = require self::$path . $filename . '.php';
 
         if (!is_array($config)) {
-            throw new Exception("The {$filename} config options are not an array.");
+            throw new Exception("The {$filename} config file options are not an array.");
         }
 
         return $config;
