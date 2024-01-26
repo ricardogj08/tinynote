@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92c97e852a5852683ef0c8c02677e6b2",
+    "content-hash": "5a8eef509cd1c15406e3fdfcbedcf54e",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -122,6 +122,76 @@
                 "source": "https://github.com/gullevek/dotEnv/tree/v2.0.8"
             },
             "time": "2023-03-03T00:32:02+00:00"
+        },
+        {
+            "name": "ph-7/just-http-status-codes",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pH-7/JustHttpStatusCodes.git",
+                "reference": "cafea29cdbb65413d526f279514d1255308d4551"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pH-7/JustHttpStatusCodes/zipball/cafea29cdbb65413d526f279514d1255308d4551",
+                "reference": "cafea29cdbb65413d526f279514d1255308d4551",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PH7\\JustHttp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre-Henry Soria",
+                    "email": "hi@ph7.me",
+                    "homepage": "https://ph7.me",
+                    "role": "Principle Developer"
+                }
+            ],
+            "description": "Just all HTTP status codes",
+            "homepage": "https://pierrehenry.be",
+            "keywords": [
+                "Magic Number",
+                "PHP status codes",
+                "all HTTP status codes",
+                "all status codes",
+                "clean code",
+                "code",
+                "constant",
+                "constants",
+                "http",
+                "http code",
+                "http status code",
+                "status code"
+            ],
+            "support": {
+                "issues": "https://github.com/pH-7/JustHttpStatusCodes/issues",
+                "source": "https://github.com/pH-7/JustHttpStatusCodes/tree/v1.1.6"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/pH-7",
+                    "type": "github"
+                },
+                {
+                    "url": "https://ko-fi.com/phenry",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2023-06-11T04:11:32+00:00"
         },
         {
             "name": "respect/stringifier",

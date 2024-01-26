@@ -6,6 +6,7 @@ use App\Models\UserModel;
 use App\Utils\Env;
 use App\Utils\JWT;
 use App\Utils\Password;
+use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
 
@@ -46,36 +47,32 @@ class AuthController
                 ->key('password', $rules['password'], true)
                 ->assert($data);
         } catch (NestedValidationException $e) {
-            $res->json([
+            $res->status(StatusCode::BAD_REQUEST)->json([
                 'errors' => $e->getMessages()
             ]);
         }
 
-        $userModel = UserModel::factory();
-
         // Consulta la información del usuario que intenta autenticarse.
-        $user = $userModel
+        $userAuth = UserModel::factory()
             ->select('id, password, active')
             ->where($identifyBy, $data['nickname'])
             ->where('active', true)
             ->first();
 
         // Comprueba la contraseña del usuario.
-        if (empty($user) || !Password::verify($data['password'], $user['password'])) {
-            $res->json([
+        if (empty($userAuth) || !Password::verify($data['password'], $userAuth['password'])) {
+            $res->status(StatusCode::UNAUTHORIZED)->json([
                 'errors' => 'Access credentials are invalid'
             ]);
         }
 
-        $jwt = new JWT();
-
         // Genera el token de autenticación.
-        $token = $jwt->encode([
+        $token = (new JWT())->encode([
             'iss' => Env::get('APP_NAME'),
-            'sub' => $user['id'],
+            'sub' => $userAuth['id'],
             'aud' => Env::get('APP_URL'),
-            'exp' => strtotime('now'),
-            'iat' => strtotime('tomorrow')
+            'exp' => strtotime('tomorrow'),  // 24 horas
+            'iat' => strtotime('now')
         ]);
 
         $res->json([
