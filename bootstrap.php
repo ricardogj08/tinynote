@@ -14,6 +14,13 @@ $_GET['_path_'] = $_SERVER['REQUEST_URI'] ?? '/';
 \App\Utils\Env::loadDotEnv();
 
 /*
+ * Carga opciones de configuración de la aplicación.
+ */
+foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
+    \App\Utils\Env::set('APP_' . strtoupper($key), $value);
+}
+
+/*
  * Define la configuración de la base de datos
  * para el ORM de la aplicación.
  */
@@ -25,22 +32,10 @@ $_GET['_path_'] = $_SERVER['REQUEST_URI'] ?? '/';
 $app = new \PhpExpress\Application();
 
 /*
- * Crea una instancia aislada de rutas y middlewares.
- */
-$router = new \PhpExpress\Router($app);
-
-/*
- * Carga opciones de configuración de la aplicación.
- */
-foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
-    \App\Utils\Env::set('APP_' . strtoupper($key), $value);
-}
-
-/*
- * Carga los archivos de definición de rutas.
+ * Carga los archivos de definición de rutas y middlewares.
  *
- * La variable $router se pasa en los archivos de la
- * carpeta routes para registrar rutas y middlewares.
+ * Se pasa la variable $app en los archivos
+ * para registrar rutas y middlewares.
  */
 require_once __DIR__ . '/routes/api.php';
 require_once __DIR__ . '/routes/web.php';
@@ -48,4 +43,4 @@ require_once __DIR__ . '/routes/web.php';
 /*
  * Ejecuta la aplicación.
  */
-$router->run();
+$app->run();
