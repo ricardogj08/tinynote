@@ -8,4 +8,5 @@ $router->get('/api', function ($req, $res) {
     $res->json(['message' => 'Hello world!']);
 });
 
-$router->get('/api/v1/notes', '\App\Controllers\NoteController@create');
+$router->post('/api/v1/auth/login', '\App\Controllers\AuthController@login');
+$router->post('/api/v1/notes', '\App\Controllers\NoteController@create');

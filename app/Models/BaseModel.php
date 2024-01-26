@@ -8,6 +8,6 @@ class BaseModel extends DB
 {
     public static function factory()
     {
-        return new self();
+        return new static();
     }
 }

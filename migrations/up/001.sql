@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users(id, username, email, password, active, is_admin) VALUES
-  ('a394ca44-7ff4-498a-9ce4-2f9ba7f57071', 'admin', 'admin@example.com', '$2y$10$bKmbeRH2D1sMis.iDUrzU.HlddYsUH.5vU4B8SBjXImui/tb6PAsy', TRUE, TRUE);
+  ('a394ca44-7ff4-498a-9ce4-2f9ba7f57071', 'admin', 'admin@example.com', '$2y$10$WCTV774UrzVepTglmzV5NOqYtkH3dMO9uAjWCrYbIOcxBjQrRAAEi', TRUE, TRUE);
