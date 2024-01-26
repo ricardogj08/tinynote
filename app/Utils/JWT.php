@@ -30,11 +30,17 @@ class JWT
         }
     }
 
+    /*
+     * Genera un token JWT.
+     */
     public function encode(array $payload)
     {
         return FJWT::encode($payload, $this->privateKey, $this->algo);
     }
 
+    /*
+     * Decodifica un token JWT.
+     */
     public function decode(string $jwt)
     {
         return FJWT::decode($jwt, new Key($this->publicKey, $this->algo));
