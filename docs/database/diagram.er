@@ -4,20 +4,13 @@ title {label: "tinynote Entity-Relationship diagram", size: "24"}
 
 entity {size: "16", font: "Courier"}
 
-[roles] {bgcolor: "#fcecec"}
-id {label: "(PK1) TINYINT UNSIGNED NOT NULL"}
-name {label: "(UK1) VARCHAR(16) NOT NULL"}
-description {label: "VARCHAR(32) NOT NULL"}
-created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
-updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
-
 [users] {bgcolor: "#ececfc"}
 id {label: "(PK1) CHAR(36) NOT NULL"}
-role_id {label: "(FK1) TINYINT UNSIGNED NOT NULL"}
 username {label: "(UK1) VARCHAR(32) NOT NULL"}
 email {label: "(UK2) VARCHAR(255) NOT NULL"}
 password {label: "VARCHAR(255) NOT NULL"}
 active {label: "BOOLEAN NOT NULL DEFAULT FALSE"}
+is_admin {label: "BOOLEAN NOT NULL DEFAULT FALSE"}
 created_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
@@ -45,7 +38,6 @@ updated_at {label: "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"}
 
 # Relationships
 
-roles 1--+ users
 users 1--* notes
 users 1--* tags
 notes 1--* notes_tags

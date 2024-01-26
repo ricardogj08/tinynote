@@ -1,2 +1,2 @@
--- Elimina la tabla de tags de los usuarios.
-DROP TABLE IF EXISTS tags;
+-- Elimina la tabla de los tags de las notas.
+DROP TABLE IF EXISTS notes_tags;

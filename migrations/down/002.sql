@@ -1,2 +1,2 @@
--- Elimina la tabla de usuarios.
-DROP TABLE IF EXISTS users;
+-- Elimina la tabla de notas de los usuarios.
+DROP TABLE IF EXISTS notes;

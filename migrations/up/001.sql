@@ -1,14 +1,17 @@
--- Crea la tabla de roles de los usuarios.
-CREATE TABLE IF NOT EXISTS roles (
-  id TINYINT UNSIGNED NOT NULL,
-  name VARCHAR(16) NOT NULL,
-  description VARCHAR(32) NOT NULL,
+-- Crea la tabla de usuarios.
+CREATE TABLE IF NOT EXISTS users (
+  id VARCHAR(36) NOT NULL,
+  username VARCHAR(32) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  is_admin BOOLEAN NOT NULL DEFAULT FALSE,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT roles_id_primary PRIMARY KEY(id),
-  CONSTRAINT roles_name_unique UNIQUE(name)
+  CONSTRAINT users_id_primary PRIMARY KEY(id),
+  CONSTRAINT users_username_unique UNIQUE(username),
+  CONSTRAINT users_email_unique UNIQUE(email)
 );
 
-INSERT INTO roles(id, name, description) VALUES
-  (1, 'admin', 'Administrator'),
-  (2, 'user', 'General user');
+INSERT INTO users(id, username, email, password, active, is_admin) VALUES
+  ('a394ca44-7ff4-498a-9ce4-2f9ba7f57071', 'admin', 'admin@example.com', '$2y$10$bKmbeRH2D1sMis.iDUrzU.HlddYsUH.5vU4B8SBjXImui/tb6PAsy', TRUE, TRUE);

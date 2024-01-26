@@ -1,14 +1,18 @@
--- Crea la tabla de tags de los usuarios.
-CREATE TABLE IF NOT EXISTS tags (
+-- Crea la tabla de los tags de las notas.
+CREATE TABLE IF NOT EXISTS notes_tags (
   id CHAR(36) NOT NULL,
-  user_id CHAR(36) NOT NULL,
-  name VARCHAR(64) NOT NULL,
+  note_id CHAR(36) NOT NULL,
+  tag_id CHAR(36) NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT tags_id_primary PRIMARY KEY(id),
-    CONSTRAINT tags_user_id_foreign FOREIGN KEY(user_id)
-      REFERENCES users(id)
-      ON DELETE CASCADE
-      ON UPDATE RESTRICT,
-    CONSTRAINT tags_user_id_name_unique UNIQUE(user_id, name)
+  CONSTRAINT notes_tags_id_primary PRIMARY KEY(id),
+  CONSTRAINT notes_tags_note_id_foreign FOREIGN KEY(note_id)
+    REFERENCES notes(id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT notes_tags_tag_id_foreign FOREIGN KEY(tag_id)
+    REFERENCES tags(id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT notes_tags_note_id_tag_id_unique UNIQUE(note_id, tag_id)
 );
