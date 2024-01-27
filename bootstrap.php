@@ -34,7 +34,7 @@ $app = new \PhpExpress\Application();
 /*
  * Carga los archivos de definición de rutas y middlewares.
  *
- * Se pasa la variable $app en los archivos
+ * Se pasa la variable $app dentro de los archivos
  * para registrar rutas y middlewares.
  */
 require_once __DIR__ . '/routes/api.php';

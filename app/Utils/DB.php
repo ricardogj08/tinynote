@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use AbmmHasan\UUID\GenerateUuid;
 use PhpOrm\Configuration;
 use PhpOrm\Connection;
 
@@ -53,5 +54,21 @@ class DB
     public function getConnection()
     {
         return $this->connection;
+    }
+
+    /*
+     * Obtiene el datetime actual.
+     */
+    public static function datetime()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /*
+     * Genera un UUID v4 aleatorio.
+     */
+    public static function generateUuid()
+    {
+        return GenerateUuid::v4();
     }
 }
