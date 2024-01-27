@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a8eef509cd1c15406e3fdfcbedcf54e",
+    "content-hash": "da5e771e8e748ef56ec015942491c445",
     "packages": [
+        {
+            "name": "abmmhasan/uuid",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abmmhasan/UUID.git",
+                "reference": "d3733d7bc19ed7e58cbf196b01ecbde5b26d9110"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abmmhasan/UUID/zipball/d3733d7bc19ed7e58cbf196b01ecbde5b26d9110",
+                "reference": "d3733d7bc19ed7e58cbf196b01ecbde5b26d9110",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "AbmmHasan\\UUID\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "abmmhasan",
+                    "email": "abmmhasan@gmail.com"
+                }
+            ],
+            "description": "UUID (v1, v3-v5) Generator (RFC4122)",
+            "support": {
+                "issues": "https://github.com/abmmhasan/UUID/issues",
+                "source": "https://github.com/abmmhasan/UUID/tree/2.0"
+            },
+            "time": "2023-10-27T05:35:01+00:00"
+        },
         {
             "name": "firebase/php-jwt",
             "version": "v6.10.0",
