@@ -18,9 +18,9 @@ class AuthController
     private function getValidationRules()
     {
         return [
-            'email' => v::email()->length(null, 255, true),
-            'username' => v::alnum()->length(4, 32, true),
-            'password' => v::graph()->length(8, 64, true)
+            'email' => v::stringType()->email()->length(null, 255, true),
+            'username' => v::stringType()->alnum()->length(4, 32, true),
+            'password' => v::stringType()->graph()->length(8, 64, true)
         ];
     }
 
