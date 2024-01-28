@@ -36,6 +36,7 @@ $app = new \PhpExpress\Application();
  * para utilizarlos en las rutas.
  */
 $app->param('uuid', '[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}');
+$app->param('wildcard', '.*');
 
 /*
  * Carga los archivos de definición de rutas y middlewares.
