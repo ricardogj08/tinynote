@@ -52,7 +52,7 @@ class AuthMiddleware
 
         /*
          * Se pasa la variable $req->app->local('userAuth')
-         * dentro de los middlewares y controladores
+         * dentro de los controladores y middlewares
          * con la información del usuario autenticado.
          */
         $req->app->local('userAuth', $userAuth);

@@ -47,7 +47,7 @@ class NoteController
 
         // Comprueba si los tags están registrados.
         if (!empty($data['tags'])) {
-            $query = TagModel::Factory()->select('id');
+            $query = TagModel::factory()->select('id');
 
             $params = [];
 
