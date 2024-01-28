@@ -16,6 +16,7 @@ class TagController
     private function getValidationRules()
     {
         return [
+            'id' => v::stringType()->NotEmpty()->Uuid(),
             'name' => v::stringType()->NotEmpty()->length(null, 64, true)
         ];
     }
@@ -38,9 +39,9 @@ class TagController
             ]);
         }
 
-        $userAuth = $req->app->local('userAuth');
-
         $data['name'] = trim($data['name']);
+
+        $userAuth = $req->app->local('userAuth');
 
         $tagModel = TagModel::factory();
 
@@ -100,6 +101,54 @@ class TagController
 
         $res->json([
             'data' => $tags
+        ]);
+    }
+
+    /*
+     * Elimina el tag de un usuario.
+     */
+    public function delete($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'errors' => $e->getMessages()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        $tagModel = TagModel::factory();
+
+        // Consulta la información del tag que será eliminado.
+        $deletedTag = $tagModel
+            ->select('tags.id, tags.name, COUNT(notes.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->notes()
+            ->where('tags.user_id', $userAuth['id'])
+            ->groupBy('tags.id')
+            ->find($params['uuid']);
+
+        // Comprueba que el tag se encuentra registrado.
+        if (empty($deletedTag)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'errors' => 'Tag cannot be found'
+            ]);
+        }
+
+        // Elimina la información del tag.
+        $tagModel
+            ->reset()
+            ->where('id', $deletedTag['id'])
+            ->delete();
+
+        $res->json([
+            'data' => $deletedTag
         ]);
     }
 }

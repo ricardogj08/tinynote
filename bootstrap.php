@@ -32,6 +32,12 @@ foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
 $app = new \PhpExpress\Application();
 
 /*
+ * Establece parámetros personalizados
+ * para utilizarlos en las rutas.
+ */
+$app->param('uuid', '[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}');
+
+/*
  * Carga los archivos de definición de rutas y middlewares.
  *
  * Se pasa la variable $app dentro de los archivos
