@@ -17,4 +17,14 @@ class TagModel extends BaseModel
         'created_at',
         'updated_at'
     ];
+
+    /*
+     * Relaciona las notas de un tag.
+     */
+    public function notes()
+    {
+        return $this
+            ->leftJoin('notes_tags', 'tags.id = notes_tags.tag_id')
+            ->leftJoin('notes', 'notes.id = notes_tags.note_id');
+    }
 }

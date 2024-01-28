@@ -80,4 +80,26 @@ class TagController
             'data' => $newTag
         ]);
     }
+
+    /*
+     * Consulta los tags de un usuario.
+     */
+    public function index($req, $res)
+    {
+        $userAuth = $req->app->local('userAuth');
+
+        $tagModel = tagModel::factory();
+
+        // Consulta la información de los tags del usuario.
+        $tags = $tagModel
+            ->select('tags.id, tags.name, COUNT(notes.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->notes()
+            ->where('tags.user_id', $userAuth['id'])
+            ->groupBy('tags.id')
+            ->get();
+
+        $res->json([
+            'data' => $tags
+        ]);
+    }
 }
