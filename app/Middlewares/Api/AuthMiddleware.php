@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Middlewares;
+namespace App\Middlewares\Api;
 
 use App\Models\UserModel;
 use App\Utils\JWT;
