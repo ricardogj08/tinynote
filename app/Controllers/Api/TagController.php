@@ -134,7 +134,7 @@ class TagController
             ->groupBy('tags.id')
             ->find($params['uuid']);
 
-        // Comprueba que el tag se encuentra registrado.
+        // Comprueba que el tag se encuentre registrado.
         if (empty($deletedTag)) {
             $res->status(StatusCode::NOT_FOUND)->json([
                 'errors' => 'Tag cannot be found'

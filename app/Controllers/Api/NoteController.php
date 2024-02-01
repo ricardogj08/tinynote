@@ -3,7 +3,9 @@
 namespace App\Controllers\Api;
 
 use App\Models\NoteModel;
+use App\Models\NoteTagModel;
 use App\Models\TagModel;
+use App\Utils\DB;
 use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
@@ -45,9 +47,11 @@ class NoteController
 
         $userAuth = $req->app->local('userAuth');
 
-        // Comprueba si los tags están registrados.
+        $tagModel = TagModel::factory();
+
+        // Comprueba que los tags se encuentren registrados.
         if (!empty($data['tags'])) {
-            $query = TagModel::factory()->select('id');
+            $query = $tagModel->select('id');
 
             $params = [];
 
@@ -57,13 +61,70 @@ class NoteController
                 $params[] = $paramName;
             }
 
-            $params = implode(', ', $params);
+            $params = implode(',', $params);
 
-            $query->where("(id IN({$params}))");
+            $query->where("id IN({$params})");
 
             $tags = $query->where('user_id', $userAuth['id'])->get();
 
-            exit (var_dump($tags));
+            if (array_diff(array_column($tags, 'id'), $data['tags'])) {
+                $res->status(StatusCode::NOT_FOUND)->json([
+                    'errors' => 'Tags cannot be found'
+                ]);
+            }
         }
+
+        // Genera el UUID de la nueva nota.
+        $newNoteId = DB::generateUuid();
+
+        $datetime = DB::datetime();
+
+        $noteModel = NoteModel::factory();
+
+        // Registra la información de la nueva nota.
+        $noteModel->insert([
+            'id' => $newNoteId,
+            'user_id' => $userAuth['id'],
+            'title' => $data['title'],
+            'body' => $data['body'],
+            'created_at' => $datetime,
+            'updated_at' => $datetime
+        ]);
+
+        $noteTagModel = NoteTagModel::factory();
+
+        // Relaciona los tags de la nota registrada.
+        if (!empty($tags)) {
+            foreach ($tags as $tag) {
+                $datetime = DB::datetime();
+
+                $noteTagModel->reset()->insert([
+                    'id' => DB::generateUuid(),
+                    'note_id' => $newNoteId,
+                    'tag_id' => $tag['id'],
+                    'created_at' => $datetime,
+                    'updated_at' => $datetime
+                ]);
+            }
+        }
+
+        // Consulta la información de la nota registrada.
+        $newNote = $noteModel
+            ->reset()
+            ->select('id, user_id, title, body, created_at, updated_at')
+            ->find($newNoteId);
+
+        // Consulta los tags de la nota registrada.
+        $newNote['tags'] = $noteTagModel
+            ->reset()
+            ->select('tags.id, tags.name')
+            ->tags()
+            ->where('notes_tags.note_id', $newNote['id'])
+            ->groupBy('tags.id')
+            ->get();
+
+        $res->status(StatusCode::CREATED)->json([
+            'data' => $newNote
+        ]);
     }
 }

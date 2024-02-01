@@ -20,7 +20,7 @@ class TagModel extends BaseModel
 
     public function notesTags()
     {
-      return $this->leftJoin('notes_tags', 'tags.id = notes_tags.tag_id');
+        return $this->leftJoin('notes_tags', 'tags.id = notes_tags.tag_id');
     }
 
     /*
