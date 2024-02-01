@@ -67,17 +67,19 @@ class NoteController
 
             $tags = $query->where('user_id', $userAuth['id'])->get();
 
-            if (array_diff(array_column($tags, 'id'), $data['tags'])) {
+            if (array_diff($data['tags'], array_column($tags, 'id'))) {
                 $res->status(StatusCode::NOT_FOUND)->json([
                     'errors' => 'Tags cannot be found'
                 ]);
             }
         }
 
-        // Genera el UUID de la nueva nota.
-        $newNoteId = DB::generateUuid();
+        // Cifra el cuerpo de la nota.
 
         $datetime = DB::datetime();
+
+        // Genera el UUID de la nueva nota.
+        $newNoteId = DB::generateUuid();
 
         $noteModel = NoteModel::factory();
 
