@@ -4,7 +4,7 @@ namespace App\Models;
 
 /*
  * Modelo que representa la tabla
- * de tags de los usuarios.
+ * de los tags de los usuarios.
  */
 class TagModel extends BaseModel
 {

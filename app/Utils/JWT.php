@@ -25,8 +25,12 @@ class JWT
         $this->privateKey = file_get_contents($config['privateKey']);
         $this->publicKey = file_get_contents($config['publicKey']);
 
-        if ($this->privateKey === false || $this->publicKey === false) {
-            throw new Exception('JWT private or public key file not found.');
+        if ($this->privateKey === false) {
+            throw new Exception("JWT private key file '{$config['privateKey']}' cannot be found.");
+        }
+
+        if ($this->publicKey === false) {
+            throw new Exception("JWT public key file '{$config['publicKey']}' cannot be found.");
         }
     }
 

@@ -7,7 +7,7 @@ class Password
     private static $algo = PASSWORD_DEFAULT;
 
     /*
-     * Cifra una contraseña.
+     * Encripta una contraseña.
      */
     public static function encrypt(string $password)
     {

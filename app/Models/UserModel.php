@@ -3,7 +3,7 @@
 namespace App\Models;
 
 /*
- * Modelo que representa la tabla de usuarios.
+ * Modelo que representa la tabla de los usuarios.
  */
 class UserModel extends BaseModel
 {

@@ -21,7 +21,7 @@ foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
 }
 
 /*
- * Define la configuración de la base de datos
+ * Establece la configuración de la base de datos
  * para el ORM de la aplicación.
  */
 \PhpOrm\DB::config(__DIR__ . '/config/database.php');

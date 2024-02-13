@@ -3,8 +3,8 @@
 namespace App\Models;
 
 /*
- * Modelo que representa la tabla
- * de los tags de las notas.
+ * Modelo que representa la tabla de
+ * relación de las notas y los tags.
  */
 class NoteTagModel extends BaseModel
 {

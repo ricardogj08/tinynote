@@ -1,4 +1,4 @@
--- Crea la tabla de notas de los usuarios.
+-- Crea la tabla de las notas de los usuarios.
 CREATE TABLE IF NOT EXISTS notes (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,

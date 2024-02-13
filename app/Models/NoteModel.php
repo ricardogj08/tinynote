@@ -4,7 +4,7 @@ namespace App\Models;
 
 /*
  * Modelo que representa la tabla
- * de notas de los usuarios.
+ * de las notas de los usuarios.
  */
 class NoteModel extends BaseModel
 {

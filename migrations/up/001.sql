@@ -1,4 +1,4 @@
--- Crea la tabla de usuarios.
+-- Crea la tabla de los usuarios.
 CREATE TABLE IF NOT EXISTS users (
   id VARCHAR(36) NOT NULL,
   username VARCHAR(32) NOT NULL,

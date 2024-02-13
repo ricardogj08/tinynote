@@ -1,4 +1,4 @@
--- Crea la tabla de tags de los usuarios.
+-- Crea la tabla de los tags de los usuarios.
 CREATE TABLE IF NOT EXISTS tags (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
