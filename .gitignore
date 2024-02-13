@@ -4,3 +4,4 @@ pretty-php.phar
 writable/**/*.db
 writable/**/*.sqlite
 writable/**/*.pem
+writable/**/*.key
