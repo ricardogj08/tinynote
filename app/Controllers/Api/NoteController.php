@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Models\NoteModel;
 use App\Models\NoteTagModel;
 use App\Models\TagModel;
+use App\Utils\Crypt;
 use App\Utils\DB;
 use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -74,7 +75,10 @@ class NoteController
             }
         }
 
-        // Cifra el cuerpo de la nota.
+        $crypt = new Crypt($userAuth['id']);
+
+        // Encripta el cuerpo de la nota.
+        $data['body'] = $crypt->encrypt(trim($data['body']));
 
         $datetime = DB::datetime();
 
@@ -87,7 +91,7 @@ class NoteController
         $noteModel->insert([
             'id' => $newNoteId,
             'user_id' => $userAuth['id'],
-            'title' => $data['title'],
+            'title' => trim($data['title']),
             'body' => $data['body'],
             'created_at' => $datetime,
             'updated_at' => $datetime
@@ -115,6 +119,8 @@ class NoteController
             ->reset()
             ->select('id, user_id, title, body, created_at, updated_at')
             ->find($newNoteId);
+
+        $newNote['body'] = $crypt->decrypt($newNote['body']);
 
         // Consulta los tags de la nota registrada.
         $newNote['tags'] = $noteTagModel

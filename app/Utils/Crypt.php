@@ -52,7 +52,7 @@ class Crypt
      */
     public function encrypt(string $data)
     {
-        return $this->publicKey->encrypt($data);
+        return base64_encode($this->publicKey->encrypt($data));
     }
 
     /*
@@ -60,7 +60,7 @@ class Crypt
      */
     public function decrypt(string $encryptedData)
     {
-        return $this->privateKey->decrypt($encryptedData);
+        return $this->privateKey->decrypt(base64_decode($encryptedData));
     }
 
     /*
@@ -68,6 +68,6 @@ class Crypt
      */
     public function canDecrypt(string $encryptedData)
     {
-        return $this->privateKey->decrypt->canDecrypt($encryptedData);
+        return $this->privateKey->decrypt->canDecrypt(base64_decode($encryptedData));
     }
 }
