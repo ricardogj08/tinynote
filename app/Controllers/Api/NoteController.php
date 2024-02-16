@@ -129,10 +129,48 @@ class NoteController
             ->tags()
             ->where('notes_tags.note_id', $newNote['id'])
             ->groupBy('tags.id')
+            ->orderBy('tags.name ASC')
             ->get();
 
         $res->status(StatusCode::CREATED)->json([
             'data' => $newNote
+        ]);
+    }
+
+    /*
+     * Consulta las notas de un usuario.
+     */
+    public function index($req, $res)
+    {
+        $userAuth = $req->app->local('userAuth');
+
+        $noteModel = NoteModel::factory();
+
+        // Consulta la información de las notas del usuario.
+        $notes = $noteModel
+            ->select('notes.id, notes.user_id, notes.title, notes.created_at, notes.updated_at')
+            ->where('notes.user_id', $userAuth['id'])
+            ->orderBy('notes.updated_at DESC')
+            ->get();
+
+        $noteTagModel = NoteTagModel::factory();
+
+        // Consulta los tags de las notas del usuario.
+        foreach ($notes as &$note) {
+            $note['tags'] = $noteTagModel
+                ->reset()
+                ->select('tags.id, tags.name')
+                ->tags()
+                ->where('notes_tags.note_id', $note['id'])
+                ->groupBy('tags.id')
+                ->orderBy('tags.name ASC')
+                ->get();
+        }
+
+        unset($note);
+
+        $res->json([
+            'data' => $notes
         ]);
     }
 }

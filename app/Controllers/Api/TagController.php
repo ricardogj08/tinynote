@@ -97,6 +97,7 @@ class TagController
             ->notesTags()
             ->where('tags.user_id', $userAuth['id'])
             ->groupBy('tags.id')
+            ->orderBy('tags.updated_at DESC')
             ->get();
 
         $res->json([
