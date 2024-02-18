@@ -81,4 +81,31 @@ class AuthController
             ]
         ]);
     }
+
+    /*
+     * Consulta la información del usuario autenticado.
+     */
+    public function me($req, $res)
+    {
+        $userAuth = $req->app->local('userAuth');
+
+        // Consulta la información del usuario autenticado.
+        $userAuth = UserModel::factory()
+            ->select('id, username, email, active, is_admin, created_at, updated_at')
+            ->find($userAuth['id']);
+
+        $res->json([
+            'data' => $userAuth
+        ]);
+    }
+
+    /*
+     * Cierra la sesión de un usuario autenticado.
+     */
+    public function logout() {}
+
+    /*
+     * Renueva la sesión de un usuario autenticado.
+     */
+    public function refresh() {}
 }
