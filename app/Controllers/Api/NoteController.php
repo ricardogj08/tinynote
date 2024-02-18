@@ -19,6 +19,7 @@ class NoteController
     private function getValidationRules()
     {
         return [
+            'id' => v::stringType()->NotEmpty()->Uuid(),
             'title' => v::stringType()->notEmpty()->length(null, 255, true),
             'body' => v::stringType()->notEmpty(),
             'tags' => v::optional(v::arrayVal()->each(v::stringType()->Uuid()))
@@ -117,10 +118,8 @@ class NoteController
         // Consulta la información de la nota registrada.
         $newNote = $noteModel
             ->reset()
-            ->select('id, user_id, title, body, created_at, updated_at')
+            ->select('id, user_id, title, created_at, updated_at')
             ->find($newNoteId);
-
-        $newNote['body'] = $crypt->decrypt($newNote['body']);
 
         // Consulta los tags de la nota registrada.
         $newNote['tags'] = $noteTagModel
@@ -171,6 +170,61 @@ class NoteController
 
         $res->json([
             'data' => $notes
+        ]);
+    }
+
+    /*
+     * Elimina la nota de un usuario.
+     */
+    public function delete($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'errors' => $e->getMessages()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        $noteModel = NoteModel::factory();
+
+        // Consulta la información de la nota que será eliminada.
+        $deletedNote = $noteModel
+            ->select('id, user_id, title, created_at, updated_at')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que la nota se encuentra registrada.
+        if (empty($deletedNote)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'errors' => 'Note cannot be found'
+            ]);
+        }
+
+        // Consulta los tags de la nota que será eliminada.
+        $deletedNote['tags'] = NoteTagModel::factory()
+            ->select('tags.id, tags.name')
+            ->tags()
+            ->where('notes_tags.note_id', $deletedNote['id'])
+            ->groupBy('tags.id')
+            ->orderBy('tags.name ASC')
+            ->get();
+
+        // Elimina la información de la nota.
+        $noteModel
+            ->reset()
+            ->where('id', $deletedNote['id'])
+            ->delete();
+
+        $res->json([
+            'data' => $deletedNote
         ]);
     }
 }
