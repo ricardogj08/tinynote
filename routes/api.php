@@ -26,6 +26,7 @@ $app->delete('/api/v1/tags/:uuid', '\App\Controllers\Api\TagController@delete');
 
 $app->post('/api/v1/notes', '\App\Controllers\Api\NoteController@create');
 $app->get('/api/v1/notes', '\App\Controllers\Api\NoteController@index');
+$app->get('/api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@show');
 $app->delete('/api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@delete');
 
 $app->all('/api/:wildcard', '\App\Controllers\Api\ApiController@error404');

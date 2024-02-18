@@ -78,7 +78,7 @@ class NoteController
 
         $crypt = new Crypt($userAuth['id']);
 
-        // Encripta el cuerpo de la nota.
+        // Encripta el contenido de la nota.
         $data['body'] = $crypt->encrypt(trim($data['body']));
 
         $datetime = DB::datetime();
@@ -170,6 +170,59 @@ class NoteController
 
         $res->json([
             'data' => $notes
+        ]);
+    }
+
+    /*
+     * Consulta la información de
+     * la nota de un usuario.
+     */
+    public function show($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'errors' => $e->getMessages()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        // Consulta la información de la nota.
+        $note = NoteModel::factory()
+            ->select('id, user_id, title, body, created_at, updated_at')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que la nota se encuentra registrada.
+        if (empty($note)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'errors' => 'Note cannot be found'
+            ]);
+        }
+
+        $crypt = new Crypt($userAuth['id']);
+
+        // Desencripta el contenido de la nota.
+        $note['body'] = $crypt->decrypt($note['body']);
+
+        // Consulta los tags de la nota.
+        $note['tags'] = NoteTagModel::factory()
+            ->select('tags.id, tags.name')
+            ->tags()
+            ->where('notes_tags.note_id', $note['id'])
+            ->groupBy('tags.id')
+            ->orderBy('tags.name ASC')
+            ->get();
+
+        $res->json([
+            'data' => $note
         ]);
     }
 
