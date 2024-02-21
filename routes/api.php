@@ -22,6 +22,7 @@ $app->get('/api/v1/auth/refresh', '\App\Controllers\Api\AuthController@refresh')
 
 $app->post('/api/v1/tags', '\App\Controllers\Api\TagController@create');
 $app->get('/api/v1/tags', '\App\Controllers\Api\TagController@index');
+$app->put('/api/v1/tags/:uuid', '\App\Controllers\Api\TagController@update');
 $app->delete('/api/v1/tags/:uuid', '\App\Controllers\Api\TagController@delete');
 
 $app->post('/api/v1/notes', '\App\Controllers\Api\NoteController@create');

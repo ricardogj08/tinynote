@@ -46,6 +46,7 @@ class TagController
         $tagModel = TagModel::factory();
 
         $existsNewTag = $tagModel
+            ->select('id')
             ->where('user_id', $userAuth['id'])
             ->where('name', $data['name'])
             ->value('id');
@@ -106,6 +107,90 @@ class TagController
     }
 
     /*
+     * Modifica o actualiza la información
+     * del tag de un usuario.
+     */
+    public function update($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'errors' => $e->getMessages()
+            ]);
+        }
+
+        $data = $req->body;
+
+        // Comprueba los campos del cuerpo de la petición.
+        try {
+            v::key('name', $rules['name'], true)->assert($data);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'errors' => $e->getMessages()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        $tagModel = TagModel::factory();
+
+        // Consulta la información del tag que será modificado.
+        $tag = $tagModel
+            ->select('id, name')
+            ->where('user_id', $userAuth['id'])
+            ->find('id', $params['uuid']);
+
+        // Comprueba que el tag se encuentra registrado.
+        if (empty($tag)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'errors' => 'Tag cannot be found'
+            ]);
+        }
+
+        $data['name'] = trim($data['name']);
+
+        if ($tag['name'] !== $data['name']) {
+            $existsTag = $tagModel
+                ->reset()
+                ->select('id')
+                ->where('user_id', $userAuth['id'])
+                ->where('name', $data['name'])
+                ->value('id');
+
+            // Comprueba que el tag sea único.
+            if (!empty($existsTag)) {
+                $res->status(StatusCode::CONFLICT)->json([
+                    'errors' => 'A tag already exists with that name'
+                ]);
+            }
+
+            // Modifica la información del tag del usuario.
+            $tagModel->reset()->where('id', $tag['id'])->update([
+                'name' => $data['name'],
+                'updated_at' => DB::datetime()
+            ]);
+        }
+
+        // Consulta la información del tag modificado.
+        $tag = $tagModel
+            ->reset()
+            ->select('tags.id, tags.name, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->notesTags()
+            ->groupBy('tags.id')
+            ->find($tagId);
+
+        $res->json([
+            'data' => $tag
+        ]);
+    }
+
+    /*
      * Elimina el tag de un usuario.
      */
     public function delete($req, $res)
@@ -135,7 +220,7 @@ class TagController
             ->groupBy('tags.id')
             ->find($params['uuid']);
 
-        // Comprueba que el tag se encuentre registrado.
+        // Comprueba que el tag se encuentra registrado.
         if (empty($deletedTag)) {
             $res->status(StatusCode::NOT_FOUND)->json([
                 'errors' => 'Tag cannot be found'
