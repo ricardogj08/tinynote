@@ -178,15 +178,15 @@ class TagController
         }
 
         // Consulta la información del tag modificado.
-        $tag = $tagModel
+        $updatedTag = $tagModel
             ->reset()
             ->select('tags.id, tags.name, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
             ->notesTags()
             ->groupBy('tags.id')
-            ->find($tagId);
+            ->find($tag['id']);
 
         $res->json([
-            'data' => $tag
+            'data' => $updatedTag
         ]);
     }
 
