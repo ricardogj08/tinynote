@@ -2,20 +2,20 @@
 
 namespace App\Controllers\Web;
 
-class NoteController
+class TagController
 {
     /*
-     * Renderiza el formulario de registro de notas.
+     * Renderiza el formulario de registro de tags.
      */
     public function new($req, $res)
     {
-        $res->render('notes/new', [
+        $res->render('tags/new', [
             'res' => $res
         ]);
     }
 
     /*
-     * Registra la nota de un usuario.
+     * Registra el tag de un usuario.
      */
     public function create($req, $res) {}
 }

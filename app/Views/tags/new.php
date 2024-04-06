@@ -1,16 +1,16 @@
 <?php $res->render('layouts/header') ?>
 
-<form method="post" enctype="multipart/form-data" action="<?= \App\Utils\Url::build('notes') ?>">
+<form method="post" action="<?= \App\Utils\Url::build('tags') ?>">
   <fieldset>
   	<legend>
-  		Note registration
+  		Tag registration
   	</legend>
 
     <div class="form-group">
-      <label for="title">
-        Title:
+      <label for="name">
+        Name:
       </label>
-      <input type="text" id="title" name="title">
+      <input type="text" id="name" name="name">
     </div>
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default">
