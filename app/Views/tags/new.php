@@ -2,9 +2,7 @@
 
 <form method="post" action="<?= \App\Utils\Url::build('tags') ?>">
   <fieldset>
-  	<legend>
-  		Tag registration
-  	</legend>
+    <legend>Tag registration</legend>
 
     <div class="form-group">
       <label for="name">

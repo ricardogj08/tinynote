@@ -6,6 +6,9 @@
 
 $app->get('/', '\App\Controllers\Web\PageController@index');
 
+$app->get('/login', '\App\Controllers\Web\AuthController@loginView');
+$app->post('/login', '\App\Controllers\Web\AuthController@loginAction');
+
 $app->get('/tags/new', '\App\Controllers\Web\TagController@new');
 $app->post('/tags', '\App\Controllers\Web\TagController@create');
 
