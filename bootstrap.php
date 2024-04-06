@@ -32,6 +32,11 @@ foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
 $app = new \PhpExpress\Application();
 
 /*
+ * Configura la ruta de las vistas.
+ */
+$app->set('views', __DIR__ . '/app/Views');
+
+/*
  * Establece parámetros personalizados
  * para utilizarlos en las rutas.
  */
