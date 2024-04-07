@@ -10,7 +10,7 @@ class TagController
     public function new($req, $res)
     {
         $res->render('tags/new', [
-            'res' => $res
+            'app' => $req->app
         ]);
     }
 

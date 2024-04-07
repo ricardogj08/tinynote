@@ -10,7 +10,7 @@ class AuthController
     public function loginView($req, $res)
     {
         $res->render('auth/login', [
-            'res' => $res
+            'app' => $req->app
         ]);
     }
 

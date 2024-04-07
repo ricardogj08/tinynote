@@ -1,4 +1,4 @@
-<?php $res->render('layouts/header', ['title' => 'Login']) ?>
+<?php $app->render('layouts/header', ['title' => 'Login']) ?>
 
 <h1>Login</h1>
 
@@ -30,4 +30,4 @@
   </fieldset>
 </form>
 
-<?php $res->render('layouts/footer') ?>
+<?php $app->render('layouts/footer') ?>

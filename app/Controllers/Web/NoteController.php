@@ -10,7 +10,7 @@ class NoteController
     public function new($req, $res)
     {
         $res->render('notes/new', [
-            'res' => $res
+            'app' => $req->app
         ]);
     }
 

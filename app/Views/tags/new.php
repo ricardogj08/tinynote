@@ -1,4 +1,4 @@
-<?php $res->render('layouts/header') ?>
+<?php $app->render('layouts/header') ?>
 
 <form method="post" action="<?= \App\Utils\Url::build('tags') ?>">
   <fieldset>
@@ -15,4 +15,4 @@
   </fieldset>
 </form>
 
-<?php $res->render('layouts/footer') ?>
+<?php $app->render('layouts/footer') ?>
