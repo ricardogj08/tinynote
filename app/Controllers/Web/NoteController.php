@@ -18,4 +18,9 @@ class NoteController
      * Registra la nota de un usuario.
      */
     public function create($req, $res) {}
+
+    /*
+     * Consulta las notas del usuario.
+     */
+    public function index($req, $res) {}
 }

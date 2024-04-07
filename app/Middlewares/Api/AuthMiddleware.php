@@ -12,7 +12,7 @@ class AuthMiddleware
     /*
      * Comprueba la autenticación de un token.
      */
-    public function before($req, $res)
+    public function verify($req, $res)
     {
         $header = $req->header('Authorization');
 

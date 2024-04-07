@@ -18,4 +18,9 @@ class TagController
      * Registra el tag de un usuario.
      */
     public function create($req, $res) {}
+
+    /*
+     * Consulta los tags del usuario.
+     */
+    public function index($req, $res) {}
 }
