@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Web;
 
+use App\Utils\Api;
+
 class AuthController
 {
     /*
