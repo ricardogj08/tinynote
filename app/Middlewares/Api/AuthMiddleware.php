@@ -14,7 +14,7 @@ class AuthMiddleware
      */
     public function verify($req, $res)
     {
-        $header = $req->header('Authorization');
+        $header = $req->header('Authorization') ?? '';
 
         if (empty($header)) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
@@ -26,7 +26,7 @@ class AuthMiddleware
          * Obtiene el token de autenticación
          * desde el header de la petición.
          */
-        $token = explode(' ', $header ?? '');
+        $token = explode(' ', $header);
         $token = end($token);
 
         try {

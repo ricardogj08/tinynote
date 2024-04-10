@@ -14,7 +14,7 @@ class AuthMiddleware
      */
     public function verify($req, $res)
     {
-        $userAuth = $req->cookies[$this->cookieName];
+        $userAuth = $req->cookies[$this->cookieName] ?? null;
 
         if (empty($userAuth)) {
             $res->redirect(Url::build('login'), StatusCode::FOUND);
@@ -26,7 +26,7 @@ class AuthMiddleware
      */
     public function redirect($req, $res)
     {
-        $userAuth = $req->cookies[$this->cookieName];
+        $userAuth = $req->cookies[$this->cookieName] ?? null;
 
         if (!empty($userAuth)) {
             $req->redirect(Url::build('notes'), StatusCode::FOUND);
