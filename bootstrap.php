@@ -27,6 +27,12 @@ foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
 \PhpOrm\DB::config(__DIR__ . '/config/database.php');
 
 /*
+ * Configura e inicia una nueva sesión.
+ */
+session_save_path(__DIR__ . '/writable/sessions');
+session_start();
+
+/*
  * Crea una instancia de la aplicación.
  */
 $app = new \PhpExpress\Application();

@@ -1,3 +1,4 @@
+<?php use App\Utils\Html ?>
 <?php $app->render('layouts/header', ['title' => 'Login']) ?>
 
 <h1>Login</h1>
@@ -10,7 +11,7 @@
       <label for="nickname">
         Email/Username:
       </label>
-      <input type="text" id="nickname" name="nickname" placeholder="Enter your email or username">
+      <input type="text" id="nickname" name="nickname" placeholder="Enter your email or username" value="<?= Html::escape($data['nickname']) ?>">
     </div>
 
     <div class="form-group">
