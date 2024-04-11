@@ -56,11 +56,35 @@ class TagController
             $res->redirect(Url::build('tags/new'), StatusCode::FOUND);
         }
 
+        $req->session['success'] = 'The tag was created correctly';
+
         $res->redirect(Url::build('tags'), StatusCode::FOUND);
     }
 
     /*
      * Consulta los tags del usuario.
      */
-    public function index($req, $res) {}
+    public function index($req, $res)
+    {
+        $client = Api::client();
+
+        // Realiza la petición de consulta de los tags del usuario.
+        $response = $client->get('v1/tags');
+
+        $body = json_decode($response->body ?? '', true);
+
+        $tags = $body['data'] ?? [];
+
+        $errors = $body['errors'] ?? null;
+        $success = $req->session['success'] ?? null;
+
+        unset($req->session['success']);
+
+        $res->render('tags/index', [
+            'app' => $req->app,
+            'tags' => $tags,
+            'errors' => $errors,
+            'success' => $success
+        ]);
+    }
 }
