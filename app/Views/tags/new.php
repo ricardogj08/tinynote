@@ -1,6 +1,15 @@
-<?php $app->render('layouts/header') ?>
+<?php use App\Utils\Url, App\Utils\Html ?>
+<?php $app->render('layouts/header', ['title' => 'Create tag']) ?>
 
-<form method="post" action="<?= \App\Utils\Url::build('tags') ?>">
+<h1>Create tag</h1>
+
+<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+
+<a href="<?= Url::build('tags') ?>">
+  < Back
+</a>
+
+<form method="post" action="<?= Url::build('tags') ?>">
   <fieldset>
     <legend>Tag registration</legend>
 
@@ -8,7 +17,16 @@
       <label for="name">
         Name:
       </label>
-      <input type="text" id="name" name="name">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter tag name"
+        minlength="1"
+        maxlength="64"
+        required
+        value="<?= Html::escape($values['name']) ?>">
+        <small class="text-error"><?= Html::escape($validations['name']) ?></small>
     </div>
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default">

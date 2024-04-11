@@ -17,7 +17,7 @@ class TagController
     {
         return [
             'id' => v::stringType()->NotEmpty()->Uuid(),
-            'name' => v::stringType()->NotEmpty()->length(null, 64, true)
+            'name' => v::stringType()->NotEmpty()->length(1, 64, true)
         ];
     }
 
@@ -26,7 +26,7 @@ class TagController
      */
     public function create($req, $res)
     {
-        $data = $req->body;
+        $data = ['name' => $req->body['name'] ?? null];
 
         $rules = $this->getValidationRules();
 
@@ -125,7 +125,7 @@ class TagController
             ]);
         }
 
-        $data = $req->body;
+        $data = ['name' => $req->body['name'] ?? null];
 
         // Comprueba los campos del cuerpo de la petición.
         try {
