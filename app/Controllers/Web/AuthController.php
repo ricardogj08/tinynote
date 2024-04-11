@@ -17,6 +17,15 @@ class AuthController
     }
 
     /*
+     * Obtiene las opciones de configuración
+     * de la cookie de autenticación.
+     */
+    private function getCookieOptions()
+    {
+        return ['path' => '/', 'httpOnly' => true];
+    }
+
+    /*
      * Renderiza el formulario de inicio de sesión.
      */
     public function loginView($req, $res)
@@ -77,9 +86,24 @@ class AuthController
             $res->redirect(Url::build('login'), StatusCode::FOUND);
         }
 
+        $cookieOptions = $this->getCookieOptions();
+
+        // 24 horas
+        $cookieOptions['expire'] = strtotime('tomorrow');
+
         // Genera la cookie de autenticación del usuario.
-        $res->cookie('userAuth', $token);
+        $res->cookie('userAuth', $token, $cookieOptions);
 
         $res->redirect(Url::build('notes'), StatusCode::FOUND);
+    }
+
+    /*
+     * Cierra la sesión de un usuario.
+     */
+    public function logout($req, $res)
+    {
+        $res->clearCookie('userAuth', $this->getCookieOptions());
+
+        $res->redirect(Url::build('login'), StatusCode::FOUND);
     }
 }

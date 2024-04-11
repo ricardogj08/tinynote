@@ -29,8 +29,7 @@ foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
 /*
  * Configura e inicia una nueva sesión.
  */
-session_save_path(__DIR__ . '/writable/sessions');
-session_start();
+session_start(['save_path' => __DIR__ . '/writable/sessions']);
 
 /*
  * Crea una instancia de la aplicación.
