@@ -4,6 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Utils\Api;
 use App\Utils\Url;
+use PH7\JustHttp\StatusCode;
 
 class AuthController
 {
@@ -73,12 +74,12 @@ class AuthController
                 $req->session['errors'] = $body['errors'];
             }
 
-            $res->redirect(Url::build('login'));
+            $res->redirect(Url::build('login'), StatusCode::FOUND);
         }
 
         // Genera la cookie de autenticación del usuario.
         $res->cookie('userAuth', $token);
 
-        $res->redirect(Url::build('notes'));
+        $res->redirect(Url::build('notes'), StatusCode::FOUND);
     }
 }

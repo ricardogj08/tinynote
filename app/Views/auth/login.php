@@ -13,16 +13,31 @@
       <label for="nickname">
         Email/Username:
       </label>
-      <input type="text" id="nickname" name="nickname" placeholder="Enter your email or username" value="<?= Html::escape($values['nickname']) ?>">
-      <small><?= Html::escape($validations['nickname']) ?></small>
+      <input
+        type="text"
+        id="nickname"
+        name="nickname"
+        placeholder="Enter your email or username"
+        minlength="4"
+        maxlength="255"
+        required
+        value="<?= Html::escape($values['nickname']) ?>">
+      <small class="text-error"><?= Html::escape($validations['nickname']) ?></small>
     </div>
 
     <div class="form-group">
       <label for="password">
         Password:
       </label>
-      <input type="password" id="password" name="password" placeholder="Enter your password">
-      <small><?= Html::escape($validations['password']) ?></small>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        minlength="8"
+        maxlength="64"
+        required>
+      <small class="text-error"><?= Html::escape($validations['password']) ?></small>
     </div>
 
     <div class="form-group">

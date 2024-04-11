@@ -18,7 +18,7 @@ class AuthController
     private function getValidationRules()
     {
         return [
-            'email' => v::stringType()->email()->length(null, 255, true),
+            'email' => v::stringType()->email()->length(4, 255, true),
             'username' => v::stringType()->alnum()->length(4, 32, true),
             'password' => v::stringType()->graph()->length(8, 64, true)
         ];
@@ -31,7 +31,12 @@ class AuthController
     {
         $rules = $this->getValidationRules();
 
-        $data = $req->body;
+        $data = [];
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach (['nickname', 'password'] as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         $identifyBy = 'username';
 
