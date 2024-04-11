@@ -30,7 +30,7 @@ class AuthMiddleware
         $userAuth = $req->cookies['userAuth'] ?? null;
 
         if (!empty($userAuth)) {
-            $req->redirect(Url::build('notes'), StatusCode::FOUND);
+            $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }
     }
 }

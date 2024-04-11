@@ -3,6 +3,8 @@
 
 <h1>Login</h1>
 
+<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+
 <form method="post" action="<?= \App\Utils\Url::build('login') ?>">
   <fieldset>
     <legend>Sign In</legend>
@@ -11,7 +13,8 @@
       <label for="nickname">
         Email/Username:
       </label>
-      <input type="text" id="nickname" name="nickname" placeholder="Enter your email or username" value="<?= Html::escape($data['nickname']) ?>">
+      <input type="text" id="nickname" name="nickname" placeholder="Enter your email or username" value="<?= Html::escape($values['nickname']) ?>">
+      <small><?= Html::escape($validations['nickname']) ?></small>
     </div>
 
     <div class="form-group">
@@ -19,6 +22,7 @@
         Password:
       </label>
       <input type="password" id="password" name="password" placeholder="Enter your password">
+      <small><?= Html::escape($validations['password']) ?></small>
     </div>
 
     <div class="form-group">

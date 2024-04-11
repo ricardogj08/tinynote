@@ -20,16 +20,26 @@ class AuthController
      */
     public function loginView($req, $res)
     {
-        $data = [];
+        $values = [];
+        $validations = [];
+        $errors = $req->session['errors'] ?? null;
 
-        // Obtiene los valores de los campos del formulario.
+        /*
+         * Obtiene los valores y errores de validación
+         * de los campos del formulario.
+         */
         foreach ($this->getFormFields() as $field) {
-            $data[$field] = $req->session['data'][$field] ?? null;
+            $values[$field] = $req->session['values'][$field] ?? null;
+            $validations[$field] = $errors[$field] ?? null;
         }
+
+        unset($req->session['values'], $req->session['errors']);
 
         $res->render('auth/login', [
             'app' => $req->app,
-            'data' => $data
+            'values' => $values,
+            'validations' => $validations,
+            'errors' => $errors
         ]);
     }
 
@@ -38,19 +48,37 @@ class AuthController
      */
     public function loginAction($req, $res)
     {
-        $data = $req->body;
+        $data = [];
+
+        // Obtiene los valores de los campos del formulario.
+        foreach ($this->getFormFields() as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         $client = Api::client();
 
-        $response = $client->post('v1/auth/login');
+        // Realiza la petición de inicio de sesión del usuario.
+        $response = $client->post('v1/auth/login', [], $data);
+
+        $body = json_decode($response->body ?? '', true);
+
+        $token = $body['data']['token'] ?? null;
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success)) {
-            foreach ($this->getFormFields() as $field) {
-                $req->session['data'][$field] = $data[$field] ?? null;
+        if (empty($response->success) || empty($token)) {
+            $req->session['values'] = $data;
+
+            // Envía los errores de los campos del formulario.
+            if (!empty($body['errors'])) {
+                $req->session['errors'] = $body['errors'];
             }
 
             $res->redirect(Url::build('login'));
         }
+
+        // Genera la cookie de autenticación del usuario.
+        $res->cookie('userAuth', $token);
+
+        $res->redirect(Url::build('notes'));
     }
 }
