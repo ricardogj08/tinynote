@@ -121,7 +121,7 @@ class TagController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'errors' => $e->getMessage()
             ]);
         }
 
@@ -204,7 +204,7 @@ class TagController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'errors' => $e->getMessage()
             ]);
         }
 

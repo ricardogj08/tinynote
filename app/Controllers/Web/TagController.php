@@ -75,10 +75,11 @@ class TagController
 
         $tags = $body['data'] ?? [];
 
-        $errors = $body['errors'] ?? null;
+        $errors = $body['errors'] ?? $req->session['errors'] ?? null;
+
         $success = $req->session['success'] ?? null;
 
-        unset($req->session['success']);
+        unset($req->session['success'], $req->session['errors']);
 
         $res->render('tags/index', [
             'app' => $req->app,
@@ -86,5 +87,32 @@ class TagController
             'errors' => $errors,
             'success' => $success
         ]);
+    }
+
+    /*
+     * Elimina el tag de un usuario.
+     */
+    public function delete($req, $res)
+    {
+        $client = Api::client();
+
+        // Realiza la petición de eliminación del tag del usuario.
+        $response = $client->delete('v1/tags/' . $req->params['uuid']);
+
+        $body = json_decode($response->body ?? '', true);
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success)) {
+            // Envía los errores de los campos del formulario.
+            if (!empty($body['errors'])) {
+                $req->session['errors'] = $body['errors'];
+            }
+
+            $res->redirect(Url::build('tags'), StatusCode::FOUND);
+        }
+
+        $req->session['success'] = 'The tag was deleted correctly';
+
+        $res->redirect(Url::build('tags'), StatusCode::FOUND);
     }
 }

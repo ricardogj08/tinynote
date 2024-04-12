@@ -12,33 +12,33 @@
 
 <table>
   <caption>Registered tags</caption>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Num. notes</th>
-			<th>Created</th>
-			<th>Updated</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($tags as $tag): ?>
-			<tr>
-				<td><?= Html::escape($tag['name']) ?></td>
-				<td><?= Html::escape($tag['number_notes']) ?></td>
-				<td><?= Html::escape(Date::humanize($tag['created_at'])) ?></td>
-				<td><?= Html::escape(Date::humanize($tag['updated_at'])) ?></td>
-				<td>
-					<a href="<?= Url::build(['tags', 'edit', $tag['id']]) ?>">
-						Edit
-					</a>
-					<a href="">
-						Delete
-					</a>
-				</td>
-			</tr>
-		<?php endforeach ?>
-	</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Num. notes</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($tags as $tag): ?>
+      <tr>
+        <td><?= Html::escape($tag['name']) ?></td>
+        <td><?= Html::escape($tag['number_notes']) ?></td>
+        <td><?= Html::escape(Date::humanize($tag['created_at'])) ?></td>
+        <td><?= Html::escape(Date::humanize($tag['updated_at'])) ?></td>
+        <td>
+          <a href="<?= Url::build(['tags', 'edit', $tag['id']]) ?>">
+            Edit
+          </a>
+          <a href="<?= Url::build(['tags', 'delete', $tag['id']]) ?>">
+            Delete
+          </a>
+        </td>
+      </tr>
+    <?php endforeach ?>
+  </tbody>
 </table>
 
 <?php $app->render('layouts/footer') ?>

@@ -6,8 +6,11 @@
 
 $app->use('login', '\App\Middlewares\Web\AuthMiddleware@redirect');
 $app->use('logout', '\App\Middlewares\Web\AuthMiddleware@verify');
+
 $app->use('tags/new', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('tags', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('tags/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+
 $app->use('notes/new', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('notes', '\App\Middlewares\Web\AuthMiddleware@verify');
 
@@ -20,6 +23,7 @@ $app->get('logout', '\App\Controllers\Web\AuthController@logout');
 $app->get('tags/new', '\App\Controllers\Web\TagController@new');
 $app->post('tags', '\App\Controllers\Web\TagController@create');
 $app->get('tags', '\App\Controllers\Web\TagController@index');
+$app->get('tags/delete/:uuid', '\App\Controllers\Web\TagController@delete');
 
 $app->get('notes/new', '\App\Controllers\Web\NoteController@new');
 $app->post('notes', '\App\Controllers\Web\NoteController@create');
