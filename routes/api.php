@@ -7,8 +7,10 @@
 $app->use('api/v1/auth/me', '\App\Middlewares\Api\AuthMiddleware@verify');
 $app->use('api/v1/auth/logout', '\App\Middlewares\Api\AuthMiddleware@verify');
 $app->use('api/v1/auth/refresh', '\App\Middlewares\Api\AuthMiddleware@verify');
+
 $app->use('api/v1/tags', '\App\Middlewares\Api\AuthMiddleware@verify');
 $app->use('api/v1/tags/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
+
 $app->use('api/v1/notes', '\App\Middlewares\Api\AuthMiddleware@verify');
 $app->use('api/v1/notes/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
 

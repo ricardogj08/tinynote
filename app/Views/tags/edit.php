@@ -1,7 +1,7 @@
 <?php use App\Utils\Url, App\Utils\Html ?>
-<?php $app->render('layouts/header', ['title' => 'Create tag']) ?>
+<?php $app->render('layouts/header', ['title' => 'Edit tag']) ?>
 
-<h1>Create tag</h1>
+<h1>Edit tag</h1>
 
 <?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
 
@@ -9,9 +9,9 @@
   < Back
 </a>
 
-<form method="post" action="<?= Url::build('tags/create') ?>">
+<form method="post" action="<?= Url::build(['tags', 'update']) ?>">
   <fieldset>
-    <legend>Tag registration</legend>
+    <legend>Tag editing</legend>
 
     <div class="form-group">
       <label for="name">
@@ -22,11 +22,8 @@
         id="name"
         name="name"
         placeholder="Enter tag name"
-        minlength="1"
-        maxlength="64"
-        required
-        value="<?= Html::escape($values['name']) ?>">
-        <small class="text-error"><?= Html::escape($validations['name']) ?></small>
+        value="<?= Html::escape() ?>">
+        <small class="text-error"><?= Html::escape() ?></small>
     </div>
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default">

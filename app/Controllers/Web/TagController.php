@@ -90,6 +90,31 @@ class TagController
     }
 
     /*
+     * Renderiza el formulario de modificación de tags.
+     */
+    public function edit($req, $res)
+    {
+        $errors = $req->session['errors'] ?? null;
+
+        unset($req->session['errors']);
+
+        $res->render('tags/edit', [
+            'app' => $req->app,
+            'errors' => $errors
+        ]);
+    }
+
+    /*
+     * Modifica el tag de un usuario.
+     */
+    public function update($req, $res)
+    {
+        $req->session['success'] = 'The tag was modified correctly';
+
+        $res->redirect(Url::build('tags'), StatusCode::FOUND);
+    }
+
+    /*
      * Elimina el tag de un usuario.
      */
     public function delete($req, $res)
