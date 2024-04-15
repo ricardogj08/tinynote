@@ -29,14 +29,14 @@ class AuthController
      */
     public function login($req, $res)
     {
-        $rules = $this->getValidationRules();
-
         $data = [];
 
         // Obtiene los campos del cuerpo de la petición.
         foreach (['nickname', 'password'] as $field) {
             $data[$field] = $req->body[$field] ?? null;
         }
+
+        $rules = $this->getValidationRules();
 
         $identifyBy = 'username';
 

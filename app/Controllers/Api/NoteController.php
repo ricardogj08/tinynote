@@ -19,10 +19,10 @@ class NoteController
     private function getValidationRules()
     {
         return [
-            'id' => v::stringType()->NotEmpty()->Uuid(),
-            'title' => v::stringType()->notEmpty()->length(null, 255, true),
-            'body' => v::stringType()->notEmpty(),
-            'tags' => v::optional(v::arrayVal()->each(v::stringType()->Uuid()))
+            'id' => v::stringType()->notEmpty()->Uuid(),
+            'title' => v::stringType()->notEmpty()->length(1, 255, true),
+            'body' => v::stringType()->notEmpty()->length(1, pow(2, 16) - 1, true),
+            'tags' => v::optional(v::arrayVal()->each(v::stringType()->notEmpty()->Uuid()))
         ];
     }
 
@@ -31,7 +31,12 @@ class NoteController
      */
     public function create($req, $res)
     {
-        $data = $req->body;
+        $data = [];
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach (['title', 'body', 'tags'] as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         $rules = $this->getValidationRules();
 

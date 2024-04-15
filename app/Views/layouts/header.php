@@ -12,6 +12,10 @@
     .text-error {
       color: var(--error-color);
     }
+
+    textarea {
+      resize: vertical;
+    }
   </style>
 </head>
 <body>
