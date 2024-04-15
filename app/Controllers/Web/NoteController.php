@@ -87,11 +87,56 @@ class NoteController
             $res->redirect(Url::build('notes/new'), StatusCode::FOUND);
         }
 
+        $req->session['success'] = 'The note was created correctly';
+
         $res->redirect(Url::build('notes'), StatusCode::FOUND);
     }
 
     /*
      * Consulta las notas del usuario.
      */
-    public function index($req, $res) {}
+    public function index($req, $res)
+    {
+        $client = Api::client();
+
+        // Realiza la petición de consulta de las notas del usuario.
+        $response = $client->get('v1/notes');
+
+        $body = json_decode($response->body ?? '', true);
+
+        $notes = $body['data'] ?? [];
+
+        $errors = $body['errors'] ?? $req->session['errors'] ?? null;
+
+        $success = $req->session['success'] ?? null;
+
+        unset($req->session['success'], $req->session['errors']);
+
+        $res->render('notes/index', [
+            'app' => $req->app,
+            'notes' => $notes,
+            'errors' => $errors,
+            'success' => $success
+        ]);
+    }
+
+    /*
+     * Renderiza la nota de un usuario.
+     */
+    public function show($req, $res) {}
+
+    /*
+     * Renderiza el formulario de modificación de notas.
+     */
+    public function edit($req, $res) {}
+
+    /*
+     * Modifica la nota de un usuario.
+     */
+    public function update($req, $res) {}
+
+    /*
+     * Elimina la nota de un usuario.
+     */
+    public function delete($req, $res) {}
 }
