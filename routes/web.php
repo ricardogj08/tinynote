@@ -18,9 +18,9 @@ $app->use('notes/new', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('notes/create', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('notes', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('notes/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('note/edit/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('note/update/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('note/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('notes/edit/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('notes/update/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('notes/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
 
 $app->get('', '\App\Controllers\Web\PageController@index');
 
