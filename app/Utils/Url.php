@@ -17,4 +17,12 @@ class Url
 
         return implode('/', $segments);
     }
+
+    /*
+     * Construye una URL desde la base.
+     */
+    public static function base($segments = [])
+    {
+        return preg_replace('/index\.php\/?/', '', self::build($segments));
+    }
 }

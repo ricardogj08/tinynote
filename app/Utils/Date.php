@@ -9,7 +9,7 @@ class Date
     /*
      * Humaniza un fecha.
      */
-    public static function humanize(?string $datetime)
+    public static function humanize(?string $datetime = 'now')
     {
         $date = new DateTimeImmutable($datetime);
 
