@@ -79,9 +79,7 @@ class AuthController
             $req->session['values'] = $data;
 
             // Envía los errores de los campos del formulario.
-            if (!empty($body['errors'])) {
-                $req->session['errors'] = $body['errors'];
-            }
+            $req->session['errors'] = $body['errors'] ?? 'Could not login';
 
             $res->redirect(Url::build('login'), StatusCode::FOUND);
         }

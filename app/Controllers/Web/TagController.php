@@ -49,9 +49,7 @@ class TagController
             $req->session['values'] = $data;
 
             // Envía los errores de los campos del formulario.
-            if (!empty($body['errors'])) {
-                $req->session['errors'] = $body['errors'];
-            }
+            $req->session['errors'] = $body['errors'] ?? 'The tag could not be created';
 
             $res->redirect(Url::build('tags/new'), StatusCode::FOUND);
         }
@@ -131,9 +129,7 @@ class TagController
         // Comprueba el cuerpo de la petición.
         if (empty($response->success) || empty($body)) {
             // Envía los errores de los campos del formulario.
-            if (!empty($body['errors'])) {
-                $req->session['errors'] = $body['errors'];
-            }
+            $req->session['errors'] = $body['errors'] ?? 'The note could not be deleted';
 
             $res->redirect(Url::build('tags'), StatusCode::FOUND);
         }
