@@ -38,7 +38,7 @@
         name="body"
         placeholder="Enter note body"
         cols="30"
-        rows="5"
+        rows="15"
         required
         minlength="1"
         maxlength="<?= pow(2, 16) - 1 ?>"><?= Html::escape($values['body']) ?></textarea>

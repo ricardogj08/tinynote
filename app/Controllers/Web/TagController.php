@@ -45,7 +45,7 @@ class TagController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success)) {
+        if (empty($response->success) || empty($body)) {
             $req->session['values'] = $data;
 
             // Envía los errores de los campos del formulario.
@@ -119,15 +119,17 @@ class TagController
      */
     public function delete($req, $res)
     {
+        $uuid = $req->params['uuid'] ?? '';
+
         $client = Api::client();
 
         // Realiza la petición de eliminación del tag del usuario.
-        $response = $client->delete('v1/tags/' . $req->params['uuid']);
+        $response = $client->delete('v1/tags/' . $uuid);
 
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success)) {
+        if (empty($response->success) || empty($body)) {
             // Envía los errores de los campos del formulario.
             if (!empty($body['errors'])) {
                 $req->session['errors'] = $body['errors'];

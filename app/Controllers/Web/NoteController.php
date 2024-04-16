@@ -76,13 +76,11 @@ class NoteController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success)) {
+        if (empty($response->success) || empty($body)) {
             $req->session['values'] = $data;
 
             // Envía los errores de los campos del formulario.
-            if (!empty($body['errors'])) {
-                $req->session['errors'] = $body['errors'];
-            }
+            $req->session['errors'] = $body['errors'] ?? 'The note could not be created';
 
             $res->redirect(Url::build('notes/new'), StatusCode::FOUND);
         }
@@ -123,7 +121,35 @@ class NoteController
     /*
      * Renderiza la nota de un usuario.
      */
-    public function show($req, $res) {}
+    public function show($req, $res)
+    {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $client = Api::client();
+
+        /*
+         * Realiza la petición de consulta de
+         * la información de la nota del usuario.
+         */
+        $response = $client->get('v1/notes/' . $uuid);
+
+        $body = json_decode($response->body ?? '', true);
+
+        $note = $body['data'] ?? [];
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($note)) {
+            // Envía los errores de los campos del formulario.
+            $req->session['errors'] = $body['errors'] ?? 'The note could not be displayed';
+
+            $res->redirect(Url::build('notes'), StatusCode::FOUND);
+        }
+
+        $res->render('notes/show', [
+            'app' => $req->app,
+            'note' => $note
+        ]);
+    }
 
     /*
      * Renderiza el formulario de modificación de notas.
@@ -140,19 +166,19 @@ class NoteController
      */
     public function delete($req, $res)
     {
+        $uuid = $req->params['uuid'] ?? '';
+
         $client = Api::client();
 
         // Realiza la petición de eliminación de la nota del usuario.
-        $response = $client->delete('v1/notes/' . $req->params['uuid']);
+        $response = $client->delete('v1/notes/' . $uuid);
 
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success)) {
+        if (empty($response->success) || empty($body)) {
             // Envía los errores de los campos del formulario.
-            if (!empty($body['errors'])) {
-                $req->session['errors'] = $body['errors'];
-            }
+            $req->session['errors'] = $body['errors'] ?? 'The note could not be deleted';
 
             $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }
