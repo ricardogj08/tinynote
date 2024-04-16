@@ -36,6 +36,7 @@
         "ph-7/just-http-status-codes": "^1.1",
         "abmmhasan/uuid": "^2.0",
         "spatie/crypto": "^2.0",
-        "rmccue/requests": "^2.0"
+        "rmccue/requests": "^2.0",
+        "erusev/parsedown": "^1.7"
     }
 }
