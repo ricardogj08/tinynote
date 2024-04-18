@@ -15,6 +15,14 @@ class Html
     }
 
     /*
+     * Escapa algunos caractes de un string a HTML 5.
+     */
+    public static function simpleEscape(?string $text = '')
+    {
+        return htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8', true);
+    }
+
+    /*
      * Convierte un texto en Markdown a HTML 5.
      */
     public static function markdown(?string $text = '')

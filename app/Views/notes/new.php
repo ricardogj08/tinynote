@@ -42,7 +42,7 @@
         rows="15"
         required
         minlength="1"
-        maxlength="<?= pow(2, 16) - 1 ?>"><?= Html::escape($values['body']) ?></textarea>
+        maxlength="<?= pow(2, 16) - 1 ?>"><?= Html::simpleEscape($values['body']) ?></textarea>
         <small class="text-error"><?= Html::escape($validations['body']) ?></small>
     </div>
 
