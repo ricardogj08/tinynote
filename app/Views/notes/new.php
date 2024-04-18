@@ -1,5 +1,6 @@
 <?php use App\Utils\Url, App\Utils\Html ?>
 <?php $app->render('layouts/header', ['title' => 'Create note']) ?>
+<?php $app->render('layouts/navbar', ['app' => $app]) ?>
 
 <h1>Create note</h1>
 
@@ -66,7 +67,7 @@
       <?php endif ?>
     </div>
 
-    <input type="submit" name="submit" value="Submit" class="btn btn-default">
+    <input type="submit" name="submit" value="Submit" class="btn btn-default btn-ghost">
   </fieldset>
 </form>
 

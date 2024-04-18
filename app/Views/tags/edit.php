@@ -1,5 +1,6 @@
 <?php use App\Utils\Url, App\Utils\Html ?>
 <?php $app->render('layouts/header', ['title' => 'Edit tag']) ?>
+<?php $app->render('layouts/navbar', ['app' => $app]) ?>
 
 <h1>Edit tag</h1>
 
@@ -26,7 +27,7 @@
         <small class="text-error"><?= Html::escape() ?></small>
     </div>
 
-    <input type="submit" name="submit" value="Submit" class="btn btn-default">
+    <input type="submit" name="submit" value="Submit" class="btn btn-default btn-ghost">
   </fieldset>
 </form>
 
