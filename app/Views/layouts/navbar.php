@@ -1,10 +1,10 @@
-<?php use App\Utils\Url ?>
+<?php use App\Utils\Url, App\Utils\Html, App\Utils\Env ?>
 
 <div class="terminal-nav">
   <header class="terminal-logo">
     <div class="logo terminal-prompt">
       <a href="<?= Url::build('notes') ?>">
-        tinynote
+        <?= Html::escape(Env::get('APP_NAME')) ?>
       </a>
     </div>
   </header>

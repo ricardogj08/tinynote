@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Web;
 
+use App\Utils\Env;
+use App\Utils\Html;
 use PH7\JustHttp\StatusCode;
 
 class PageController
@@ -11,7 +13,9 @@ class PageController
      */
     public function index($req, $res)
     {
-        $res->send('Hello world!');
+        $welcome = sprintf('Hello to %s!', Env::get('APP_NAME'));
+
+        $res->send(Html::escape($welcome));
     }
 
     /*

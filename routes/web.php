@@ -4,6 +4,8 @@
  * Registra todas las rutas y middlewares del sitio web.
  */
 
+$app->use('', '\App\Middlewares\Web\AuthMiddleware@redirect');
+
 $app->use('login', '\App\Middlewares\Web\AuthMiddleware@redirect');
 $app->use('logout', '\App\Middlewares\Web\AuthMiddleware@verify');
 
