@@ -23,15 +23,14 @@ class NoteController
     {
         $values = [];
         $validations = [];
-        $errors = $req->session['errors'] ?? null;
 
         /*
-         * Obtiene los valores y errores de validación
+         * Obtiene los valores y los mensajes de validación
          * de los campos del formulario.
          */
         foreach ($this->getFormFields() as $field) {
             $values[$field] = $req->session['values'][$field] ?? null;
-            $validations[$field] = $errors[$field] ?? null;
+            $validations[$field] = $req->session['validations'][$field] ?? null;
         }
 
         $client = Api::client();
@@ -43,16 +42,18 @@ class NoteController
 
         $tags = $body['data'] ?? [];
 
-        $errors = $body['errors'] ?? $errors;
+        $error = $body['error'] ?? $req->session['error'] ?? null;
 
-        unset($req->session['values'], $req->session['errors']);
+        foreach (['values', 'validations', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('notes/new', [
             'app' => $req->app,
             'values' => $values,
             'validations' => $validations,
             'tags' => $tags,
-            'errors' => $errors
+            'error' => $error
         ]);
     }
 
@@ -79,8 +80,13 @@ class NoteController
         if (empty($response->success) || empty($body)) {
             $req->session['values'] = $data;
 
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'The note could not be created';
+            // Envía los mensajes de validación de los campos del formulario.
+            if (!empty($body['validations'])) {
+                $req->session['validations'] = $body['validations'];
+            }
+
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be created';
 
             $res->redirect(Url::build('notes/new'), StatusCode::FOUND);
         }
@@ -104,17 +110,19 @@ class NoteController
 
         $notes = $body['data'] ?? [];
 
-        $errors = $body['errors'] ?? $req->session['errors'] ?? null;
+        $error = $body['error'] ?? $req->session['error'] ?? null;
 
         $success = $req->session['success'] ?? null;
 
-        unset($req->session['success'], $req->session['errors']);
+        foreach (['success', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('notes/index', [
             'app' => $req->app,
             'notes' => $notes,
-            'errors' => $errors,
-            'success' => $success
+            'success' => $success,
+            'error' => $error
         ]);
     }
 
@@ -139,8 +147,8 @@ class NoteController
 
         // Comprueba el cuerpo de la petición.
         if (empty($response->success) || empty($note)) {
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'The note could not be displayed';
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be displayed';
 
             $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }
@@ -177,8 +185,8 @@ class NoteController
 
         // Comprueba el cuerpo de la petición.
         if (empty($response->success) || empty($body)) {
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'The note could not be deleted';
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be deleted';
 
             $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }

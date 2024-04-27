@@ -4,7 +4,7 @@
 
 <h1>Create tag</h1>
 
-<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+<?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 
 <a href="<?= Url::build('tags') ?>">
   < Back

@@ -16,7 +16,7 @@ $_GET['_path_'] = preg_replace('/^(\/?index\.php)?\/?/', '', $_SERVER['REQUEST_U
 /*
  * Carga opciones de configuración de la aplicación.
  */
-foreach (\App\Utils\Config::getFromFile('app') as $key => $value) {
+foreach (\App\Utils\Config::getFromFilename('app') as $key => $value) {
     \App\Utils\Env::set('APP_' . strtoupper($key), $value);
 }
 

@@ -26,7 +26,12 @@ class TagController
      */
     public function create($req, $res)
     {
-        $data = ['name' => $req->body['name'] ?? null];
+        $data = [];
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach (['name'] as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         $rules = $this->getValidationRules();
 
@@ -35,7 +40,7 @@ class TagController
             v::key('name', $rules['name'], true)->assert($data);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'validations' => $e->getMessages()
             ]);
         }
 
@@ -54,7 +59,7 @@ class TagController
         // Comprueba que el tag sea único.
         if (!empty($existsNewTag)) {
             $res->status(StatusCode::CONFLICT)->json([
-                'errors' => 'A tag already exists with that name'
+                'error' => 'A tag already exists with that name'
             ]);
         }
 
@@ -121,18 +126,23 @@ class TagController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessage()
+                'error' => $e->getMessage()
             ]);
         }
 
-        $data = ['name' => $req->body['name'] ?? null];
+        $data = [];
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach (['name'] as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         // Comprueba los campos del cuerpo de la petición.
         try {
             v::key('name', $rules['name'], true)->assert($data);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'validations' => $e->getMessages()
             ]);
         }
 
@@ -149,7 +159,7 @@ class TagController
         // Comprueba que el tag se encuentra registrado.
         if (empty($tag)) {
             $res->status(StatusCode::NOT_FOUND)->json([
-                'errors' => 'Tag cannot be found'
+                'error' => 'Tag cannot be found'
             ]);
         }
 
@@ -166,7 +176,7 @@ class TagController
             // Comprueba que el tag sea único.
             if (!empty($existsTag)) {
                 $res->status(StatusCode::CONFLICT)->json([
-                    'errors' => 'A tag already exists with that name'
+                    'error' => 'A tag already exists with that name'
                 ]);
             }
 
@@ -204,7 +214,7 @@ class TagController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessage()
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -223,7 +233,7 @@ class TagController
         // Comprueba que el tag se encuentra registrado.
         if (empty($deletedTag)) {
             $res->status(StatusCode::NOT_FOUND)->json([
-                'errors' => 'Tag cannot be found'
+                'error' => 'Tag cannot be found'
             ]);
         }
 

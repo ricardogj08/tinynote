@@ -9,23 +9,40 @@ use PH7\JustHttp\StatusCode;
 class TagController
 {
     /*
+     * Obtiene los nombres de los campos del formulario.
+     */
+    private function getFormFields()
+    {
+        return ['name'];
+    }
+
+    /*
      * Renderiza el formulario de registro de tags.
      */
     public function new($req, $res)
     {
-        $errors = $req->session['errors'] ?? null;
+        $values = [];
+        $validations = [];
+        $error = $req->session['error'] ?? null;
 
-        // Obtiene el valor y error del campo del formulario.
-        $values = ['name' => $req->session['values']['name'] ?? null];
-        $validations = ['name' => $errors['name'] ?? null];
+        /*
+         * Obtiene los valores y los mensajes de validación
+         * de los campos del formulario.
+         */
+        foreach ($this->getFormFields() as $field) {
+            $values[$field] = $req->session['values'][$field] ?? null;
+            $validations[$field] = $req->session['validations'][$field] ?? null;
+        }
 
-        unset($req->session['values'], $req->session['errors']);
+        foreach (['values', 'validations', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('tags/new', [
             'app' => $req->app,
             'values' => $values,
             'validations' => $validations,
-            'errors' => $errors
+            'error' => $error
         ]);
     }
 
@@ -34,8 +51,12 @@ class TagController
      */
     public function create($req, $res)
     {
-        // Obtiene el valor del campo del formulario.
-        $data = ['name' => $req->body['name'] ?? null];
+        $data = [];
+
+        // Obtiene los valores de los campos del formulario.
+        foreach ($this->getFormFields() as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
 
         $client = Api::client();
 
@@ -48,8 +69,13 @@ class TagController
         if (empty($response->success) || empty($body)) {
             $req->session['values'] = $data;
 
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'The tag could not be created';
+            // Envía los mensajes de validación de los campos del formulario.
+            if (!empty($body['validations'])) {
+                $req->session['validations'] = $body['validations'];
+            }
+
+            // Envía el mensaje de error de la petición..
+            $req->session['error'] = $body['error'] ?? 'The tag could not be created';
 
             $res->redirect(Url::build('tags/new'), StatusCode::FOUND);
         }
@@ -73,17 +99,19 @@ class TagController
 
         $tags = $body['data'] ?? [];
 
-        $errors = $body['errors'] ?? $req->session['errors'] ?? null;
+        $error = $body['error'] ?? $req->session['error'] ?? null;
 
         $success = $req->session['success'] ?? null;
 
-        unset($req->session['success'], $req->session['errors']);
+        foreach (['success', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('tags/index', [
             'app' => $req->app,
             'tags' => $tags,
-            'errors' => $errors,
-            'success' => $success
+            'success' => $success,
+            'error' => $error
         ]);
     }
 
@@ -92,13 +120,15 @@ class TagController
      */
     public function edit($req, $res)
     {
-        $errors = $req->session['errors'] ?? null;
+        $error = $req->session['error'] ?? null;
 
-        unset($req->session['errors']);
+        foreach (['values', 'validations', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('tags/edit', [
             'app' => $req->app,
-            'errors' => $errors
+            'error' => $error
         ]);
     }
 
@@ -128,8 +158,8 @@ class TagController
 
         // Comprueba el cuerpo de la petición.
         if (empty($response->success) || empty($body)) {
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'The note could not be deleted';
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be deleted';
 
             $res->redirect(Url::build('tags'), StatusCode::FOUND);
         }

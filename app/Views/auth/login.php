@@ -1,11 +1,11 @@
-<?php use App\Utils\Html ?>
+<?php use App\Utils\Url, App\Utils\Html ?>
 <?php $app->render('layouts/header', ['title' => 'Login']) ?>
 
 <h1>Login</h1>
 
-<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+<?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 
-<form method="post" action="<?= \App\Utils\Url::build('login') ?>">
+<form method="post" action="<?= Url::build('login') ?>">
   <fieldset>
     <legend>Sign In</legend>
 

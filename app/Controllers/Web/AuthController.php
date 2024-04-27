@@ -22,7 +22,10 @@ class AuthController
      */
     private function getCookieOptions()
     {
-        return ['path' => '/', 'httpOnly' => true];
+        return [
+            'path' => '/',
+            'httpOnly' => true
+        ];
     }
 
     /*
@@ -32,24 +35,26 @@ class AuthController
     {
         $values = [];
         $validations = [];
-        $errors = $req->session['errors'] ?? null;
+        $error = $req->session['error'] ?? null;
 
         /*
-         * Obtiene los valores y errores de validación
+         * Obtiene los valores y los mensajes de validación
          * de los campos del formulario.
          */
         foreach ($this->getFormFields() as $field) {
             $values[$field] = $req->session['values'][$field] ?? null;
-            $validations[$field] = $errors[$field] ?? null;
+            $validations[$field] = $req->session['validations'][$field] ?? null;
         }
 
-        unset($req->session['values'], $req->session['errors']);
+        foreach (['values', 'validations', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
 
         $res->render('auth/login', [
             'app' => $req->app,
             'values' => $values,
             'validations' => $validations,
-            'errors' => $errors
+            'error' => $error
         ]);
     }
 
@@ -78,8 +83,13 @@ class AuthController
         if (empty($response->success) || empty($token)) {
             $req->session['values'] = $data;
 
-            // Envía los errores de los campos del formulario.
-            $req->session['errors'] = $body['errors'] ?? 'Could not login';
+            // Envía los mensajes de validación de los campos del formulario.
+            if (!empty($body['validations'])) {
+                $req->session['validations'] = $body['validations'];
+            }
+
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'Could not login';
 
             $res->redirect(Url::build('login'), StatusCode::FOUND);
         }

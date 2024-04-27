@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Models\UserModel;
 use App\Utils\Env;
-use App\Utils\JWT;
+use App\Utils\Jwt;
 use App\Utils\Password;
 use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -53,7 +53,7 @@ class AuthController
                 ->assert($data);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'validations' => $e->getMessages()
             ]);
         }
 
@@ -67,12 +67,12 @@ class AuthController
         // Comprueba la contraseña del usuario.
         if (empty($userAuth) || !Password::verify($data['password'], $userAuth['password'])) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
-                'errors' => 'Access credentials are invalid'
+                'error' => 'Access credentials are invalid'
             ]);
         }
 
         // Genera el token de autenticación.
-        $token = (new JWT())->encode([
+        $token = (new Jwt())->encode([
             'iss' => Env::get('APP_NAME'),
             'sub' => $userAuth['id'],
             'aud' => Env::get('APP_URL'),
@@ -103,11 +103,6 @@ class AuthController
             'data' => $userAuth
         ]);
     }
-
-    /*
-     * Cierra la sesión de un usuario autenticado.
-     */
-    public function logout() {}
 
     /*
      * Renueva la sesión de un usuario autenticado.

@@ -20,6 +20,13 @@ class AuthMiddleware
         }
 
         Api::setAuth($userAuth);
+
+        /*
+         * Se pasa la variable $req->app->local('userAuth')
+         * dentro de los controladores y middlewares
+         * con la información del usuario autenticado.
+         */
+        $req->app->local('userAuth', $userAuth);
     }
 
     /*

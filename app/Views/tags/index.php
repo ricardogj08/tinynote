@@ -4,7 +4,7 @@
 
 <h1>Tags</h1>
 
-<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+<?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 <?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('tags/new') ?>" class="btn btn-default btn-ghost">

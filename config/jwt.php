@@ -8,6 +8,6 @@ use App\Utils\Env;
  */
 
 return [
-    'privateKey' => Env::get('JWT_PRIVATE_KEY', '../writable/jwt/rsa-private-key.pem'),
-    'publicKey' => Env::get('JWT_PUBLIC_KEY', '../writable/jwt/rsa-public-key.pem')
+    'privateKeyPath' => Env::get('JWT_PRIVATE_KEY_PATH', '../writable/jwt/rsa-private-key.pem'),
+    'publicKeyPath' => Env::get('JWT_PUBLIC_KEY_PATH', '../writable/jwt/rsa-public-key.pem')
 ];

@@ -4,7 +4,7 @@
 
 <h1>Notes</h1>
 
-<?php $app->render('layouts/alerts/errors', ['errors' => $errors]) ?>
+<?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 <?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('notes/new') ?>" class="btn btn-default btn-ghost">
@@ -23,7 +23,7 @@
       <p>
         <?php foreach ($note['tags'] as $tag): ?>
           <a href="">
-            #<?= Html::escape($tag['name']) ?>
+            <?= Html::escape($tag['name']) ?>
           </a>
         <?php endforeach ?>
       </p>

@@ -6,6 +6,6 @@
   < Back
 </a>
 
-<?= Html::markdown($note['body']) ?>
+<?= Html::fromMarkdown($note['body']) ?>
 
 <?php $app->render('layouts/footer') ?>

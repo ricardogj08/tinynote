@@ -22,7 +22,7 @@ class ApiController
     public function error404($req, $res)
     {
         $res->status(StatusCode::NOT_FOUND)->json([
-            'errors' => 'Endpoint not found'
+            'error' => 'Endpoint not found'
         ]);
     }
 }

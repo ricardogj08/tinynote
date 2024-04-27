@@ -3,7 +3,7 @@
 namespace App\Middlewares\Api;
 
 use App\Models\UserModel;
-use App\Utils\JWT;
+use App\Utils\Jwt;
 use PH7\JustHttp\StatusCode;
 use UnexpectedValueException;
 
@@ -14,11 +14,11 @@ class AuthMiddleware
      */
     public function verify($req, $res)
     {
-        $header = $req->header('Authorization') ?? '';
+        $header = $req->header('Authorization');
 
         if (empty($header)) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
-                'errors' => 'Unauthorized endpoint',
+                'error' => 'Unauthorized endpoint',
             ]);
         }
 
@@ -26,15 +26,15 @@ class AuthMiddleware
          * Obtiene el token de autenticación
          * desde el header de la petición.
          */
-        $token = explode(' ', $header);
+        $token = explode(' ', $header ?? '');
         $token = end($token);
 
         try {
             // Decodifica el token de autenticación.
-            $payload = (new JWT())->decode($token);
+            $payload = (new Jwt())->decode($token);
         } catch (UnexpectedValueException $e) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
-                'errors' => $e->getMessage()
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -46,7 +46,7 @@ class AuthMiddleware
         // Comprueba si el usuario está registrado.
         if (empty($userAuth)) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
-                'errors' => 'Unauthorized user'
+                'error' => 'Unauthorized user'
             ]);
         }
 

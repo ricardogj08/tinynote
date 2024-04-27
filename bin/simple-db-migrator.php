@@ -21,7 +21,11 @@ $DB = new \App\Utils\DB();
 
 chdir(__DIR__ . '/../public');
 
-$dbConf = ['dsn' => $DB->getConnection()->getDsn(), 'user' => $DB->getConfig()->getUsername(), 'password' => $DB->getConfig()->getPassword()];
+$dbConf = [
+    'dsn' => $DB->getConnection()->getDsn(),
+    'user' => $DB->getConfig()->getUsername(),
+    'password' => $DB->getConfig()->getPassword()
+];
 // $dbConf = [ "dsn" => "mysql:host=172.20.1.3;dbname=migrationtest", "user" => "root", "password" => "xxxxxx", ];
 // $dbConf = [ "dsn" => "pgsql:host=172.17.0.2;dbname=migrationtest", "user" => "postgres", "password" => "xxxxxx", ];
 $MIGRAION_ROOT = __DIR__ . '/../migrations';

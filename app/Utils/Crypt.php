@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Utils\Config;
 use Spatie\Crypto\Rsa\KeyPair;
 use Spatie\Crypto\Rsa\PrivateKey;
 use Spatie\Crypto\Rsa\PublicKey;
@@ -9,42 +10,44 @@ use Exception;
 
 class Crypt
 {
-    private $configFile = 'crypt';
-    private $privateKeyFile = 'private.key';
-    private $publicKeyFile = 'public.key';
+    private const configFilename = 'crypt';
+    private const privateKeyFilename = 'private.key';
+    private const publicKeyFilename = 'public.key';
+    private const privateKeyBits = 4096;
+
     private $privateKey;
     private $publicKey;
 
-    public function __construct(string $subdirectory)
+    public function __construct(string $uuid)
     {
-        $this->mount($subdirectory);
+        $this->mount($uuid);
     }
 
-    private function mount(string $subdirectory)
+    private function mount(string $uuid)
     {
-        $config = Config::getFromFile($this->configFile);
+        $config = Config::getFromFilename(self::configFilename);
 
-        $keysDirectory = $config['keys-directory'];
+        $pathKeys = $config['pathKeys'];
 
-        if (!is_dir($keysDirectory)) {
-            throw new Exception("Crypt keys directory '{$keysDirectory}' cannot be found.");
+        if (!is_dir($pathKeys)) {
+            throw new Exception(sprintf('Crypt path keys "%s" cannot be found.', $pathKeys));
         }
 
-        $keysPath = realpath($keysDirectory) . "/{$subdirectory}/";
+        $userPathKeys = sprintf('%s/%s/', realpath($pathKeys), $uuid);
 
-        // Crea el subdirectorio de las llaves de cifrado si no existe.
-        is_dir($keysPath) || mkdir($keysPath);
+        // Crea el directorio de las llaves de cifrado del usuario.
+        is_dir($userPathKeys) || mkdir($userPathKeys);
 
-        $privateKeyPath = $keysPath . $this->privateKeyFile;
-        $publicKeyPath = $keysPath . $this->publicKeyFile;
+        $pathToPrivateKey = $userPathKeys . self::privateKeyFilename;
+        $pathToPublicKey = $userPathKeys . self::publicKeyFilename;
 
         // Genera las llaves de cifrado si no existen.
-        if (!is_file($privateKeyPath) && !is_file($publicKeyPath)) {
-            (new KeyPair())->generate($privateKeyPath, $publicKeyPath);
+        if (!is_file($pathToPrivateKey) && !is_file($pathToPublicKey)) {
+            (new KeyPair())->generate($pathToPrivateKey, $pathToPublicKey);
         }
 
-        $this->privateKey = PrivateKey::fromFile($privateKeyPath);
-        $this->publicKey = PublicKey::fromFile($publicKeyPath);
+        $this->privateKey = PrivateKey::fromFile($pathToPrivateKey);
+        $this->publicKey = PublicKey::fromFile($pathToPublicKey);
     }
 
     /*
@@ -52,7 +55,13 @@ class Crypt
      */
     public function encrypt(string $data)
     {
-        return base64_encode($this->publicKey->encrypt($data));
+        $encryptedData = '';
+
+        foreach (str_split($data, 117) as $part) {
+            $encryptedData .= base64_encode($this->publicKey->encrypt($part));
+        }
+
+        return $encryptedData;
     }
 
     /*
@@ -60,14 +69,12 @@ class Crypt
      */
     public function decrypt(string $encryptedData)
     {
-        return $this->privateKey->decrypt(base64_decode($encryptedData));
-    }
+        $data = '';
 
-    /*
-     * Comprueba si puede desencriptar un string.
-     */
-    public function canDecrypt(string $encryptedData)
-    {
-        return $this->privateKey->decrypt->canDecrypt(base64_decode($encryptedData));
+        foreach (str_split($encryptedData, 128) as $part) {
+            $data .= $this->privateKey->decrypt(base64_decode($part));
+        }
+
+        return $data;
     }
 }

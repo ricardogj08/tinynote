@@ -48,7 +48,7 @@ class NoteController
                 ->assert($data);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'validations' => $e->getMessages()
             ]);
         }
 
@@ -70,15 +70,13 @@ class NoteController
                 $params[] = $paramName;
             }
 
-            $params = implode(',', $params);
-
-            $query->where("id IN({$params})");
+            $query->where(sprintf('id IN(%s)', implode(',', $params)));
 
             $tags = $query->where('user_id', $userAuth['id'])->get();
 
             if (array_diff($data['tags'], array_column($tags, 'id'))) {
                 $res->status(StatusCode::NOT_FOUND)->json([
-                    'errors' => 'Tags cannot be found'
+                    'error' => 'Tags cannot be found'
                 ]);
             }
         }
@@ -195,7 +193,7 @@ class NoteController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -210,7 +208,7 @@ class NoteController
         // Comprueba que la nota se encuentra registrada.
         if (empty($note)) {
             $res->status(StatusCode::NOT_FOUND)->json([
-                'errors' => 'Note cannot be found'
+                'error' => 'Note cannot be found'
             ]);
         }
 
@@ -247,7 +245,7 @@ class NoteController
             v::key('uuid', $rules['id'], true)->assert($params);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
-                'errors' => $e->getMessages()
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -264,7 +262,7 @@ class NoteController
         // Comprueba que la nota se encuentra registrada.
         if (empty($deletedNote)) {
             $res->status(StatusCode::NOT_FOUND)->json([
-                'errors' => 'Note cannot be found'
+                'error' => 'Note cannot be found'
             ]);
         }
 

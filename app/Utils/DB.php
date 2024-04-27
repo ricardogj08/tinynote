@@ -3,13 +3,15 @@
 namespace App\Utils;
 
 use AbmmHasan\UUID\GenerateUuid;
+use App\Utils\Config;
 use PhpOrm\Configuration;
 use PhpOrm\Connection;
 
 class DB
 {
-    private $configFile = 'database';
-    private $database = 'default';
+    private const configFilename = 'database';
+    private const database = 'default';
+
     private $configuration;
     private $connection;
 
@@ -20,9 +22,9 @@ class DB
 
     private function mount()
     {
-        $config = Config::getFromFile($this->configFile);
+        $config = Config::getFromFilename(self::conifgFilename);
 
-        $options = $config[$this->database];
+        $options = $config[self::database];
 
         $this->configuration = new Configuration(
             $options['username'],
