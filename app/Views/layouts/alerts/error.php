@@ -2,5 +2,5 @@
   <div class="terminal-alert terminal-alert-error">
     <?= \App\Utils\Html::escape($error) ?>
   </div>
-	<br>
+  <br>
 <?php endif ?>

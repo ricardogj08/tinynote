@@ -13,9 +13,7 @@ class PageController
      */
     public function index($req, $res)
     {
-        $welcome = sprintf('Hello to %s!', Env::get('APP_NAME'));
-
-        $res->send(Html::escape($welcome));
+        $res->send(Html::escape(sprintf('Hello to %s!', Env::get('APP_NAME'))));
     }
 
     /*

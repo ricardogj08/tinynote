@@ -2,5 +2,5 @@
   <div class="terminal-alert terminal-alert-primary">
     <?= \App\Utils\Html::escape($success) ?>
   </div>
-	<br>
+  <br>
 <?php endif ?>

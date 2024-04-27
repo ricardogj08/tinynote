@@ -8,20 +8,23 @@
     "packages": [
         {
             "name": "abmmhasan/uuid",
-            "version": "2.0",
+            "version": "2.01",
             "source": {
                 "type": "git",
                 "url": "https://github.com/abmmhasan/UUID.git",
-                "reference": "d3733d7bc19ed7e58cbf196b01ecbde5b26d9110"
+                "reference": "f220b3cb0936e2d5264a61c765d665e7aaed1816"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abmmhasan/UUID/zipball/d3733d7bc19ed7e58cbf196b01ecbde5b26d9110",
-                "reference": "d3733d7bc19ed7e58cbf196b01ecbde5b26d9110",
+                "url": "https://api.github.com/repos/abmmhasan/UUID/zipball/f220b3cb0936e2d5264a61c765d665e7aaed1816",
+                "reference": "f220b3cb0936e2d5264a61c765d665e7aaed1816",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
+            },
+            "suggest": {
+                "inforcyph/uid": "If your library uses PHP version 8 or higher, it is recommended to use [infocyph/UID](https://github.com/infocyph/UID) instead."
             },
             "type": "library",
             "autoload": {
@@ -45,9 +48,9 @@
             "description": "UUID (v1, v3-v5) Generator (RFC4122)",
             "support": {
                 "issues": "https://github.com/abmmhasan/UUID/issues",
-                "source": "https://github.com/abmmhasan/UUID/tree/2.0"
+                "source": "https://github.com/abmmhasan/UUID/tree/2.01"
             },
-            "time": "2023-10-27T05:35:01+00:00"
+            "time": "2024-04-26T05:58:07+00:00"
         },
         {
             "name": "erusev/parsedown",
