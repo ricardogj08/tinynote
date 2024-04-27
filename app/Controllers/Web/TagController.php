@@ -120,14 +120,47 @@ class TagController
      */
     public function edit($req, $res)
     {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $client = Api::client();
+
+        /*
+         * Realiza la petición de consulta de
+         * la información del tag del usuario.
+         */
+        $response = $client->get('v1/tags/' . $uuid);
+
+        $body = json_decode($response->body ?? '', true);
+
+        $tag = $body['data'] ?? [];
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($tag)) {
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The tag could not be edited';
+
+            $res->redirect(Url::build('tags'), StatusCode::FOUND);
+        }
+
+        $validations = [];
         $error = $req->session['error'] ?? null;
 
-        foreach (['values', 'validations', 'error'] as $key) {
+        /*
+         * Obtiene los valores y los mensajes de validación
+         * de los campos del formulario.
+         */
+        foreach ($this->getFormFields() as $field) {
+            $validations[$field] = $req->session['validations'][$field] ?? null;
+        }
+
+        foreach (['validations', 'error'] as $key) {
             unset($req->session[$key]);
         }
 
         $res->render('tags/edit', [
             'app' => $req->app,
+            'tag' => $tag,
+            'validations' => $validations,
             'error' => $error
         ]);
     }
@@ -137,6 +170,35 @@ class TagController
      */
     public function update($req, $res)
     {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $data = [];
+
+        // Obtiene los valores de los campos del formulario.
+        foreach ($this->getFormFields() as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
+
+        $client = Api::client();
+
+        // Realiza la petición de modificación del tag del usuario.
+        $response = $client->put('v1/tags/' . $uuid, $data);
+
+        $body = json_decode($response->body ?? '', true);
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($body)) {
+            // Envía los mensajes de validación de los campos del formulario.
+            if (!empty($body['validations'])) {
+                $req->session['validations'] = $body['validations'];
+            }
+
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The tag could not be deleted';
+
+            $res->redirect(Url::build('tags/edit/' . $uuid), StatusCode::FOUND);
+        }
+
         $req->session['success'] = 'The tag was modified correctly';
 
         $res->redirect(Url::build('tags'), StatusCode::FOUND);
@@ -159,7 +221,7 @@ class TagController
         // Comprueba el cuerpo de la petición.
         if (empty($response->success) || empty($body)) {
             // Envía el mensaje de error de la petición.
-            $req->session['error'] = $body['error'] ?? 'The note could not be deleted';
+            $req->session['error'] = $body['error'] ?? 'The tag could not be deleted';
 
             $res->redirect(Url::build('tags'), StatusCode::FOUND);
         }

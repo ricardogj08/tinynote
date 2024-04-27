@@ -10,7 +10,7 @@
   < Back
 </a>
 
-<form method="post" action="<?= Url::build(['tags', 'update']) ?>">
+<form method="post" action="<?= Url::build(['tags', 'update', $tag['id']]) ?>">
   <fieldset>
     <legend>Tag editing</legend>
 
@@ -23,8 +23,11 @@
         id="name"
         name="name"
         placeholder="Enter tag name"
-        value="<?= Html::escape() ?>">
-        <small class="text-error"><?= Html::escape() ?></small>
+        minlength="1"
+        maxlength="64"
+        required
+        value="<?= Html::escape($tag['name']) ?>">
+        <small class="text-error"><?= Html::escape($validations['name']) ?></small>
     </div>
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default btn-ghost">

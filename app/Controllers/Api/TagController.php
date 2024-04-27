@@ -112,6 +112,44 @@ class TagController
     }
 
     /*
+     * Consulta la información del tag de un usuario.
+     */
+    public function show($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        // Consulta la información del tag.
+        $tag = TagModel::factory()
+            ->select('id, user_id, name, created_at, updated_at')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que el tag se encuentra registrada.
+        if (empty($tag)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'Tag cannot be found'
+            ]);
+        }
+
+        $res->json([
+            'data' => $tag
+        ]);
+    }
+
+    /*
      * Modifica o actualiza la información
      * del tag de un usuario.
      */
