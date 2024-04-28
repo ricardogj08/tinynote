@@ -13,13 +13,33 @@ class AuthMiddleware
      */
     public function verify($req, $res)
     {
-        $userAuth = $req->cookies['userAuth'] ?? null;
+        $token = $req->cookies['userAuth'] ?? null;
 
-        if (empty($userAuth)) {
+        if (empty($token)) {
             $res->redirect(Url::build('login'), StatusCode::FOUND);
         }
 
-        Api::setAuth($userAuth);
+        Api::setAuth($token);
+
+        $client = Api::client();
+
+        /*
+         * Realiza la petición de consulta de
+         * la información del usuario autenticado.
+         */
+        $response = $client->get('v1/auth/me');
+
+        $body = json_decode($response->body ?? '', true);
+
+        $userAuth = $body['data'] ?? [];
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($userAuth)) {
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'Your session has expired';
+
+            $res->redirect(Url::build('logout', StatusCode::FOUND));
+        }
 
         /*
          * Se pasa la variable $req->app->local('userAuth')
@@ -34,9 +54,9 @@ class AuthMiddleware
      */
     public function redirect($req, $res)
     {
-        $userAuth = $req->cookies['userAuth'] ?? null;
+        $token = $req->cookies['userAuth'] ?? null;
 
-        if (!empty($userAuth)) {
+        if (!empty($token)) {
             $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }
     }

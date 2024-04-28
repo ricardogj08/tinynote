@@ -66,7 +66,7 @@ class TagController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($body)) {
+        if (empty($response->success) || empty($body['data'])) {
             $req->session['values'] = $data;
 
             // Envía los mensajes de validación de los campos del formulario.
@@ -187,7 +187,7 @@ class TagController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($body)) {
+        if (empty($response->success) || empty($body['data'])) {
             // Envía los mensajes de validación de los campos del formulario.
             if (!empty($body['validations'])) {
                 $req->session['validations'] = $body['validations'];
@@ -219,7 +219,7 @@ class TagController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($body)) {
+        if (empty($response->success) || empty($body['data'])) {
             // Envía el mensaje de error de la petición.
             $req->session['error'] = $body['error'] ?? 'The tag could not be deleted';
 

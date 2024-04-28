@@ -77,7 +77,7 @@ class NoteController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($body)) {
+        if (empty($response->success) || empty($body['data'])) {
             $req->session['values'] = $data;
 
             // Envía los mensajes de validación de los campos del formulario.
@@ -184,7 +184,7 @@ class NoteController
         $body = json_decode($response->body ?? '', true);
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($body)) {
+        if (empty($response->success) || empty($body['data'])) {
             // Envía el mensaje de error de la petición.
             $req->session['error'] = $body['error'] ?? 'The note could not be deleted';
 
