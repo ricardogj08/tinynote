@@ -41,7 +41,7 @@ Generate entity-relationship diagram:
 
 ## License
 
-    tinynote - A simple markdown note taking application with encryption support built in PHP.
+    tinynote -- A simple markdown note taking application with encryption support built in PHP.
 
     Copyright (C) 2024  Ricardo García Jiménez <ricardogj08@riseup.net>
 

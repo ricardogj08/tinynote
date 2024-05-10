@@ -57,11 +57,11 @@ class Crypt
     {
         $encryptedData = '';
 
-        foreach (str_split($data, 117) as $part) {
-            $encryptedData .= base64_encode($this->publicKey->encrypt($part));
+        foreach (str_split($data, self::privateKeyBits / 8 - 64) as $part) {
+            $encryptedData .= $this->publicKey->encrypt($part);
         }
 
-        return $encryptedData;
+        return base64_encode($encryptedData);
     }
 
     /*
@@ -71,8 +71,8 @@ class Crypt
     {
         $data = '';
 
-        foreach (str_split($encryptedData, 128) as $part) {
-            $data .= $this->privateKey->decrypt(base64_decode($part));
+        foreach (str_split(base64_decode($encryptedData), self::privateKeyBits * 128 / 1024) as $part) {
+            $data .= $this->privateKey->decrypt($part);
         }
 
         return $data;
