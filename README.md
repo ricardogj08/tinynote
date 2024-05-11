@@ -39,6 +39,11 @@ Generate entity-relationship diagram:
 
     composer run gendb-diagram
 
+## References
+
+* [MigratoryData - Generate JWT tokens using PHP.](https://migratorydata.com/docs/extensions/auth-jwt/generate-jwt-with-php)
+* [PHP - Encrypt long data with OpenSSL.](https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810)
+
 ## License
 
     tinynote -- A simple markdown note taking application with encryption support built in PHP.

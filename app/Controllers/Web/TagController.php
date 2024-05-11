@@ -194,7 +194,7 @@ class TagController
             }
 
             // Envía el mensaje de error de la petición.
-            $req->session['error'] = $body['error'] ?? 'The tag could not be deleted';
+            $req->session['error'] = $body['error'] ?? 'The tag could not be updated';
 
             $res->redirect(Url::build('tags/edit/' . $uuid), StatusCode::FOUND);
         }
