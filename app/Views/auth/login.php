@@ -36,7 +36,8 @@
         placeholder="Enter your password"
         minlength="8"
         maxlength="64"
-        required>
+        required
+        value="">
       <small class="text-error"><?= Html::escape($validations['password']) ?></small>
     </div>
 

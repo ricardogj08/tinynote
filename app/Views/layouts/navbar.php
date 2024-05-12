@@ -25,6 +25,11 @@
           Logout
         </a>
       </li>
+      <li>
+        <a href="<?= Url::build('profile/edit') ?>">
+          <?= Html::escape($app->local('userAuth')['username'] ?? null) ?>
+        </a>
+      </li>
     </ul>
   </nav>
 </div>
