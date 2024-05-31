@@ -181,8 +181,10 @@ class TagController
 
         $client = Api::client();
 
+        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+
         // Realiza la petición de modificación del tag del usuario.
-        $response = $client->put('v1/tags/' . $uuid, $data);
+        $response = $client->put('v1/tags/' . $uuid, $headers, $data);
 
         $body = json_decode($response->body ?? '', true);
 

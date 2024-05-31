@@ -192,7 +192,7 @@ class TagController
         $tag = $tagModel
             ->select('id, name')
             ->where('user_id', $userAuth['id'])
-            ->find('id', $params['uuid']);
+            ->find($params['uuid']);
 
         // Comprueba que el tag se encuentra registrado.
         if (empty($tag)) {
