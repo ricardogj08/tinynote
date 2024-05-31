@@ -5,7 +5,7 @@ namespace App\Utils;
 class Url
 {
     /*
-     * Contruye una URL del sitio web.
+     * Construye una URL del sitio web.
      */
     public static function build($segments = [])
     {

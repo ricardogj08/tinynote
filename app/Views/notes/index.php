@@ -8,7 +8,7 @@
 <?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('notes/new') ?>" class="btn btn-default btn-ghost">
- Create note
+  Create note
 </a>
 
 <?php foreach ($notes as $note): ?>

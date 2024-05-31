@@ -8,7 +8,7 @@
 <?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('tags/new') ?>" class="btn btn-default btn-ghost">
- Create tag
+  Create tag
 </a>
 
 <table>

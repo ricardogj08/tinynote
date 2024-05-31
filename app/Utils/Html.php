@@ -18,7 +18,7 @@ class Html
     }
 
     /*
-     * Escapa algunos caractes de un string a HTML 5.
+     * Escapa algunos caracteres de un texto a HTML 5.
      */
     public static function simpleEscape(?string $text = '')
     {
