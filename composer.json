@@ -28,8 +28,8 @@
         }
     ],
     "require": {
-        "riverside/php-express": "^1.0",
-        "riverside/php-orm": "^1.1",
+        "riverside/php-express": "dev-master",
+        "riverside/php-orm": "dev-main",
         "gullevek/dotenv": "^2.0",
         "firebase/php-jwt": "^6.10",
         "respect/validation": "^2.2",
