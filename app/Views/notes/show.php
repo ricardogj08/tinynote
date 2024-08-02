@@ -6,6 +6,8 @@
   < Back
 </a>
 
+<h1><?= Html::escape($note['title']) ?></h1>
+
 <?= Html::fromMarkdown($note['body']) ?>
 
 <?php $app->render('layouts/footer') ?>
