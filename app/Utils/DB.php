@@ -22,7 +22,7 @@ class DB
 
     private function mount()
     {
-        $config = Config::getFromFilename(self::conifgFilename);
+        $config = Config::getFromFilename(self::configFilename);
 
         $options = $config[self::database];
 
