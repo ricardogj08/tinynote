@@ -5,6 +5,7 @@
 <h1>Profile</h1>
 
 <?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
+<?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('notes') ?>">
   < Back
@@ -66,7 +67,7 @@
       <small class="text-error"><?= Html::escape($validations['pass_confirm']) ?></small>
     </div>
 
-    <input type="submit" name="submit" value="Submit" class="btn btn-default btn-ghost">
+    <input type="submit" name="submit" value="Submit" class="btn btn-default">
   </fieldset>
 </form>
 
