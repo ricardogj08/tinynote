@@ -38,10 +38,12 @@ class AuthMiddleware
             ]);
         }
 
+        $payload = json_decode(json_encode($payload), true);
+
         // Consulta la información del usuario autenticado.
         $userAuth = UserModel::factory()
             ->select('id, active, is_admin')
-            ->find($payload->sub ?? null);
+            ->find($payload['sub'] ?? null);
 
         // Comprueba si el usuario está registrado.
         if (empty($userAuth)) {
