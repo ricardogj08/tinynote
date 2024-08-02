@@ -132,7 +132,6 @@ class NoteController
             ->select('tags.id, tags.name')
             ->tags()
             ->where('notes_tags.note_id', $newNote['id'])
-            ->groupBy('tags.id')
             ->orderBy('tags.name ASC')
             ->get();
 
@@ -166,7 +165,6 @@ class NoteController
                 ->select('tags.id, tags.name')
                 ->tags()
                 ->where('notes_tags.note_id', $note['id'])
-                ->groupBy('tags.id')
                 ->orderBy('tags.name ASC')
                 ->get();
         }
@@ -222,7 +220,6 @@ class NoteController
             ->select('tags.id, tags.name')
             ->tags()
             ->where('notes_tags.note_id', $note['id'])
-            ->groupBy('tags.id')
             ->orderBy('tags.name ASC')
             ->get();
 
@@ -271,7 +268,6 @@ class NoteController
             ->select('tags.id, tags.name')
             ->tags()
             ->where('notes_tags.note_id', $deletedNote['id'])
-            ->groupBy('tags.id')
             ->orderBy('tags.name ASC')
             ->get();
 
