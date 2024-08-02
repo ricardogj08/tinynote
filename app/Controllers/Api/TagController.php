@@ -137,7 +137,7 @@ class TagController
             ->where('user_id', $userAuth['id'])
             ->find($params['uuid']);
 
-        // Comprueba que el tag se encuentra registrada.
+        // Comprueba que el tag se encuentra registrado.
         if (empty($tag)) {
             $res->status(StatusCode::NOT_FOUND)->json([
                 'error' => 'Tag cannot be found'

@@ -60,7 +60,7 @@ class TagController
 
         $client = Api::client();
 
-        // Realiza la petición del registro del tag del usuario.
+        // Realiza la petición de registro del tag del usuario.
         $response = $client->post('v1/tags', [], $data);
 
         $body = json_decode($response->body ?? '', true);

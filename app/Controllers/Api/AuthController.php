@@ -18,9 +18,9 @@ class AuthController
     private function getValidationRules()
     {
         return [
-            'email' => v::stringType()->email()->length(4, 255, true),
-            'username' => v::stringType()->alnum()->length(4, 32, true),
-            'password' => v::stringType()->graph()->length(8, 64, true)
+            'email' => v::stringType()->notEmpty()->email()->length(4, 255, true),
+            'username' => v::stringType()->notEmpty()->alnum()->length(4, 32, true),
+            'password' => v::stringType()->notEmpty()->graph()->length(8, 64, true)
         ];
     }
 
@@ -103,9 +103,4 @@ class AuthController
             'data' => $userAuth
         ]);
     }
-
-    /*
-     * Renueva la sesión de un usuario autenticado.
-     */
-    public function refresh() {}
 }
