@@ -30,6 +30,6 @@ class Env
      */
     public static function set(string $varname, $value = null)
     {
-        $_ENV[$varname] = $value;
+        putenv($varname . '=' . $value);
     }
 }
