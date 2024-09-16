@@ -167,16 +167,16 @@
         },
         {
             "name": "gullevek/dotenv",
-            "version": "v2.0.8",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gullevek/dotEnv.git",
-                "reference": "e29f9fcd8853a09bb89b0eb8ee555b754ecee36e"
+                "reference": "b9feacaded4e48effff9da7d1173752aef3dc27f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gullevek/dotEnv/zipball/e29f9fcd8853a09bb89b0eb8ee555b754ecee36e",
-                "reference": "e29f9fcd8853a09bb89b0eb8ee555b754ecee36e",
+                "url": "https://api.github.com/repos/gullevek/dotEnv/zipball/b9feacaded4e48effff9da7d1173752aef3dc27f",
+                "reference": "b9feacaded4e48effff9da7d1173752aef3dc27f",
                 "shasum": ""
             },
             "require": {
@@ -215,9 +215,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gullevek/dotEnv/issues",
-                "source": "https://github.com/gullevek/dotEnv/tree/v2.0.8"
+                "source": "https://github.com/gullevek/dotEnv/tree/v2.1.0"
             },
-            "time": "2023-03-03T00:32:02+00:00"
+            "time": "2024-08-21T02:41:15+00:00"
         },
         {
             "name": "ph-7/just-http-status-codes",
