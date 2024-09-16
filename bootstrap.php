@@ -21,6 +21,16 @@ foreach (\App\Utils\Config::getFromFilename('app') as $key => $value) {
 }
 
 /*
+ * Carga opciones de configuración de la base de datos
+ * para el ORM de la aplicación.
+ */
+foreach (\App\Utils\Config::getFromFilename('database') as $database => $options) {
+    foreach ($options as $option => $value) {
+        \App\Utils\Env::set(strtoupper($database) . '_' . strtoupper($option));
+    }
+}
+
+/*
  * Configura e inicia una nueva sesión.
  */
 session_start(['save_path' => __DIR__ . '/writable/sessions']);
