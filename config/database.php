@@ -8,13 +8,13 @@ use App\Utils\Env;
 
 return [
     'default' => [
-        'driver' => Env::get('DB_DRIVER', 'mysql'),
-        'host' => Env::get('DB_HOST', 'localhost'),
-        'port' => Env::get('DB_PORT', 3306),
-        'username' => Env::get('DB_USERNAME', 'root'),
-        'password' => Env::get('DB_PASSWORD', 'secret'),
-        'database' => Env::get('DB_DATABASE', 'tinynote'),
-        'charset' => Env::get('DB_CHARSET', 'utf8mb4'),
-        'collation' => Env::get('DB_COLLATION', 'utf8mb4_general_ci')
+        'driver' => Env::get('DEFAULT_DRIVER', 'mysql'),
+        'host' => Env::get('DEFAULT_HOST', 'localhost'),
+        'port' => Env::get('DEFAULT_PORT', 3306),
+        'username' => Env::get('DEFAULT_USERNAME', 'root'),
+        'password' => Env::get('DEFAULT_PASSWORD', 'secret'),
+        'database' => Env::get('DEFAULT_DATABASE', 'tinynote'),
+        'charset' => Env::get('DEFAULT_CHARSET', 'utf8mb4'),
+        'collation' => Env::get('DEFAULT_COLLATION', 'utf8mb4_general_ci')
     ]
 ];

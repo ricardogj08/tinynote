@@ -4,8 +4,8 @@ namespace App\Utils;
 
 use AbmmHasan\UUID\GenerateUuid;
 use App\Utils\Config;
-use PhpOrm\Configuration;
-use PhpOrm\Connection;
+use Riverside\Orm\Configuration;
+use Riverside\Orm\Connection;
 
 class DB
 {

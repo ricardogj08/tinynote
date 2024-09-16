@@ -21,12 +21,6 @@ foreach (\App\Utils\Config::getFromFilename('app') as $key => $value) {
 }
 
 /*
- * Establece la configuración de la base de datos
- * para el ORM de la aplicación.
- */
-\PhpOrm\DB::config(__DIR__ . '/config/database.php');
-
-/*
  * Configura e inicia una nueva sesión.
  */
 session_start(['save_path' => __DIR__ . '/writable/sessions']);
@@ -34,7 +28,7 @@ session_start(['save_path' => __DIR__ . '/writable/sessions']);
 /*
  * Crea una instancia de la aplicación.
  */
-$app = new \PhpExpress\Application();
+$app = new \Riverside\Express\Application();
 
 /*
  * Configura la ruta de las vistas.

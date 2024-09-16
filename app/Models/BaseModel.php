@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use PhpOrm\DB;
+use Riverside\Orm\DB;
 
 /*
  * Modelo base para todos los modelos.
