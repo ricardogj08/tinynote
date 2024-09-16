@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Utils\Env;
 use WpOrg\Requests\Session;
 
 class Api
@@ -16,6 +17,8 @@ class Api
         $session = new Session(Url::build('api/'));
 
         $session->headers = array_merge($session->headers, self::$headers);
+
+        $session->options['proxy'] = Env::get('APP_PROXY');
 
         return $session;
     }
