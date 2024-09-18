@@ -18,7 +18,10 @@ class Api
 
         $session->headers = array_merge($session->headers, self::$headers);
 
+        // Establece opciones de configuración del cliente HTTP.
         $session->options['proxy'] = Env::get('APP_HTTP_PROXY');
+        $session->options['timeout'] = 60;
+        $session->options['connect_timeout'] = 60;
 
         return $session;
     }
