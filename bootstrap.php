@@ -26,7 +26,7 @@ foreach (\App\Utils\Config::getFromFilename('app') as $key => $value) {
  */
 foreach (\App\Utils\Config::getFromFilename('database') as $database => $options) {
     foreach ($options as $option => $value) {
-        \App\Utils\Env::set(strtoupper($database . '_' . $option), $value);
+        \App\Utils\Env::put(strtoupper($database . '_' . $option), $value);
     }
 }
 

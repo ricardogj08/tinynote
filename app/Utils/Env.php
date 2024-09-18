@@ -30,6 +30,14 @@ class Env
      */
     public static function set(string $varname, $value = null)
     {
+        $_ENV[$varname] = $value;
+    }
+
+    /*
+     * Establece el valor de una variable de entorno con putenv().
+     */
+    public static function put(string $varname, $value = null)
+    {
         putenv($varname . '=' . $value);
     }
 }
