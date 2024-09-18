@@ -18,9 +18,7 @@ class Api
 
         $session->headers = array_merge($session->headers, self::$headers);
 
-        if ($proxy = Env::get('APP_PROXY')) {
-            $session->options['proxy'] = $proxy;
-        }
+        $session->options['proxy'] = Env::get('APP_HTTP_PROXY');
 
         return $session;
     }
