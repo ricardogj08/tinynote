@@ -194,7 +194,7 @@ class TagController
 
         // Consulta la información del tag que será modificado.
         $tag = $tagModel
-            ->select('id, name')
+            ->select('id')
             ->where('user_id', $userAuth['id'])
             ->find($params['uuid']);
 

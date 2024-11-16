@@ -118,13 +118,13 @@ class ProfileController
         }
 
         // Consulta la información modificada del usuario autenticado.
-        $userAuth = $userModel
+        $updatedUserAuth = $userModel
             ->reset()
             ->select('id, username, email, active, is_admin, created_at, updated_at')
             ->find($userAuth['id']);
 
         $res->json([
-            'data' => $userAuth
+            'data' => $updatedUserAuth
         ]);
     }
 }

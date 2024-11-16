@@ -22,7 +22,7 @@ class NoteController
             'id' => v::stringType()->notEmpty()->Uuid(),
             'title' => v::stringType()->notEmpty()->length(1, 255, true),
             'body' => v::stringType()->notEmpty()->length(1, pow(2, 16) - 1, true),
-            'tags' => v::optional(v::arrayVal()->each(v::stringType()->notEmpty()->Uuid()))
+            'tags' => v::arrayVal()->each(v::stringType()->notEmpty()->Uuid())
         ];
     }
 
@@ -35,7 +35,9 @@ class NoteController
 
         // Obtiene los campos del cuerpo de la petición.
         foreach (['title', 'body', 'tags'] as $field) {
-            $data[$field] = $req->body[$field] ?? null;
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
         }
 
         $rules = $this->getValidationRules();
@@ -72,6 +74,7 @@ class NoteController
 
             $query->where(sprintf('id IN(%s)', implode(',', $params)));
 
+            // Consulta los tags del usuario.
             $tags = $query->where('user_id', $userAuth['id'])->get();
 
             if (array_diff($data['tags'], array_column($tags, 'id'))) {
@@ -225,6 +228,94 @@ class NoteController
 
         $res->json([
             'data' => $note
+        ]);
+    }
+
+    /*
+     * Modifica o actualiza la información
+     * de la nota de un usuario.
+     */
+    public function update($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        $data = [];
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach (['title', 'body', 'tags'] as $field) {
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
+        }
+
+        // Comprueba los campos del cuerpo de la petición.
+        try {
+            v::key('title', $rules['title'], false)
+                ->key('body', $rules['body'], false)
+                ->key('tags', $rules['tags'], false)
+                ->assert($data);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'validations' => $e->getMessages()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        $noteModel = NoteModel::factory();
+
+        // Consulta la información de la nota que será modificada.
+        $note = $noteModel
+            ->select('id')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que la nota se encuentra registrada.
+        if (empty($note)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'Note cannot be found'
+            ]);
+        }
+
+        $noteTagModel = NoteTagModel::factory();
+
+        // Modifica total o parcialmente la información de la nota del usuario.
+        if (!empty($data)) {
+            $data['updated_at'] = DB::datetime();
+
+            // $noteModel
+            //     ->reset()
+            //     ->where('id', $note['id'])
+            //     ->update($data);
+        }
+
+        // Consulta la información de la nota modificada.
+        $updatedNote = $noteModel
+            ->reset()
+            ->select('id, user_id, title, created_at, updated_at')
+            ->find($note['id']);
+
+        // Consulta los tags de la nota modificada.
+        $updatedNote['tags'] = $noteTagModel
+            ->select('tags.id, tags.name')
+            ->tags()
+            ->where('notes_tags.note_id', $updatedNote['id'])
+            ->orderBy('tags.name ASC')
+            ->get();
+
+        $res->json([
+            'data' => $updatedNote
         ]);
     }
 
