@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\UserModel;
+use App\Utils\DB;
 use App\Utils\Password;
 use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -18,7 +19,7 @@ class ProfileController
         return [
             'email' => v::stringType()->notEmpty()->email()->length(4, 255, true),
             'username' => v::stringType()->notEmpty()->alnum()->length(4, 32, true),
-            'password' => v::optional(v::stringType()->notEmpty()->graph()->length(8, 64, true)),
+            'password' => v::stringType()->notEmpty()->graph()->length(8, 64, true),
             'pass_confirm' => 'equals'
         ];
     }
@@ -35,16 +36,29 @@ class ProfileController
 
         // Obtiene los campos del cuerpo de la petición.
         foreach ($rules as $field => $rule) {
-            $data[$field] = $req->body[$field] ?? null;
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
         }
 
         // Comprueba los campos del cuerpo de la petición.
         try {
-            v::key('email', $rules['email'], true)
-                ->key('username', $rules['username'], true)
+            v::key('email', $rules['email'], false)
+                ->key('username', $rules['username'], false)
                 ->key('password', $rules['password'], false)
-                ->keyValue('pass_confirm', $rules['pass_confirm'], 'password')
                 ->assert($data);
+
+            /*
+             * Comprueba la confirmación de la contraseña
+             * si la contraseña se encuentra presente.
+             */
+            if (v::key('password', v::notOptional(), true)->validate($data)) {
+                v::keyValue('pass_confirm', $rules['pass_confirm'], 'password')
+                    ->assert($data);
+
+                // Encripta la nueva contraseña del usuario autenticado.
+                $data['password'] = Password::encrypt($data['password']);
+            }
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
                 'validations' => $e->getMessages()
@@ -53,8 +67,59 @@ class ProfileController
 
         $userAuth = $req->app->local('userAuth');
 
-        // Consulta la información modificada del usuario.
-        $userAuth = UserModel::factory()
+        $userModel = UserModel::factory();
+
+        /*
+         * Comprueba que el email del usuario autenticado
+         * sea único solo si se encuentra presente.
+         */
+        if (v::key('email', v::notOptional(), true)->validate($data)) {
+            $existsEmail = $userModel
+                ->reset()
+                ->select('id')
+                ->where('email', $data['email'])
+                ->where('id', '!=', $userAuth['id'])
+                ->value('id');
+
+            if (!empty($existsEmail)) {
+                $req->status(StatusCode::CONFLICT)->json([
+                    'error' => 'A user already exists with that email'
+                ]);
+            }
+        }
+
+        /*
+         * Comprueba que el nombre del usuario autenticado
+         * sea único solo si se encuentra presente.
+         */
+        if (v::key(('username'), v::notOptional(), true)->validate($data)) {
+            $existsUsername = $userModel
+                ->reset()
+                ->select('id')
+                ->where('username', $data['username'])
+                ->where('id', '!=', $userAuth['id'])
+                ->value('id');
+
+            if (!empty($existsUsername)) {
+                $req->status(StatusCode::CONFLICT)->json([
+                    'error' => 'A user already exists with that username'
+                ]);
+            }
+        }
+
+        // Modifica total o parcialmente la información del usuario autenticado.
+        if (!empty($data)) {
+            $data['updated_at'] = DB::datetime();
+
+            $userModel
+                ->reset()
+                ->where('id', $userAuth['id'])
+                ->update($data);
+        }
+
+        // Consulta la información modificada del usuario autenticado.
+        $userAuth = $userModel
+            ->reset()
             ->select('id, username, email, active, is_admin, created_at, updated_at')
             ->find($userAuth['id']);
 
