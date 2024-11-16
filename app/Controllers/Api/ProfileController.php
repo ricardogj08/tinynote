@@ -35,7 +35,7 @@ class ProfileController
         $rules = $this->getValidationRules();
 
         // Obtiene los campos del cuerpo de la petición.
-        foreach ($rules as $field => $rule) {
+        foreach (array_keys($rules) as $field) {
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }

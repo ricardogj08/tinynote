@@ -30,7 +30,9 @@ class TagController
 
         // Obtiene los campos del cuerpo de la petición.
         foreach (['name'] as $field) {
-            $data[$field] = $req->body[$field] ?? null;
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
         }
 
         $rules = $this->getValidationRules();
@@ -172,12 +174,14 @@ class TagController
 
         // Obtiene los campos del cuerpo de la petición.
         foreach (['name'] as $field) {
-            $data[$field] = $req->body[$field] ?? null;
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
         }
 
         // Comprueba los campos del cuerpo de la petición.
         try {
-            v::key('name', $rules['name'], true)->assert($data);
+            v::key('name', $rules['name'], false)->assert($data);
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
                 'validations' => $e->getMessages()
@@ -201,28 +205,36 @@ class TagController
             ]);
         }
 
-        $data['name'] = trim($data['name']);
+        /*
+         * Comprueba que el nombre del tag sea único
+         * solo si encuentra presente.
+         */
+        if (v::key(('name'), v::notOptional(), true)->validate($data)) {
+            $data['name'] = trim($data['name']);
 
-        if ($tag['name'] !== $data['name']) {
             $existsTag = $tagModel
                 ->reset()
                 ->select('id')
                 ->where('user_id', $userAuth['id'])
                 ->where('name', $data['name'])
+                ->where('id', '!=', $tag['id'])
                 ->value('id');
 
-            // Comprueba que el tag sea único.
             if (!empty($existsTag)) {
                 $res->status(StatusCode::CONFLICT)->json([
                     'error' => 'A tag already exists with that name'
                 ]);
             }
+        }
 
-            // Modifica la información del tag del usuario.
-            $tagModel->reset()->where('id', $tag['id'])->update([
-                'name' => $data['name'],
-                'updated_at' => DB::datetime()
-            ]);
+        // Modifica total o parcialmente la información del tag del usuario.
+        if (!empty($data)) {
+            $data['updated_at'] = DB::datetime();
+
+            $tagModel
+                ->reset()
+                ->where('id', $tag['id'])
+                ->update($data);
         }
 
         // Consulta la información del tag modificado.
