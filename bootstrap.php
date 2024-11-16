@@ -9,6 +9,11 @@ require __DIR__ . '/vendor/autoload.php';
 $_GET['_path_'] = ltrim($_SERVER['PATH_INFO'] ?? '', '/');
 
 /*
+ * Establece todas las funciones de fecha de PHP a UTC.
+ */
+date_default_timezone_set('UTC');
+
+/*
  * Carga variables de entorno desde el archivo .env
  */
 \App\Utils\Env::loadDotEnv();

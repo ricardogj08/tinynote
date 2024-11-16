@@ -33,7 +33,9 @@ class AuthController
 
         // Obtiene los campos del cuerpo de la petición.
         foreach (['nickname', 'password'] as $field) {
-            $data[$field] = $req->body[$field] ?? null;
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
         }
 
         $rules = $this->getValidationRules();
