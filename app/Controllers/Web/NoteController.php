@@ -172,23 +172,39 @@ class NoteController
          * Realiza la petición de consulta de
          * la información de la nota del usuario.
          */
-        $response = $client->get('v1/notes/' . $uuid);
+        $noteResponse = $client->get('v1/notes/' . $uuid);
 
-        $body = json_decode($response->body ?? '', true);
+        $noteBody = json_decode($noteResponse->body ?? '', true);
 
-        $note = $body['data'] ?? [];
+        $note = $noteBody['data'] ?? [];
 
         // Comprueba el cuerpo de la petición.
-        if (empty($response->success) || empty($note)) {
+        if (empty($noteResponse->success) || empty($note)) {
             // Envía el mensaje de error de la petición.
-            $req->session['error'] = $body['error'] ?? 'The note could not be edited';
+            $req->session['error'] = $noteBody['error'] ?? 'The note could not be edited';
 
             $res->redirect(Url::build('notes'), StatusCode::FOUND);
         }
 
+        // Realiza la petición de consulta de los tags del usuario.
+        $tagsResponse = $client->get('v1/tags');
+
+        $tagsBody = json_decode($tagsResponse->body ?? '', true);
+
+        $tags = $tagsBody['data'] ?? [];
+
         $validations = [];
-        $error = $req->session['error'] ?? null;
+        $error = $tagsBody['error'] ?? $req->session['error'] ?? null;
         $success = $req->session['success'] ?? null;
+
+        $noteTagsIDs = array_column($note['tags'], 'id');
+
+        // Marca los tags seleccionados desde los tags de la nota.
+        foreach ($tags as &$tag) {
+            $tag['selected'] = in_array($tag['id'], $noteTagsIDs);
+        }
+
+        unset($tag);
 
         /*
          * Obtiene los valores y los mensajes de validación
@@ -205,6 +221,7 @@ class NoteController
         $res->render('notes/edit', [
             'app' => $req->app,
             'note' => $note,
+            'tags' => $tags,
             'validations' => $validations,
             'error' => $error,
             'success' => $success

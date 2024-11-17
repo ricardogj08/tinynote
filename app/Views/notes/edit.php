@@ -47,6 +47,29 @@
       <small class="text-error"><?= Html::escape($validations['body']) ?></small>
     </div>
 
+    <div class="form-group">
+      <label for="tags">
+        Tags:
+      </label>
+      <select id="tags" name="tags[]" multiple size="4">
+        <?php foreach ($tags as $tag): ?>
+          <option value="<?= Html::escape($tag['id']) ?>" <?= $tag['selected'] ? 'selected' : '' ?>>
+            <?= Html::escape($tag['name']) ?>
+          </option>
+        <?php endforeach ?>
+      </select>
+
+      <?php if (is_array($validations['tags'])): ?>
+        <?php foreach ($validations['tags'] as $key => $value): ?>
+          <small class="text-error"><?= Html::escape($value) ?></small>
+        <?php endforeach ?>
+      <?php else: ?>
+        <small class="text-error"><?= Html::escape($validations['tags']) ?></small>
+      <?php endif ?>
+
+      <small>*Hold down the <kbd>Ctrl</kbd> (Windows) or <kbd>Command</kbd> (Mac) button to select/deselect multiple options.</small>
+    </div>
+
     <input type="submit" name="submit" value="Submit" class="btn btn-default">
   </fieldset>
 </form>
