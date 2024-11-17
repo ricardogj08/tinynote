@@ -162,7 +162,52 @@ class NoteController
     /*
      * Renderiza el formulario de modificación de notas.
      */
-    public function edit($req, $res) {}
+    public function edit($req, $res)
+    {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $client = Api::client();
+
+        /*
+         * Realiza la petición de consulta de
+         * la información de la nota del usuario.
+         */
+        $response = $client->get('v1/notes/' . $uuid);
+
+        $body = json_decode($response->body ?? '', true);
+
+        $note = $body['data'] ?? [];
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($note)) {
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be edited';
+
+            $res->redirect(Url::build('notes'), StatusCode::FOUND);
+        }
+
+        $validations = [];
+        $error = $req->session['error'] ?? null;
+
+        /*
+         * Obtiene los valores y los mensajes de validación
+         * de los campos del formulario.
+         */
+        foreach ($this->getFormFields() as $field) {
+            $validations[$field] = $req->session['validations'][$field] ?? null;
+        }
+
+        foreach (['validations', 'error'] as $key) {
+            unset($req->session[$key]);
+        }
+
+        $res->render('notes/edit', [
+            'app' => $req->app,
+            'note' => $note,
+            'validations' => $validations,
+            'error' => $error
+        ]);
+    }
 
     /*
      * Modifica la nota de un usuario.

@@ -27,7 +27,7 @@
         maxlength="64"
         required
         value="<?= Html::escape($values['name']) ?>">
-        <small class="text-error"><?= Html::escape($validations['name']) ?></small>
+      <small class="text-error"><?= Html::escape($validations['name']) ?></small>
     </div>
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default">

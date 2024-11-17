@@ -43,7 +43,7 @@
         required
         minlength="1"
         maxlength="<?= pow(2, 16) - 1 ?>"><?= Html::simpleEscape($values['body']) ?></textarea>
-        <small class="text-error"><?= Html::escape($validations['body']) ?></small>
+      <small class="text-error"><?= Html::escape($validations['body']) ?></small>
     </div>
 
     <div class="form-group">

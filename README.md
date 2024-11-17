@@ -19,15 +19,15 @@ Run database migrations:
 Generate JWT private key:
 
     openssl genrsa \
-    -out writable/jwt/rsa-private-key.pem \
-    2048
+      -out writable/jwt/rsa-private-key.pem \
+      2048
 
 Generate JWT public key from the private key:
 
     openssl rsa -in writable/jwt/rsa-private-key.pem \
-    -pubout \
-    -outform PEM \
-    -out writable/jwt/rsa-public-key.pem
+      -pubout \
+      -outform PEM \
+      -out writable/jwt/rsa-public-key.pem
 
 ## Commands
 
