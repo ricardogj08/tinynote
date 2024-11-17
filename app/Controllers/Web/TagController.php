@@ -144,6 +144,7 @@ class TagController
 
         $validations = [];
         $error = $req->session['error'] ?? null;
+        $success = $req->session['success'] ?? null;
 
         /*
          * Obtiene los valores y los mensajes de validación
@@ -153,7 +154,7 @@ class TagController
             $validations[$field] = $req->session['validations'][$field] ?? null;
         }
 
-        foreach (['validations', 'error'] as $key) {
+        foreach (['validations', 'error', 'success'] as $key) {
             unset($req->session[$key]);
         }
 
@@ -161,7 +162,8 @@ class TagController
             'app' => $req->app,
             'tag' => $tag,
             'validations' => $validations,
-            'error' => $error
+            'error' => $error,
+            'success' => $success
         ]);
     }
 
@@ -203,7 +205,7 @@ class TagController
 
         $req->session['success'] = 'The tag was modified correctly';
 
-        $res->redirect(Url::build('tags'), StatusCode::FOUND);
+        $res->redirect(Url::build('tags/edit/' . $uuid), StatusCode::FOUND);
     }
 
     /*

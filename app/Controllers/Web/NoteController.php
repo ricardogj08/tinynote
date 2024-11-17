@@ -188,6 +188,7 @@ class NoteController
 
         $validations = [];
         $error = $req->session['error'] ?? null;
+        $success = $req->session['success'] ?? null;
 
         /*
          * Obtiene los valores y los mensajes de validación
@@ -197,7 +198,7 @@ class NoteController
             $validations[$field] = $req->session['validations'][$field] ?? null;
         }
 
-        foreach (['validations', 'error'] as $key) {
+        foreach (['validations', 'error', 'success'] as $key) {
             unset($req->session[$key]);
         }
 
@@ -205,14 +206,22 @@ class NoteController
             'app' => $req->app,
             'note' => $note,
             'validations' => $validations,
-            'error' => $error
+            'error' => $error,
+            'success' => $success
         ]);
     }
 
     /*
      * Modifica la nota de un usuario.
      */
-    public function update($req, $res) {}
+    public function update($req, $res)
+    {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $req->session['success'] = 'The note was modified correctly';
+
+        $res->redirect(Url::build('notes/edit/' . $uuid), StatusCode::FOUND);
+    }
 
     /*
      * Elimina la nota de un usuario.

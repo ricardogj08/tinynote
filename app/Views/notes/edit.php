@@ -5,6 +5,7 @@
 <h1>Edit note</h1>
 
 <?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
+<?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
 <a href="<?= Url::build('notes') ?>">
   < Back
