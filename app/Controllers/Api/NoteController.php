@@ -288,6 +288,15 @@ class NoteController
             ]);
         }
 
+        $noteTagModel = NoteTagModel::factory();
+
+        // Consulta los tags de la nota que será modificada.
+        $note['tags'] = $noteTagModel
+            ->select('tags.id, tags.name')
+            ->tags()
+            ->where('notes_tags.note_id', $note['id'])
+            ->get();
+
         /*
          * Limpia espacios sobrantes del título de la nota
          * si se encuentra presente.
@@ -306,7 +315,42 @@ class NoteController
             $data['body'] = $crypt->encrypt(trim($data['body']));
         }
 
-        $noteTagModel = NoteTagModel::factory();
+        /*
+         * Comprueba los tags de la nota que fueron modificados
+         * si se encuentra presente.
+         */
+        if (v::key('tags', v::notOptional(), true)->validate($data)) {
+            $noteTagsIDs = array_column($note['tags'], 'id');
+
+            // Obtiene los nuevos tags vinculados a la nota.
+            $newNoteTags = array_diff($data['tags'], $noteTagsIDs);
+
+            if (!empty($newNoteTags)) {
+            }
+
+            // Obtiene los tags eliminados de la nota.
+            $deletedNoteTags = array_diff($noteTagsIDs, $data['tags']);
+
+            // Elimina los tags de la nota.
+            if (!empty($deletedNoteTags)) {
+                $query = $noteTagModel
+                    ->reset()
+                    ->where('note_id', $note['id']);
+
+                $params = [];
+
+                foreach ($deletedNoteTags as $key => $value) {
+                    $paramName = ':id_' . $key;
+                    $query->param($paramName, $value);
+                    $params[] = $paramName;
+                }
+
+                // Elimina la información de los tags que no se encuentran.
+                $query
+                    ->where(sprintf('tag_id IN(%s)', implode(',', $params)))
+                    ->delete();
+            }
+        }
 
         unset($data['tags']);
 
