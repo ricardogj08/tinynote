@@ -235,6 +235,35 @@ class NoteController
     {
         $uuid = $req->params['uuid'] ?? '';
 
+        $data = [];
+
+        // Obtiene los valores de los campos del formulario.
+        foreach ($this->getFormFields() as $field) {
+            $data[$field] = $req->body[$field] ?? null;
+        }
+
+        $client = Api::client();
+
+        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+
+        // Realiza la petición de modificación de la nota del usuario.
+        $response = $client->put('v1/notes/' . $uuid, $headers, $data);
+
+        $body = json_decode($response->body ?? '', true);
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($body['data'])) {
+            // Envía los mensajes de validación de los campos del formulario.
+            if (!empty($body['validations'])) {
+                $req->session['validations'] = $body['validations'];
+            }
+
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The note could not be updated';
+
+            $res->redirect(Url::build('notes/edit/' . $uuid), StatusCode::FOUND);
+        }
+
         $req->session['success'] = 'The note was modified correctly';
 
         $res->redirect(Url::build('notes/edit/' . $uuid), StatusCode::FOUND);

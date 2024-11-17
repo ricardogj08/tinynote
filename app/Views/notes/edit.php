@@ -11,7 +11,7 @@
   < Back
 </a>
 
-<form method="post" action="<?= Url::build(['notes', 'update', $note['id']]) ?>">
+<form method="post" enctype="multipart/form-data" action="<?= Url::build(['notes', 'update', $note['id']]) ?>">
   <fieldset>
     <legend>Note editing</legend>
 
@@ -33,7 +33,7 @@
 
     <div class="form-group">
       <label for="body">
-        Body:
+        Body (markdown):
       </label>
       <textarea
         id="textarea"

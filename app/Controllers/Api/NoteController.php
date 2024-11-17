@@ -288,16 +288,36 @@ class NoteController
             ]);
         }
 
+        /*
+         * Limpia espacios sobrantes del título de la nota
+         * si se encuentra presente.
+         */
+        if (v::key('title', v::notOptional(), true)->validate($data)) {
+            $data['title'] = trim($data['title']);
+        }
+
+        /*
+         * Encripta el nuevo contenido de la nota
+         * si se encuentra presente.
+         */
+        if (v::key('body', v::notOptional(), true)->validate($data)) {
+            $crypt = new Crypt($userAuth['id']);
+
+            $data['body'] = $crypt->encrypt(trim($data['body']));
+        }
+
         $noteTagModel = NoteTagModel::factory();
+
+        unset($data['tags']);
 
         // Modifica total o parcialmente la información de la nota del usuario.
         if (!empty($data)) {
             $data['updated_at'] = DB::datetime();
 
-            // $noteModel
-            //     ->reset()
-            //     ->where('id', $note['id'])
-            //     ->update($data);
+            $noteModel
+                ->reset()
+                ->where('id', $note['id'])
+                ->update($data);
         }
 
         // Consulta la información de la nota modificada.
@@ -308,6 +328,7 @@ class NoteController
 
         // Consulta los tags de la nota modificada.
         $updatedNote['tags'] = $noteTagModel
+            ->reset()
             ->select('tags.id, tags.name')
             ->tags()
             ->where('notes_tags.note_id', $updatedNote['id'])
