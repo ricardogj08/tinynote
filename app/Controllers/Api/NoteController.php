@@ -56,13 +56,11 @@ class NoteController
 
         $userAuth = $req->app->local('userAuth');
 
-        $tagModel = TagModel::factory();
-
         $tags = [];
 
         // Comprueba que los tags se encuentren registrados.
-        if (!empty($data['tags'])) {
-            $query = $tagModel->select('id');
+        if (v::key('tags', v::notOptional(), true)->validate($data)) {
+            $query = TagModel::factory()->select('id');
 
             $params = [];
 
@@ -74,12 +72,13 @@ class NoteController
 
             $query->where(sprintf('id IN(%s)', implode(',', $params)));
 
-            // Consulta los tags del usuario.
+            // Consulta la información de los tags del usuario a relacionar en la nota.
             $tags = $query->where('user_id', $userAuth['id'])->get();
 
+            // Comprueba que los tags enviados estén registrados.
             if (array_diff($data['tags'], array_column($tags, 'id'))) {
                 $res->status(StatusCode::NOT_FOUND)->json([
-                    'error' => 'Tags cannot be found'
+                    'error' => 'The tags to add cannot be found'
                 ]);
             }
         }
@@ -288,15 +287,6 @@ class NoteController
             ]);
         }
 
-        $noteTagModel = NoteTagModel::factory();
-
-        // Consulta los tags de la nota que será modificada.
-        $note['tags'] = $noteTagModel
-            ->select('tags.id, tags.name')
-            ->tags()
-            ->where('notes_tags.note_id', $note['id'])
-            ->get();
-
         /*
          * Limpia espacios sobrantes del título de la nota
          * si se encuentra presente.
@@ -315,17 +305,61 @@ class NoteController
             $data['body'] = $crypt->encrypt(trim($data['body']));
         }
 
+        $noteTagModel = NoteTagModel::factory();
+
         /*
          * Comprueba los tags de la nota que fueron modificados
          * si se encuentra presente.
          */
         if (v::key('tags', v::notOptional(), true)->validate($data)) {
+            // Consulta los tags de la nota que será modificada.
+            $note['tags'] = $noteTagModel
+                ->select('tags.id, tags.name')
+                ->tags()
+                ->where('notes_tags.note_id', $note['id'])
+                ->get();
+
             $noteTagsIDs = array_column($note['tags'], 'id');
 
-            // Obtiene los nuevos tags vinculados a la nota.
+            // Obtiene los nuevos tags relacionados a la nota.
             $newNoteTags = array_diff($data['tags'], $noteTagsIDs);
 
+            // Comprueba y relaciona los nuevos tags a la nota.
             if (!empty($newNoteTags)) {
+                $query = TagModel::factory()->select('id');
+
+                $params = [];
+
+                foreach ($newNoteTags as $key => $value) {
+                    $paramName = ':id_' . $key;
+                    $query->param($paramName, $value);
+                    $params[] = $paramName;
+                }
+
+                $query->where(sprintf('id IN(%s)', implode(',', $params)));
+
+                // Consulta la información de los nuevos tags a relacionar en la nota.
+                $newTagsToAdd = $query->where('user_id', $userAuth['id'])->get();
+
+                // Comprueba que los tags enviados estén registrados.
+                if (array_diff($newNoteTags, array_column($newTagsToAdd, 'id'))) {
+                    $res->status(StatusCode::NOT_FOUND)->json([
+                        'error' => 'The new tags to add cannot be found'
+                    ]);
+                }
+
+                // Relaciona los nuevos tags de la nota.
+                foreach ($newTagsToAdd as $tag) {
+                    $datetime = DB::datetime();
+
+                    $noteTagModel->reset()->insert([
+                        'id' => DB::generateUuid(),
+                        'note_id' => $note['id'],
+                        'tag_id' => $tag['id'],
+                        'created_at' => $datetime,
+                        'updated_at' => $datetime
+                    ]);
+                }
             }
 
             // Obtiene los tags eliminados de la nota.
@@ -333,26 +367,26 @@ class NoteController
 
             // Elimina los tags de la nota.
             if (!empty($deletedNoteTags)) {
-                $query = $noteTagModel
+                $deleteQuery = $noteTagModel
                     ->reset()
                     ->where('note_id', $note['id']);
 
-                $params = [];
+                $deleteParams = [];
 
                 foreach ($deletedNoteTags as $key => $value) {
-                    $paramName = ':id_' . $key;
-                    $query->param($paramName, $value);
-                    $params[] = $paramName;
+                    $deleteParamName = ':id_' . $key;
+                    $deleteQuery->param($deleteParamName, $value);
+                    $deleteParams[] = $deleteParamName;
                 }
 
                 // Elimina la información de los tags que no se encuentran.
-                $query
-                    ->where(sprintf('tag_id IN(%s)', implode(',', $params)))
+                $deleteQuery
+                    ->where(sprintf('tag_id IN(%s)', implode(',', $deleteParams)))
                     ->delete();
             }
-        }
 
-        unset($data['tags']);
+            unset($data['tags']);
+        }
 
         // Modifica total o parcialmente la información de la nota del usuario.
         if (!empty($data)) {

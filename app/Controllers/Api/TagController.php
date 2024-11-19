@@ -46,6 +46,7 @@ class TagController
             ]);
         }
 
+        // Limpia espacios sobrantes del nombre del nuevo tag.
         $data['name'] = trim($data['name']);
 
         $userAuth = $req->app->local('userAuth');
