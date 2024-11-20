@@ -9,7 +9,7 @@ use PH7\JustHttp\StatusCode;
 class AuthMiddleware
 {
     /*
-     * Comprueba la autenticación de una cookie.
+     * Comprueba la cookie de autenticación del usuario.
      */
     public function verify($req, $res)
     {
@@ -50,7 +50,7 @@ class AuthMiddleware
     }
 
     /*
-     * Redirecciona a una URL si existe la autenticación de la cookie.
+     * Redirecciona a una URL si existe la cookie de autenticación del usuario.
      */
     public function redirect($req, $res)
     {

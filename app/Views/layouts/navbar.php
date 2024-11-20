@@ -20,6 +20,13 @@
           Tags
         </a>
       </li>
+      <?php if (($app->local('userAuth')['is_admin'] ?? null) == true): ?>
+        <li>
+          <a href="<?= Url::build('users') ?>">
+            Users
+          </a>
+        </li>
+      <?php endif ?>
       <li>
         <a href="<?= Url::build('logout') ?>">
           Logout

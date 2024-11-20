@@ -4,8 +4,7 @@
  * Registra todas las rutas y middlewares del sitio web.
  */
 
-$app->use('', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('', '\App\Middlewares\Web\AuthMiddleware@redirect');
+$app->use('', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\AuthMiddleware@redirect']);
 
 $app->use('login', '\App\Middlewares\Web\AuthMiddleware@redirect');
 $app->use('logout', '\App\Middlewares\Web\AuthMiddleware@verify');
@@ -28,12 +27,12 @@ $app->use('notes/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('profile/edit', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('profile/update', '\App\Middlewares\Web\AuthMiddleware@verify');
 
-$app->use('users/new', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('users/create', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('users', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('users/edit/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('users/update/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
-$app->use('users/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users/new', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
+$app->use('users/create', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
+$app->use('users', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
+$app->use('users/edit/:uuid', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
+$app->use('users/update/:uuid', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
+$app->use('users/delete/:uuid', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\RoleMiddleware@isAdmin']);
 
 /*
  * Registro de rutas.

@@ -16,8 +16,8 @@ $app->use('api/v1/notes/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
 
 $app->use('api/v1/profile', '\App\Middlewares\Api\AuthMiddleware@verify');
 
-$app->use('api/v1/users', '\App\Middlewares\Api\AuthMiddleware@verify');
-$app->use('api/v1/users/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
+$app->use('api/v1/users', ['\App\Middlewares\Api\AuthMiddleware@verify', '\App\Middlewares\Api\RoleMiddleware@isAdmin']);
+$app->use('api/v1/users/:uuid', ['\App\Middlewares\Api\AuthMiddleware@verify', '\App\Middlewares\Api\RoleMiddleware@isAdmin']);
 
 /*
  * Registro de rutas.
