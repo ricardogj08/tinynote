@@ -16,6 +16,13 @@ $app->use('api/v1/notes/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
 
 $app->use('api/v1/profile', '\App\Middlewares\Api\AuthMiddleware@verify');
 
+$app->use('api/v1/users', '\App\Middlewares\Api\AuthMiddleware@verify');
+$app->use('api/v1/users/:uuid', '\App\Middlewares\Api\AuthMiddleware@verify');
+
+/*
+ * Registro de rutas.
+ */
+
 $app->all('api', '\App\Controllers\Api\ApiController@index');
 $app->all('api/v1', '\App\Controllers\Api\ApiController@index');
 
@@ -37,5 +44,10 @@ $app->get('api/v1/notes', '\App\Controllers\Api\NoteController@index');
 $app->get('api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@show');
 $app->put('api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@update');
 $app->delete('api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@delete');
+
+$app->post('api/v1/users', '\App\Controllers\Api\UserController@create');
+$app->get('api/v1/users', '\App\Controllers\Api\UserController@index');
+$app->put('api/v1/users/:uuid', '\App\Controllers\Api\UserController@update');
+$app->delete('api/v1/users/:uuid', '\App\Controllers\Api\UserController@delete');
 
 $app->all('api/:wildcard', '\App\Controllers\Api\ApiController@error404');

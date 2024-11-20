@@ -28,6 +28,17 @@ $app->use('notes/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('profile/edit', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('profile/update', '\App\Middlewares\Web\AuthMiddleware@verify');
 
+$app->use('users/new', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users/create', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users/edit/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users/update/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+$app->use('users/delete/:uuid', '\App\Middlewares\Web\AuthMiddleware@verify');
+
+/*
+ * Registro de rutas.
+ */
+
 $app->get('', '\App\Controllers\Web\PageController@index');
 
 $app->get('login', '\App\Controllers\Web\AuthController@loginView');
@@ -51,5 +62,12 @@ $app->get('notes/delete/:uuid', '\App\Controllers\Web\NoteController@delete');
 
 $app->get('profile/edit', '\App\Controllers\Web\ProfileController@edit');
 $app->post('profile/update', '\App\Controllers\Web\ProfileController@update');
+
+$app->get('users/new', '\App\Controllers\Web\UserController@new');
+$app->get('users/create', '\App\Controllers\Web\UserController@create');
+$app->get('users', '\App\Controllers\Web\UserController@index');
+$app->get('users/edit/:uuid', '\App\Controllers\Web\UserController@edit');
+$app->post('users/update/:uuid', '\App\Controllers\Web\UserController@update');
+$app->get('users/delete/:uuid', '\App\Controllers\Web\UserController@delete');
 
 $app->all(':wildcard', '\App\Controllers\Web\PageController@error404');
