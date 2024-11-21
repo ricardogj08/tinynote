@@ -33,14 +33,17 @@ class NoteController
     {
         $data = [];
 
+        $rules = $this->getValidationRules();
+
+        // Selecciona solo los campos necesarios.
+        $fields = array_diff(array_keys($rules), ['id']);
+
         // Obtiene los campos del cuerpo de la petición.
-        foreach (['title', 'body', 'tags'] as $field) {
+        foreach ($fields as $field) {
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }
         }
-
-        $rules = $this->getValidationRules();
 
         // Comprueba los campos del cuerpo de la petición.
         try {
@@ -81,6 +84,8 @@ class NoteController
                     'error' => 'The tags to add cannot be found'
                 ]);
             }
+
+            unset($data['tags']);
         }
 
         $crypt = new Crypt($userAuth['id']);
@@ -88,22 +93,21 @@ class NoteController
         // Encripta el contenido de la nota.
         $data['body'] = $crypt->encrypt(trim($data['body']));
 
-        $datetime = DB::datetime();
-
         // Genera el UUID de la nueva nota.
-        $newNoteId = DB::generateUuid();
+        $data['id'] = DB::generateUuid();
+
+        // Relaciona la nota al usuario.
+        $data['user_id'] = $userAuth['id'];
+
+        // Elimina espacios sobrantes del título de la nota.
+        $data['title'] = trim($data['title']);
+
+        $data['created_at'] = $data['updated_at'] = DB::datetime();
 
         $noteModel = NoteModel::factory();
 
         // Registra la información de la nueva nota.
-        $noteModel->insert([
-            'id' => $newNoteId,
-            'user_id' => $userAuth['id'],
-            'title' => trim($data['title']),
-            'body' => $data['body'],
-            'created_at' => $datetime,
-            'updated_at' => $datetime
-        ]);
+        $noteModel->insert($data);
 
         $noteTagModel = NoteTagModel::factory();
 
@@ -114,7 +118,7 @@ class NoteController
 
                 $noteTagModel->reset()->insert([
                     'id' => DB::generateUuid(),
-                    'note_id' => $newNoteId,
+                    'note_id' => $data['id'],
                     'tag_id' => $tag['id'],
                     'created_at' => $datetime,
                     'updated_at' => $datetime
@@ -126,7 +130,7 @@ class NoteController
         $newNote = $noteModel
             ->reset()
             ->select('id, user_id, title, created_at, updated_at')
-            ->find($newNoteId);
+            ->find($data['id']);
 
         // Consulta los tags de la nota registrada.
         $newNote['tags'] = $noteTagModel
@@ -251,8 +255,11 @@ class NoteController
 
         $data = [];
 
+        // Selecciona solo los campos necesarios.
+        $fields = array_diff(array_keys($rules), ['id']);
+
         // Obtiene los campos del cuerpo de la petición.
-        foreach (['title', 'body', 'tags'] as $field) {
+        foreach ($fields as $field) {
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }
