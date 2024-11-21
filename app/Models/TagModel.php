@@ -18,13 +18,16 @@ class TagModel extends BaseModel
         'updated_at'
     ];
 
+    /*
+     * Relaciona los tags con su pivote de las notas.
+     */
     public function notesTags()
     {
         return $this->leftJoin('notes_tags', 'tags.id = notes_tags.tag_id');
     }
 
     /*
-     * Relaciona las notas de un tag.
+     * Relaciona las notas con su pivote de los tags.
      */
     public function notes()
     {

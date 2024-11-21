@@ -19,4 +19,20 @@ class UserModel extends BaseModel
         'created_at',
         'updated_at'
     ];
+
+    /*
+     * Relaciona los tags con sus usuarios.
+     */
+    public function tags()
+    {
+        return $this->leftJoin('tags', 'users.id = tags.user_id');
+    }
+
+    /*
+     * Relaciona las notas con sus usuarios.
+     */
+    public function notes()
+    {
+        return $this->leftJoin('notes', 'users.id = notes.user_id');
+    }
 }

@@ -47,6 +47,7 @@ $app->delete('api/v1/notes/:uuid', '\App\Controllers\Api\NoteController@delete')
 
 $app->post('api/v1/users', '\App\Controllers\Api\UserController@create');
 $app->get('api/v1/users', '\App\Controllers\Api\UserController@index');
+$app->get('api/v1/users/:uuid', '\App\Controllers\Api\UserController@show');
 $app->put('api/v1/users/:uuid', '\App\Controllers\Api\UserController@update');
 $app->delete('api/v1/users/:uuid', '\App\Controllers\Api\UserController@delete');
 

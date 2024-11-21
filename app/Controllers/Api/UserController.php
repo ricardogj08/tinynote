@@ -112,7 +112,58 @@ class UserController
     /*
      * Consulta los usuarios registrados.
      */
-    public function index($req, $res) {}
+    public function index($req, $res)
+    {
+        $userModel = UserModel::factory();
+
+        // Consulta la información de los usuarios registrados.
+        $users = $userModel
+            ->select('users.id, users.username, users.email, users.active, users.is_admin, COUNT(notes.id) as number_notes, COUNT(tags.id) as number_tags, users.created_at, users.updated_at')
+            ->notes()
+            ->tags()
+            ->groupBy('users.id')
+            ->orderBy('users.updated_at DESC')
+            ->get();
+
+        $res->json([
+            'data' => $users
+        ]);
+    }
+
+    /*
+     * Consulta la información de un usuario.
+     */
+    public function show($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        // Consulta la información del usuario.
+        $user = UserModel::factory()
+            ->select('id, username, email, active, is_admin, created_at, updated_at')
+            ->find($params['uuid']);
+
+        // Comprueba que el usuario se encuentra registrado.
+        if (empty($user)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'User cannot be found'
+            ]);
+        }
+
+        $res->json([
+            'data' => $user
+        ]);
+    }
 
     /*
      * Modifica o actualiza la información de un usuario.
