@@ -28,14 +28,17 @@ class TagController
     {
         $data = [];
 
+        $rules = $this->getValidationRules();
+
+        // Selecciona solo los campos necesarios.
+        $fields = array_diff(array_keys($rules), ['id']);
+
         // Obtiene los campos del cuerpo de la petición.
-        foreach (['name'] as $field) {
+        foreach ($fields as $field) {
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }
         }
-
-        $rules = $this->getValidationRules();
 
         // Comprueba los campos del cuerpo de la petición.
         try {
@@ -67,24 +70,21 @@ class TagController
         }
 
         // Genera el UUID del nuevo tag.
-        $newTagId = DB::generateUuid();
+        $data['id'] = DB::generateUuid();
 
-        $datetime = DB::datetime();
+        // Relaciona la nota al usuario.
+        $data['user_id'] = $userAuth['id'];
+
+        $data['created_at'] = $data['updated_at'] = DB::datetime();
 
         // Registra la información del nuevo tag.
-        $tagModel->reset()->insert([
-            'id' => $newTagId,
-            'user_id' => $userAuth['id'],
-            'name' => $data['name'],
-            'created_at' => $datetime,
-            'updated_at' => $datetime
-        ]);
+        $tagModel->reset()->insert($data);
 
         // Consulta la información del tag registrado.
         $newTag = $tagModel
             ->reset()
             ->select('id, name, user_id, created_at, updated_at')
-            ->find($newTagId);
+            ->find($data['id']);
 
         $res->status(StatusCode::CREATED)->json([
             'data' => $newTag
@@ -173,8 +173,11 @@ class TagController
 
         $data = [];
 
+        // Selecciona solo los campos necesarios.
+        $fields = array_diff(array_keys($rules), ['id']);
+
         // Obtiene los campos del cuerpo de la petición.
-        foreach (['name'] as $field) {
+        foreach ($fields as $field) {
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }
