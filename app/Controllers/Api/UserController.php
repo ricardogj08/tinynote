@@ -3,7 +3,9 @@
 namespace App\Controllers\Api;
 
 use App\Models\UserModel;
+use App\Utils\Crypt;
 use App\Utils\DB;
+use App\Utils\Files;
 use App\Utils\Password;
 use PH7\JustHttp\StatusCode;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -90,7 +92,7 @@ class UserController
 
         // Establece el rol y el estatus del nuevo usuario.
         foreach (['is_admin', 'active'] as $key) {
-            $data[$key] = v::key($key, v::notOptional()->trueVal(), true)->validate($data);
+            $data[$key] = (int) v::key($key, v::notOptional()->trueVal(), true)->validate($data);
         }
 
         $data['created_at'] = $data['updated_at'] = DB::datetime();
@@ -173,5 +175,54 @@ class UserController
     /*
      * Elimina un usuario.
      */
-    public function delete($req, $res) {}
+    public function delete($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        $userAuth = $req->app->local('userAuth');
+
+        $userModel = UserModel::factory();
+
+        // Consulta la información del usuario que será eliminado.
+        $deletedUser = $userModel
+            ->select('users.id, users.username, users.email, users.active, users.is_admin, COUNT(notes.id) as number_notes, COUNT(tags.id) as number_tags, users.created_at, users.updated_at')
+            ->notes()
+            ->tags()
+            ->where('users.id', '!=', $userAuth['id'])
+            ->groupBy('users.id')
+            ->find($params['uuid']);
+
+        // Comprueba que el usuario se encuentra registrado.
+        if (empty($deletedUser)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'User cannot be found'
+            ]);
+        }
+
+        $crypt = new Crypt($deletedUser['id']);
+
+        // Elimina el directorio de las llaves de cifrado del usuario.
+        Files::rrmdir($crypt->getUserPathKeys());
+
+        // Elimina la información del usuario.
+        $userModel
+            ->reset()
+            ->where('id', $deletedUser['id'])
+            ->delete();
+
+        $res->json([
+            'data' => $deletedUser
+        ]);
+    }
 }

@@ -15,7 +15,7 @@ class UserModel extends BaseModel
         'email',
         'password',
         'active',
-        'is_active',
+        'is_admin',
         'created_at',
         'updated_at'
     ];

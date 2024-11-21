@@ -15,6 +15,7 @@ class Crypt
     private const publicKeyFilename = 'public.key';
     private const privateKeyBits = 4096;
 
+    private $userPathKeys;
     private $privateKey;
     private $publicKey;
 
@@ -33,13 +34,13 @@ class Crypt
             throw new Exception(sprintf('Crypt path keys "%s" cannot be found.', $pathKeys));
         }
 
-        $userPathKeys = sprintf('%s/%s/', realpath($pathKeys), $uuid);
+        $this->userPathKeys = sprintf('%s/%s/', realpath($pathKeys), $uuid);
 
         // Crea el directorio de las llaves de cifrado del usuario.
-        is_dir($userPathKeys) || mkdir($userPathKeys);
+        is_dir($this->userPathKeys) || mkdir($this->userPathKeys);
 
-        $pathToPrivateKey = $userPathKeys . self::privateKeyFilename;
-        $pathToPublicKey = $userPathKeys . self::publicKeyFilename;
+        $pathToPrivateKey = $this->userPathKeys . self::privateKeyFilename;
+        $pathToPublicKey = $this->userPathKeys . self::publicKeyFilename;
 
         // Genera las llaves de cifrado si no existen.
         if (!is_file($pathToPrivateKey) && !is_file($pathToPublicKey)) {
@@ -76,5 +77,13 @@ class Crypt
         }
 
         return $data;
+    }
+
+    /*
+     * Obtiene el directorio de las llaves de cifrado del usuario.
+     */
+    public function getUserPathKeys()
+    {
+        return $this->userPathKeys;
     }
 }

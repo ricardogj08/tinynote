@@ -7,7 +7,6 @@
 $app->use('', ['\App\Middlewares\Web\AuthMiddleware@verify', '\App\Middlewares\Web\AuthMiddleware@redirect']);
 
 $app->use('login', '\App\Middlewares\Web\AuthMiddleware@redirect');
-$app->use('logout', '\App\Middlewares\Web\AuthMiddleware@verify');
 
 $app->use('tags/new', '\App\Middlewares\Web\AuthMiddleware@verify');
 $app->use('tags/create', '\App\Middlewares\Web\AuthMiddleware@verify');
