@@ -84,9 +84,9 @@ class NoteController
                     'error' => 'The tags to add cannot be found'
                 ]);
             }
-
-            unset($data['tags']);
         }
+
+        unset($data['tags']);
 
         $crypt = new Crypt($userAuth['id']);
 
@@ -391,9 +391,9 @@ class NoteController
                     ->where(sprintf('tag_id IN(%s)', implode(',', $deleteParams)))
                     ->delete();
             }
-
-            unset($data['tags']);
         }
+
+        unset($data['tags']);
 
         // Modifica total o parcialmente la información de la nota del usuario.
         if (!empty($data)) {
