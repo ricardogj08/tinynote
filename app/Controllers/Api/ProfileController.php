@@ -76,6 +76,8 @@ class ProfileController
          * sea único solo si se encuentra presente.
          */
         if (v::key('email', v::notOptional(), true)->validate($data)) {
+            $data['email'] = mb_strtolower($data['email']);
+
             $existsEmail = $userModel
                 ->reset()
                 ->select('id')
@@ -84,7 +86,7 @@ class ProfileController
                 ->value('id');
 
             if (!empty($existsEmail)) {
-                $req->status(StatusCode::CONFLICT)->json([
+                $res->status(StatusCode::CONFLICT)->json([
                     'error' => 'A user already exists with that email'
                 ]);
             }
@@ -103,7 +105,7 @@ class ProfileController
                 ->value('id');
 
             if (!empty($existsUsername)) {
-                $req->status(StatusCode::CONFLICT)->json([
+                $res->status(StatusCode::CONFLICT)->json([
                     'error' => 'A user already exists with that username'
                 ]);
             }

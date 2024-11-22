@@ -170,7 +170,142 @@ class UserController
     /*
      * Modifica o actualiza la información de un usuario.
      */
-    public function update($req, $res) {}
+    public function update($req, $res)
+    {
+        $params = $req->params;
+
+        $rules = $this->getValidationRules();
+
+        // Comprueba los parámetros de la ruta.
+        try {
+            v::key('uuid', $rules['id'], true)->assert($params);
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        $userModel = UserModel::factory();
+
+        // Consulta la información del usuario que será modificado.
+        $user = $userModel
+            ->select('id')
+            ->find($params['uuid']);
+
+        // Comprueba que el usuario se encuentra registrado.
+        if (empty($user)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'User cannot be found'
+            ]);
+        }
+
+        $data = [];
+
+        // Selecciona solo los campos necesarios.
+        $fields = array_diff(array_keys($rules), ['id']);
+
+        // Obtiene los campos del cuerpo de la petición.
+        foreach ($fields as $field) {
+            if (v::key($field, v::notOptional(), true)->validate($req->body)) {
+                $data[$field] = $req->body[$field];
+            }
+        }
+
+        // Comprueba los campos del cuerpo de la petición.
+        try {
+            v::key('username', $rules['username'], false)
+                ->key('email', $rules['email'], false)
+                ->key('password', $rules['password'], false)
+                ->key('active', $rules['active'], false)
+                ->key('is_admin', $rules['is_admin'], false)
+                ->assert($data);
+
+            /*
+             * Comprueba la confirmación de la contraseña
+             * si la contraseña se encuentra presente.
+             */
+            if (v::key('password', v::notOptional(), true)->validate($data)) {
+                v::keyValue('pass_confirm', $rules['pass_confirm'], 'password')
+                    ->assert($data);
+
+                // Encripta la nueva contraseña del usuario.
+                $data['password'] = Password::encrypt($data['password']);
+
+                unset($data['pass_confirm']);
+            }
+        } catch (NestedValidationException $e) {
+            $res->status(StatusCode::BAD_REQUEST)->json([
+                'validations' => $e->getMessages()
+            ]);
+        }
+
+        /*
+         * Comprueba que el nombre del usuario
+         * sea único solo si se encuentra presente.
+         */
+        if (v::key(('username'), v::notOptional(), true)->validate($data)) {
+            $existsUsername = $userModel
+                ->reset()
+                ->select('id')
+                ->where('username', $data['username'])
+                ->where('id', '!=', $user['id'])
+                ->value('id');
+
+            if (!empty($existsUsername)) {
+                $res->status(StatusCode::CONFLICT)->json([
+                    'error' => 'A user already exists with that username'
+                ]);
+            }
+        }
+
+        /*
+         * Comprueba que el email del usuario
+         * sea único solo si se encuentra presente.
+         */
+        if (v::key('email', v::notOptional(), true)->validate($data)) {
+            $data['email'] = mb_strtolower($data['email']);
+
+            $existsEmail = $userModel
+                ->reset()
+                ->select('id')
+                ->where('email', $data['email'])
+                ->where('id', '!=', $user['id'])
+                ->value('id');
+
+            if (!empty($existsEmail)) {
+                $res->status(StatusCode::CONFLICT)->json([
+                    'error' => 'A user already exists with that email'
+                ]);
+            }
+        }
+
+        // Establece el rol y el estatus del usuario si se encuentran presentes.
+        foreach (['is_admin', 'active'] as $key) {
+            if (v::key($key, v::notOptional(), true)->validate($data)) {
+                $data[$key] = (int) v::key($key, v::trueVal())->validate($data);
+            }
+        }
+
+        // Modifica total o parcialmente la información del usuario.
+        if (!empty($data)) {
+            $data['updated_at'] = DB::datetime();
+
+            $userModel
+                ->reset()
+                ->where('id', $user['id'])
+                ->update($data);
+        }
+
+        // Consulta la información modificada del usuario.
+        $updatedUser = $userModel
+            ->reset()
+            ->select('id, username, email, active, is_admin, created_at, updated_at')
+            ->find($user['id']);
+
+        $res->json([
+            'data' => $updatedUser
+        ]);
+    }
 
     /*
      * Elimina un usuario.
