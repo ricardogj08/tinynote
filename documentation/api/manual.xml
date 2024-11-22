@@ -1,0 +1,20 @@
+<doc>
+  <title>tinynote API</title>
+  <url>https://ricardogj08.github.io/tinynote/</url>
+  <version>1.0</version>
+  <theme>theme.css</theme>
+  <lang>en</lang>
+  <rslt>Search Results</rslt>
+  <home>Home</home>
+  <link>Permalink to this heading</link>
+  <info>Important</info>
+  <note>Note</note>
+  <also>See Also</also>
+  <todo>To Do</todo>
+  <warn>Warning</warn>
+  <args>Arguments</args>
+  <rval>Return Value</rval>
+  <prev>Previous</prev>
+  <next>Next</next>
+  <copy>2024 Ricardo García Jiménez (ricardogj08@riseup.net)</copy>
+</doc>

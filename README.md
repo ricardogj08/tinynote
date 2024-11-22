@@ -39,6 +39,10 @@ Generate entity-relationship diagram:
 
     composer run gendb-diagram
 
+Generate API documentation:
+
+    composer run gendoc
+
 ## References
 
 * [MigratoryData - Generate JWT tokens using PHP.](https://migratorydata.com/docs/extensions/auth-jwt/generate-jwt-with-php)

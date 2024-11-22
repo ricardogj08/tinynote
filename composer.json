@@ -14,12 +14,14 @@
     "scripts": {
         "migrations": "@php ./bin/simple-db-migrator.php",
         "prettier": "@php ./pretty-php.phar",
-        "gendb-diagram": "erd -i ./documentation/database/diagram.er -o ./documentation/database/diagram.png"
+        "gendb-diagram": "erd -i ./documentation/database/diagram.er -o ./documentation/database/diagram.png",
+        "gendoc": "gendoc ./docs/index.html ./documentation/api/manual.xml"
     },
     "scripts-descriptions": {
         "migrations": "Run database migrations.",
         "prettier": "Format PHP code.",
-        "gendb-diagram": "Generate entity-relationship diagram."
+        "gendb-diagram": "Generate entity-relationship diagram.",
+        "gendoc": "Generate API documentation."
     },
     "authors": [
         {
