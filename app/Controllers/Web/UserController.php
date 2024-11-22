@@ -97,12 +97,28 @@ class UserController
      */
     public function index($req, $res)
     {
+        $client = Api::client();
+
+        // Realiza la petición de consulta de los usuarios registrados.
+        $response = $client->get('v1/users');
+
+        $body = json_decode($response->body ?? '', true);
+
+        $users = $body['data'] ?? [];
+
+        $error = $body['error'] ?? $req->session['error'] ?? null;
+
+        $success = $req->session['success'] ?? null;
+
         foreach (['success', 'error'] as $key) {
             unset($req->session[$key]);
         }
 
         $res->render('users/index', [
             'app' => $req->app,
+            'users' => $users,
+            'success' => $success,
+            'error' => $error
         ]);
     }
 
