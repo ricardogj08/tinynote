@@ -171,6 +171,23 @@ class TagController
             ]);
         }
 
+        $userAuth = $req->app->local('userAuth');
+
+        $tagModel = TagModel::factory();
+
+        // Consulta la información del tag que será modificado.
+        $tag = $tagModel
+            ->select('id')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que el tag se encuentra registrado.
+        if (empty($tag)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'Tag cannot be found'
+            ]);
+        }
+
         $data = [];
 
         // Selecciona solo los campos necesarios.
@@ -189,23 +206,6 @@ class TagController
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
                 'validations' => $e->getMessages()
-            ]);
-        }
-
-        $userAuth = $req->app->local('userAuth');
-
-        $tagModel = TagModel::factory();
-
-        // Consulta la información del tag que será modificado.
-        $tag = $tagModel
-            ->select('id')
-            ->where('user_id', $userAuth['id'])
-            ->find($params['uuid']);
-
-        // Comprueba que el tag se encuentra registrado.
-        if (empty($tag)) {
-            $res->status(StatusCode::NOT_FOUND)->json([
-                'error' => 'Tag cannot be found'
             ]);
         }
 

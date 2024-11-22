@@ -253,6 +253,23 @@ class NoteController
             ]);
         }
 
+        $userAuth = $req->app->local('userAuth');
+
+        $noteModel = NoteModel::factory();
+
+        // Consulta la información de la nota que será modificada.
+        $note = $noteModel
+            ->select('id')
+            ->where('user_id', $userAuth['id'])
+            ->find($params['uuid']);
+
+        // Comprueba que la nota se encuentra registrada.
+        if (empty($note)) {
+            $res->status(StatusCode::NOT_FOUND)->json([
+                'error' => 'Note cannot be found'
+            ]);
+        }
+
         $data = [];
 
         // Selecciona solo los campos necesarios.
@@ -274,23 +291,6 @@ class NoteController
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
                 'validations' => $e->getMessages()
-            ]);
-        }
-
-        $userAuth = $req->app->local('userAuth');
-
-        $noteModel = NoteModel::factory();
-
-        // Consulta la información de la nota que será modificada.
-        $note = $noteModel
-            ->select('id')
-            ->where('user_id', $userAuth['id'])
-            ->find($params['uuid']);
-
-        // Comprueba que la nota se encuentra registrada.
-        if (empty($note)) {
-            $res->status(StatusCode::NOT_FOUND)->json([
-                'error' => 'Note cannot be found'
             ]);
         }
 
