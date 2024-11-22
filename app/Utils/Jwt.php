@@ -24,8 +24,8 @@ class Jwt
     {
         $config = Config::getFromFilename(self::configFilename);
 
-        $this->privateKey = file_get_contents($config['privateKeyPath']);
-        $this->publicKey = file_get_contents($config['publicKeyPath']);
+        $this->privateKey = file_get_contents($config['private_key_path']);
+        $this->publicKey = file_get_contents($config['public_key_path']);
 
         if ($this->privateKey === false) {
             throw new Exception(sprinft('JWT private key file "%s" cannot be found.', $config['privateKeyPath']));

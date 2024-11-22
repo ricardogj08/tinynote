@@ -8,5 +8,5 @@ use App\Utils\Env;
  */
 
 return [
-    'pathKeys' => Env::get('CRYPT_PATH_KEYS', '../writable/keys/')
+    'path_keys' => Env::get('CRYPT_PATH_KEYS', '../writable/keys/')
 ];

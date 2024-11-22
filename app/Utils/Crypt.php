@@ -28,7 +28,7 @@ class Crypt
     {
         $config = Config::getFromFilename(self::configFilename);
 
-        $pathKeys = $config['pathKeys'];
+        $pathKeys = $config['path_keys'];
 
         if (!is_dir($pathKeys)) {
             throw new Exception(sprintf('Crypt path keys "%s" cannot be found.', $pathKeys));
