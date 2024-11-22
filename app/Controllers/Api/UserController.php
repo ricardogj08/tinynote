@@ -230,14 +230,14 @@ class UserController
 
                 // Encripta la nueva contraseña del usuario.
                 $data['password'] = Password::encrypt($data['password']);
-
-                unset($data['pass_confirm']);
             }
         } catch (NestedValidationException $e) {
             $res->status(StatusCode::BAD_REQUEST)->json([
                 'validations' => $e->getMessages()
             ]);
         }
+
+        unset($data['pass_confirm']);
 
         /*
          * Comprueba que el nombre del usuario
