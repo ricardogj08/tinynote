@@ -140,5 +140,27 @@ class UserController
     /*
      * Elimina un usuario.
      */
-    public function delete($req, $res) {}
+    public function delete($req, $res)
+    {
+        $uuid = $req->params['uuid'] ?? '';
+
+        $client = Api::client();
+
+        // Realiza la petición de eliminación del usuario.
+        $response = $client->delete('v1/users/' . $uuid);
+
+        $body = json_decode($response->body ?? '', true);
+
+        // Comprueba el cuerpo de la petición.
+        if (empty($response->success) || empty($body['data'])) {
+            // Envía el mensaje de error de la petición.
+            $req->session['error'] = $body['error'] ?? 'The user could not be deleted';
+
+            $res->redirect(Url::build('users'), StatusCode::FOUND);
+        }
+
+        $req->session['success'] = 'The user was deleted correctly';
+
+        $res->redirect(Url::build('users'), StatusCode::FOUND);
+    }
 }
