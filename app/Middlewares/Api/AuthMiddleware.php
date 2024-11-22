@@ -43,6 +43,7 @@ class AuthMiddleware
         // Consulta la información del usuario autenticado.
         $userAuth = UserModel::factory()
             ->select('id, active, is_admin')
+            ->where('active', true)
             ->find($payload['sub'] ?? null);
 
         // Comprueba si el usuario está registrado.

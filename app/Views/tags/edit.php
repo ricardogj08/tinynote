@@ -31,7 +31,7 @@
       <small class="text-error"><?= Html::escape($validations['name']) ?></small>
     </div>
 
-    <input type="submit" name="submit" value="Submit" class="btn btn-default">
+    <input type="submit" name="submit" value="Save" class="btn btn-default">
   </fieldset>
 </form>
 

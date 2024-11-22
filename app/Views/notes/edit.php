@@ -70,7 +70,7 @@
       <small>*Hold down the <kbd>Ctrl</kbd> (Windows) or <kbd>Command</kbd> (Mac) button to select/deselect multiple options.</small>
     </div>
 
-    <input type="submit" name="submit" value="Submit" class="btn btn-default">
+    <input type="submit" name="submit" value="Save" class="btn btn-default">
   </fieldset>
 </form>
 
