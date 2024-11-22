@@ -62,7 +62,7 @@ $app->get('profile/edit', '\App\Controllers\Web\ProfileController@edit');
 $app->post('profile/update', '\App\Controllers\Web\ProfileController@update');
 
 $app->get('users/new', '\App\Controllers\Web\UserController@new');
-$app->get('users/create', '\App\Controllers\Web\UserController@create');
+$app->post('users/create', '\App\Controllers\Web\UserController@create');
 $app->get('users', '\App\Controllers\Web\UserController@index');
 $app->get('users/edit/:uuid', '\App\Controllers\Web\UserController@edit');
 $app->post('users/update/:uuid', '\App\Controllers\Web\UserController@update');
