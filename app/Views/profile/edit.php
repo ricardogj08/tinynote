@@ -24,6 +24,9 @@
         id="email"
         name="email"
         placeholder="Enter your email"
+        minlength="4"
+        maxlength="255"
+        required
         value="<?= Html::escape($userAuth['email']) ?>">
       <small class="text-error"><?= Html::escape($validations['email']) ?></small>
     </div>
@@ -37,6 +40,9 @@
         id="username"
         name="username"
         placeholder="Enter your username"
+        minlength="4"
+        maxlength="32"
+        required
         value="<?= Html::escape($userAuth['username']) ?>">
       <small class="text-error"><?= Html::escape($validations['username']) ?></small>
     </div>
@@ -50,6 +56,8 @@
         id="password"
         name="password"
         placeholder="Enter your password"
+        minlength="8"
+        maxlength="64"
         value="">
       <small class="text-error"><?= Html::escape($validations['password']) ?></small>
     </div>
@@ -63,6 +71,8 @@
         id="pass_confirm"
         name="pass_confirm"
         placeholder="Confirm your password"
+        minlength="8"
+        maxlength="64"
         value="">
       <small class="text-error"><?= Html::escape($validations['pass_confirm']) ?></small>
     </div>
