@@ -9,11 +9,6 @@ require __DIR__ . '/vendor/autoload.php';
 $_GET['_path_'] = ltrim($_SERVER['PATH_INFO'] ?? '', '/');
 
 /*
- * Establece todas las funciones de fecha de PHP a UTC.
- */
-date_default_timezone_set('UTC');
-
-/*
  * Carga variables de entorno desde el archivo .env
  */
 \App\Utils\Env::loadDotEnv();
@@ -34,6 +29,18 @@ foreach (\App\Utils\Config::getFromFilename('database') as $database => $options
         \App\Utils\Env::put(strtoupper($database . '_' . $option), $value);
     }
 }
+
+/*
+ * Configura los logs de la aplicación.
+ */
+foreach (\App\Utils\Config::getFromFilename('logs') as $key => $value) {
+    ini_set($key, $value);
+}
+
+/*
+ * Establece todas las funciones de fecha de PHP a UTC.
+ */
+date_default_timezone_set('UTC');
 
 /*
  * Configura e inicia una nueva sesión.

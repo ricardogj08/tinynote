@@ -20,8 +20,8 @@ class Api
 
         // Establece opciones de configuración del cliente HTTP.
         $session->options['proxy'] = Env::get('APP_HTTP_PROXY');
-        $session->options['timeout'] = 60;
-        $session->options['connect_timeout'] = 60;
+        $session->options['timeout'] = 60 * 6;
+        $session->options['connect_timeout'] = 60 * 6;
 
         return $session;
     }

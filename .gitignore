@@ -15,3 +15,5 @@ writable/keys/*
 
 writable/sessions/*
 !writable/sessions/.gitkeep
+
+writable/**/*.log
