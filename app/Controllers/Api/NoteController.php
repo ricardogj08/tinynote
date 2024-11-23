@@ -22,7 +22,7 @@ class NoteController
             'id' => v::stringType()->notEmpty()->Uuid(),
             'title' => v::stringType()->notEmpty()->length(1, 255, true),
             'body' => v::stringType()->notEmpty()->length(1, pow(2, 16) - 1, true),
-            'tags' => v::arrayVal()->each(v::stringType()->notEmpty()->Uuid())
+            'tags' => v::arrayType()->each(v::stringType()->notEmpty()->Uuid())
         ];
     }
 

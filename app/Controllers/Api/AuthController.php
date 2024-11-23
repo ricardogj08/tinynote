@@ -45,7 +45,7 @@ class AuthController
         // Comprueba el modo de autenticación.
         if (v::key('nickname', $rules['email'], true)->validate($data)) {
             $identifyBy = 'email';
-            $data['nickname'] = mb_strtolower($data['nickname']);
+            $data['nickname'] = strtolower($data['nickname']);
         }
 
         // Comprueba los campos del cuerpo de la petición.

@@ -64,7 +64,7 @@ class UserController
         }
 
         // Convierta a minúsculas el email del usuario.
-        $data['email'] = mb_strtolower($data['email']);
+        $data['email'] = strtolower($data['email']);
 
         $userModel = UserModel::factory();
 
@@ -263,7 +263,7 @@ class UserController
          * sea único solo si se encuentra presente.
          */
         if (v::key('email', v::notOptional(), true)->validate($data)) {
-            $data['email'] = mb_strtolower($data['email']);
+            $data['email'] = strtolower($data['email']);
 
             $existsEmail = $userModel
                 ->reset()
