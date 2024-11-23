@@ -5,6 +5,7 @@ namespace App\Controllers\Web;
 use App\Utils\Api;
 use App\Utils\Url;
 use PH7\JustHttp\StatusCode;
+use Respect\Validation\Validator as v;
 
 class NoteController
 {
@@ -67,6 +68,14 @@ class NoteController
         // Obtiene los valores de los campos del formulario.
         foreach ($this->getFormFields() as $field) {
             $data[$field] = $req->body[$field] ?? null;
+        }
+
+        /*
+         * Asegura no vincular ningún tag a la nota
+         * si no se encuentra presente.
+         */
+        if (!v::key('tags', v::notEmpty(), true)->validate($data)) {
+            $data['tags'] = '[]';
         }
 
         $client = Api::client();
@@ -240,6 +249,14 @@ class NoteController
         // Obtiene los valores de los campos del formulario.
         foreach ($this->getFormFields() as $field) {
             $data[$field] = $req->body[$field] ?? null;
+        }
+
+        /*
+         * Asegura eliminar todos los tags de la nota
+         * si no se encuentra presente.
+         */
+        if (!v::key('tags', v::notEmpty(), true)->validate($data)) {
+            $data['tags'] = '[]';
         }
 
         $client = Api::client();

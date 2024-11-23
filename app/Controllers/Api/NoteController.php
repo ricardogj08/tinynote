@@ -45,6 +45,11 @@ class NoteController
             }
         }
 
+        // Asegura este tipo de valor para los tags de la nota si se encuentra presente.
+        if (v::key('tags', v::notOptional()->equals('[]'), true)->validate($data)) {
+            $data['tags'] = [];
+        }
+
         // Comprueba los campos del cuerpo de la petición.
         try {
             v::key('title', $rules['title'], true)
@@ -62,7 +67,7 @@ class NoteController
         $tags = [];
 
         // Comprueba que los tags se encuentren registrados.
-        if (v::key('tags', v::notOptional(), true)->validate($data)) {
+        if (v::key('tags', v::notOptional()->notEmpty(), true)->validate($data)) {
             $query = TagModel::factory()->select('id');
 
             $params = [];
@@ -280,6 +285,11 @@ class NoteController
             if (v::key($field, v::notOptional(), true)->validate($req->body)) {
                 $data[$field] = $req->body[$field];
             }
+        }
+
+        // Permite eliminar todos los tags de la nota si se encuentra presente.
+        if (v::key('tags', v::notOptional()->equals('[]'), true)->validate($data)) {
+            $data['tags'] = [];
         }
 
         // Comprueba los campos del cuerpo de la petición.
