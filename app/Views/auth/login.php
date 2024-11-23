@@ -41,6 +41,8 @@
       <small class="text-error"><?= Html::escape($validations['password']) ?></small>
     </div>
 
+    <input type="hidden" name="csrf_token" value="<?= $app->local('csrf_token') ?? '' ?>">
+
     <div class="form-group">
       <input type="submit" name="submit" value="Login" class="btn btn-primary btn-block">
     </div>

@@ -69,6 +69,8 @@
       <small>*Hold down the <kbd>Ctrl</kbd> (Windows) or <kbd>Command</kbd> (Mac) button to select/deselect multiple options.</small>
     </div>
 
+    <input type="hidden" name="csrf_token" value="<?= $app->local('csrf_token') ?? '' ?>">
+
     <input type="submit" name="submit" value="Submit" class="btn btn-default">
   </fieldset>
 </form>

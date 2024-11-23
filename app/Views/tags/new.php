@@ -30,6 +30,8 @@
       <small class="text-error"><?= Html::escape($validations['name']) ?></small>
     </div>
 
+    <input type="hidden" name="csrf_token" value="<?= $app->local('csrf_token') ?? '' ?>">
+
     <input type="submit" name="submit" value="Submit" class="btn btn-default">
   </fieldset>
 </form>

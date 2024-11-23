@@ -14,7 +14,7 @@ class RoleMiddleware
         $isAdmin = $req->app->local('userAuth')['is_admin'] ?? null;
 
         if ($isAdmin != true) {
-            $res->sendStatus(StatusCode::NOT_FOUND);
+            $res->sendStatus(StatusCode::FORBIDDEN);
         }
     }
 }
