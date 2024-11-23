@@ -14,7 +14,7 @@ class Html
      */
     public static function escape(?string $text = '')
     {
-        return htmlentities($text, self::flags, self::encoding, true);
+        return htmlentities($text ?? '', self::flags, self::encoding, true);
     }
 
     /*
@@ -22,7 +22,7 @@ class Html
      */
     public static function simpleEscape(?string $text = '')
     {
-        return htmlspecialchars($text, self::flags, self::encoding, true);
+        return htmlspecialchars($text ?? '', self::flags, self::encoding, true);
     }
 
     /*
@@ -35,6 +35,6 @@ class Html
             ->setMarkupEscaped(true)
             ->setBreaksEnabled(false)
             ->setUrlsLinked(false)
-            ->text($text);
+            ->text($text ?? '');
     }
 }

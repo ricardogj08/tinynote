@@ -11,7 +11,7 @@ class Date
      */
     public static function humanize(?string $datetime = 'now')
     {
-        $date = new DateTimeImmutable($datetime);
+        $date = new DateTimeImmutable($datetime ?? 'now');
 
         return $date->format('D, d M Y h:i:s A');
     }
