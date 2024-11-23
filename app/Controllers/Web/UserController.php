@@ -196,7 +196,7 @@ class UserController
         // Establece el rol y el estatus del usuario si no encuentran presentes.
         foreach (['active', 'is_admin'] as $key) {
             if (v::key($key, v::optional(v::falseVal()), false)->validate($data)) {
-                $data[$key] = false;
+                $data[$key] = (string) (int) false;
             }
         }
 

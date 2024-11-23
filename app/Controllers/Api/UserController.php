@@ -92,7 +92,7 @@ class UserController
 
         // Establece el rol y el estatus del nuevo usuario.
         foreach (['is_admin', 'active'] as $key) {
-            $data[$key] = (int) v::key($key, v::notOptional()->trueVal(), true)->validate($data);
+            $data[$key] = (string) (int) v::key($key, v::notOptional()->trueVal(), true)->validate($data);
         }
 
         $data['created_at'] = $data['updated_at'] = DB::datetime();
@@ -282,7 +282,7 @@ class UserController
         // Establece el rol y el estatus del usuario si se encuentran presentes.
         foreach (['is_admin', 'active'] as $key) {
             if (v::key($key, v::notOptional(), true)->validate($data)) {
-                $data[$key] = (int) v::key($key, v::trueVal())->validate($data);
+                $data[$key] = (string) (int) v::key($key, v::trueVal())->validate($data);
             }
         }
 
