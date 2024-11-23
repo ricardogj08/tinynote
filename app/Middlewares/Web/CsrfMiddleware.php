@@ -3,7 +3,7 @@
 namespace App\Middlewares\Web;
 
 use App\Utils\Csrf;
-use  PH7\JustHttp\StatusCode;
+use PH7\JustHttp\StatusCode;
 
 class CsrfMiddleware
 {

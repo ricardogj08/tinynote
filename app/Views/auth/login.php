@@ -5,7 +5,7 @@
 
 <?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 
-<form method="post" action="<?= Url::build('login') ?>">
+<form method="post" action="<?= Url::build('login/action') ?>">
   <fieldset>
     <legend>Sign In</legend>
 

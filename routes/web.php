@@ -9,7 +9,14 @@ $app->use('', [
     '\App\Middlewares\Web\AuthMiddleware@redirect'
 ]);
 
-$app->use('login', '\App\Middlewares\Web\AuthMiddleware@redirect');
+$app->use('login', [
+    '\App\Middlewares\Web\AuthMiddleware@redirect',
+    '\App\Middlewares\Web\CsrfMiddleware@generate'
+]);
+$app->use('login/action', [
+    '\App\Middlewares\Web\AuthMiddleware@redirect',
+    '\App\Middlewares\Web\CsrfMiddleware@verify'
+]);
 
 $app->use('tags/new', [
     '\App\Middlewares\Web\AuthMiddleware@verify',
@@ -95,7 +102,7 @@ $app->use('users/delete/:uuid', [
 $app->get('', '\App\Controllers\Web\PageController@index');
 
 $app->get('login', '\App\Controllers\Web\AuthController@loginView');
-$app->post('login', '\App\Controllers\Web\AuthController@loginAction');
+$app->post('login/action', '\App\Controllers\Web\AuthController@loginAction');
 $app->get('logout', '\App\Controllers\Web\AuthController@logout');
 
 $app->get('tags/new', '\App\Controllers\Web\TagController@new');
