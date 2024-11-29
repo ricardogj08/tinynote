@@ -13,7 +13,7 @@ class CsrfMiddleware
      */
     public function generate($req, $res)
     {
-        // Genera el token contra CSRF.
+        // Genera el token contra ataques CSRF.
         $token = Csrf::generateToken($req->path);
 
         $req->session['csrf_token'] = $token;

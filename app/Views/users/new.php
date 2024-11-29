@@ -104,7 +104,7 @@
       <small class="text-error"><?= Html::escape($validations['pass_confirm']) ?></small>
     </div>
 
-    <input type="hidden" name="csrf_token" value="<?= $app->local('csrf_token') ?? '' ?>">
+    <input type="hidden" name="csrf_token" value="<?= Html::escape($app->local('csrf_token') ?? null) ?>">
 
     <input type="submit" name="submit" value="Submit" class="btn btn-default">
   </fieldset>

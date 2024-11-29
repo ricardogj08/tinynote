@@ -70,7 +70,7 @@
       <small>*Hold down the <kbd>Ctrl</kbd> (Windows) or <kbd>Command</kbd> (Mac) button to select/deselect multiple options.</small>
     </div>
 
-    <input type="hidden" name="csrf_token" value="<?= $app->local('csrf_token') ?? '' ?>">
+    <input type="hidden" name="csrf_token" value="<?= Html::escape($app->local('csrf_token') ?? null) ?>">
 
     <input type="submit" name="submit" value="Save" class="btn btn-default">
   </fieldset>
