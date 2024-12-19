@@ -7,9 +7,15 @@
 <?php $app->render('layouts/alerts/error', ['error' => $error]) ?>
 <?php $app->render('layouts/alerts/success', ['success' => $success]) ?>
 
-<a href="<?= Url::build('notes') ?>">
-  < Back
-</a>
+<div>
+  <a href="<?= Url::build('notes') ?>">
+    < Back
+  </a>
+
+  <a href="<?= Url::build(['notes', $note['id']]) ?>">
+    View
+  </a>
+</div>
 
 <form method="post" enctype="multipart/form-data" action="<?= Url::build(['notes', 'update', $note['id']]) ?>">
   <fieldset>

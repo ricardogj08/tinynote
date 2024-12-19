@@ -2,9 +2,15 @@
 <?php $app->render('layouts/header', ['title' => $note['title']]) ?>
 <?php $app->render('layouts/navbar', ['app' => $app]) ?>
 
-<a href="<?= Url::build('notes') ?>">
-  < Back
-</a>
+<div>
+  <a href="<?= Url::build('notes') ?>">
+    < Back
+  </a>
+
+  <a href="<?= Url::build(['notes', 'edit', $note['id']]) ?>">
+    Edit
+  </a>
+</div>
 
 <h1><?= Html::escape($note['title']) ?></h1>
 

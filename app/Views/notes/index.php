@@ -28,7 +28,7 @@
         <?php endforeach ?>
       </p>
       <footer>
-        <a href="<?= Url::build(['notes', $note['id']]) ?>" class="btn btn-default btn-ghost">
+        <a target="_blank" href="<?= Url::build(['notes', $note['id']]) ?>" class="btn btn-default btn-ghost">
           View
         </a>
         <a href="<?= Url::build(['notes', 'edit', $note['id']]) ?>" class="btn btn-primary btn-ghost">
