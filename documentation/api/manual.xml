@@ -40,3 +40,8 @@
   <include src/tags/delete.xml>
 
 <cap>Users</cap>
+  <include src/users/index.xml>
+  <include src/users/create.xml>
+  <include src/users/show.xml>
+  <include src/users/update.xml>
+  <include src/users/delete.xml>

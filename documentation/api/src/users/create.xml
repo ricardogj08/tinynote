@@ -1,0 +1,96 @@
+<h1 create_user>Create a user</h1>
+
+<p>Registers user information.</p>
+
+<pre>[POST] <hl>/api/v1/users</hl></pre>
+
+<h2 create_user_request_body>Request body</h2>
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Required</th>
+    <th>Range</th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>username</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [4, 32]</tt></td>
+    <td><tt></tt></td>
+    <td>User's username.</td>
+  </tr>
+  <tr>
+    <td><tt>email</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [4, 255]</tt></td>
+    <td><tt></tt></td>
+    <td>User's email.</td>
+  </tr>
+  <tr>
+    <td><tt>active</tt></td>
+    <td><tt>boolean</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>contains: [on, off, yes, no, 1, 0]</tt></td>
+    <td><tt>false</tt></td>
+    <td>If user is active.</td>
+  </tr>
+  <tr>
+    <td><tt>is_admin</tt></td>
+    <td><tt>boolean</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>contains: [on, off, yes, no, 1, 0]</tt></td>
+    <td><tt>false</tt></td>
+    <td>If user is administrator.</td>
+  </tr>
+  <tr>
+    <td><tt>password</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [8, 64]</tt></td>
+    <td></td>
+    <td>User's password.</td>
+  </tr>
+  <tr>
+    <td><tt>pass_confirm</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>equals: password</tt></td>
+    <td></td>
+    <td>User's password confirmation.</td>
+  </tr>
+</table>
+
+<h2 create_user_example>Example</h2>
+
+<pre>
+curl -X POST \
+  --oauth2-bearer AUTH_TOKEN \
+  --data-urlencode 'username=ricardogj08' \
+  --data-urlencode 'email=ricardogj08@riseup.net' \
+  --data-urlencode 'active=false' \
+  --data-urlencode 'is_admin=false' \
+  --data-urlencode 'password=12345678' \
+  --data-urlencode 'pass_confirm=12345678' \
+  http://localhost:8080/api/v1/users
+</pre>
+
+<h2 create_user_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "610b992b-4667-45ed-89d7-4c388edce35a",
+    "username": "ricardogj08",
+    "email": "ricardogj08@riseup.net",
+    "active": 0,
+    "is_admin": 0,
+    "created_at": "2025-03-12 20:33:20",
+    "updated_at": "2025-03-12 20:33:20"
+  }
+}
+</pre>

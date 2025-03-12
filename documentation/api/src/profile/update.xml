@@ -2,7 +2,7 @@
 
 <p>Modify user profile information.</p>
 
-<pre>[PUT] <hl>http://localhost:8080/api/v1/profile</hl></pre>
+<pre>[PUT] <hl>/api/v1/profile</hl></pre>
 
 <h2 update_profile_request_body>Request body</h2>
 
@@ -19,21 +19,21 @@
     <td><tt>string</tt></td>
     <td><tt>false</tt></td>
     <td><tt>length: [4, 255]</tt></td>
-    <td>User's email.</td>
+    <td>New user's email.</td>
   </tr>
   <tr>
     <td><tt>username</tt></td>
     <td><tt>string</tt></td>
     <td><tt>false</tt></td>
     <td><tt>length: [4, 32]</tt></td>
-    <td>User's username.</td>
+    <td>New user's username.</td>
   </tr>
   <tr>
     <td><tt>password</tt></td>
     <td><tt>string</tt></td>
     <td><tt>false</tt></td>
     <td><tt>length: [8, 64]</tt></td>
-    <td>User's password.</td>
+    <td>New user's password.</td>
   </tr>
   <tr>
     <td><tt>pass_confirm</tt></td>

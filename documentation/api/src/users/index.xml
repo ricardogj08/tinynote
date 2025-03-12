@@ -1,0 +1,7 @@
+<h1 users>All users</h1>
+
+<pre>[GET] <hl>/api/v1/users</hl></pre>
+
+<h2 users_example>Example</h2>
+
+<h2 users_response>Response</h2>

@@ -152,7 +152,10 @@ class UserController
 
         // Consulta la información del usuario.
         $user = UserModel::factory()
-            ->select('id, username, email, active, is_admin, created_at, updated_at')
+            ->select('users.id, users.username, users.email, users.active, users.is_admin, COUNT(notes.id) as number_notes, COUNT(tags.id) as number_tags, users.created_at, users.updated_at')
+            ->notes()
+            ->tags()
+            ->groupBy('users.id')
             ->find($params['uuid']);
 
         // Comprueba que el usuario se encuentra registrado.

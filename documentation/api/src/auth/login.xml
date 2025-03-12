@@ -2,7 +2,7 @@
 
 <p>Generates a JWT authentication token to the API.</p>
 
-<pre>[POST] <hl>/api/v1/login</hl></pre>
+<pre>[POST] <hl>/api/v1/auth/login</hl></pre>
 
 <h2 login_request_body>Request body</h2>
 
