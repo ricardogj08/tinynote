@@ -13,6 +13,23 @@
 
 <hr>
 
+<style>
+  @media screen and (max-width:30rem) {
+    .terminal-timeline::before,
+    .terminal-timeline .terminal-card::before {
+      display: none;
+    }
+
+    .terminal-timeline {
+      padding-left: 0;
+    }
+
+    .terminal-card .btn:not(:last-child) {
+      margin-bottom: var(--global-space);
+    }
+  }
+</style>
+
 <section class="terminal-timeline">
   <?php foreach ($notes as $note): ?>
     <article class="terminal-card">
