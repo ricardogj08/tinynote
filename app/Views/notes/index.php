@@ -11,35 +11,38 @@
   Create note
 </a>
 
-<?php foreach ($notes as $note): ?>
-  <hr>
-  <article class="terminal-card">
-    <header>
-      <?= Html::escape($note['title']) ?>
-    </header>
-    <div>
-      <p>Created: <?= Date::humanize($note['created_at']) ?></p>
-      <p>Updated: <?= Date::humanize($note['updated_at']) ?></p>
-      <p>
-        <?php foreach ($note['tags'] as $tag): ?>
-          <a href="">
-            <?= Html::escape($tag['name']) ?>
+<hr>
+
+<section class="terminal-timeline">
+  <?php foreach ($notes as $note): ?>
+    <article class="terminal-card">
+      <header>
+        <?= Html::escape($note['title']) ?>
+      </header>
+      <div>
+        <p>Created: <?= Date::humanize($note['created_at']) ?></p>
+        <p>Updated: <?= Date::humanize($note['updated_at']) ?></p>
+        <p>
+          <?php foreach ($note['tags'] as $tag): ?>
+            <a href="">
+              #<?= Html::escape($tag['name']) ?>
+            </a>
+          <?php endforeach ?>
+        </p>
+        <footer>
+          <a target="_blank" href="<?= Url::build(['notes', $note['id']]) ?>" class="btn btn-default btn-ghost">
+            View
           </a>
-        <?php endforeach ?>
-      </p>
-      <footer>
-        <a target="_blank" href="<?= Url::build(['notes', $note['id']]) ?>" class="btn btn-default btn-ghost">
-          View
-        </a>
-        <a href="<?= Url::build(['notes', 'edit', $note['id']]) ?>" class="btn btn-primary btn-ghost">
-          Edit
-        </a>
-        <a href="<?= Url::build(['notes', 'delete', $note['id']]) ?>" class="btn btn-error btn-ghost">
-          Delete
-        </a>
-      </footer>
-    </div>
-  </article>
-<?php endforeach ?>
+          <a href="<?= Url::build(['notes', 'edit', $note['id']]) ?>" class="btn btn-primary btn-ghost">
+            Edit
+          </a>
+          <a href="<?= Url::build(['notes', 'delete', $note['id']]) ?>" class="btn btn-error btn-ghost">
+            Delete
+          </a>
+        </footer>
+      </div>
+    </article>
+  <?php endforeach ?>
+</section>
 
 <?php $app->render('layouts/footer') ?>
