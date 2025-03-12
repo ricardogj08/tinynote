@@ -1,0 +1,7 @@
+<h1 tags>All tags</h1>
+
+<pre>[GET] <hl>/api/v1/tags</hl></pre>
+
+<h2 tags_example>Example</h2>
+
+<h2 tags_response>Response</h2>

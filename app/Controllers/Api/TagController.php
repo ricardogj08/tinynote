@@ -102,7 +102,7 @@ class TagController
 
         // Consulta la información de los tags del usuario.
         $tags = $tagModel
-            ->select('tags.id, tags.name, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->select('tags.id, tags.name, tags.user_id, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
             ->notesTags()
             ->where('tags.user_id', $userAuth['id'])
             ->groupBy('tags.id')
@@ -136,8 +136,10 @@ class TagController
 
         // Consulta la información del tag.
         $tag = TagModel::factory()
-            ->select('id, user_id, name, created_at, updated_at')
+            ->select('tags.id, tags.name, tags.user_id, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->notesTags()
             ->where('user_id', $userAuth['id'])
+            ->groupBy('tags.id')
             ->find($params['uuid']);
 
         // Comprueba que el tag se encuentra registrado.
@@ -244,7 +246,7 @@ class TagController
         // Consulta la información del tag modificado.
         $updatedTag = $tagModel
             ->reset()
-            ->select('tags.id, tags.name, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->select('tags.id, tags.name, tags.user_id, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
             ->notesTags()
             ->groupBy('tags.id')
             ->find($tag['id']);
@@ -278,7 +280,7 @@ class TagController
 
         // Consulta la información del tag que será eliminado.
         $deletedTag = $tagModel
-            ->select('tags.id, tags.name, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
+            ->select('tags.id, tags.name, tags.user_id, COUNT(notes_tags.id) AS number_notes, tags.created_at, tags.updated_at')
             ->notesTags()
             ->where('tags.user_id', $userAuth['id'])
             ->groupBy('tags.id')

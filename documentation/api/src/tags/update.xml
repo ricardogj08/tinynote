@@ -1,0 +1,27 @@
+<h1 update_tag>Update tag</h1>
+
+<p>Modify tag information.</p>
+
+<h2 update_tag_example>Example</h2>
+
+<pre>
+curl -X PUT \
+  --oauth2-bearer AUTH_TOKEN \
+  --data-urlencode 'name=php8.4' \
+  http://localhost:8080/api/v1/tags/:id
+</pre>
+
+<h2 update_tag_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "84eacd98-43e9-425b-8d36-382ef01715e6",
+    "name": "php8.4",
+    "user_id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "number_notes": 0,
+    "created_at": "2025-03-12 18:59:12",
+    "updated_at": "2025-03-12 19:24:16"
+  }
+}
+</pre>

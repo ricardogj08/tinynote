@@ -32,5 +32,10 @@
 <cap>Profile</cap>
 
 <cap>Tags</cap>
+  <include src/tags/index.xml>
+  <include src/tags/create.xml>
+  <include src/tags/show.xml>
+  <include src/tags/update.xml>
+  <include src/tags/delete.xml>
 
 <cap>Users</cap>

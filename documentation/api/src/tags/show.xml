@@ -1,0 +1,30 @@
+<h1 show_tag>Show a tag</h1>
+
+<p>Get tag information.</p>
+
+<pre>[GET] <hl>/api/v1/tag/:id</hl></pre>
+
+<h2 show_tag_example>Example</h2>
+
+<pre>
+curl -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  --oauth2-bearer AUTH_TOKEN \
+  http://localhost:8080/api/v1/tag/:id
+</pre>
+
+<h2 show_tag_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "84eacd98-43e9-425b-8d36-382ef01715e6",
+    "user_id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "name": "php",
+    "number_notes": 0,
+    "created_at": "2025-03-12 18:59:12",
+    "updated_at": "2025-03-12 18:59:12"
+  }
+}
+</pre>
