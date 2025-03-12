@@ -1,6 +1,6 @@
 <h1 show_tag>Show a tag</h1>
 
-<p>Get tag information.</p>
+<p>Gets tag information.</p>
 
 <pre>[GET] <hl>/api/v1/tag/:id</hl></pre>
 

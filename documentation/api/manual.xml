@@ -30,6 +30,7 @@
 <cap>Notes</cap>
 
 <cap>Profile</cap>
+  <include src/profile/update.xml>
 
 <cap>Tags</cap>
   <include src/tags/index.xml>

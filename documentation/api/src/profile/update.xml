@@ -1,0 +1,74 @@
+<h1 update_profile>Update profile</h1>
+
+<p>Modify user profile information.</p>
+
+<pre>[PUT] <hl>http://localhost:8080/api/v1/profile</hl></pre>
+
+<h2 update_profile_request_body>Request body</h2>
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Required</th>
+    <th>Range</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>email</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>length: [4, 255]</tt></td>
+    <td>User's email.</td>
+  </tr>
+  <tr>
+    <td><tt>username</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>length: [4, 32]</tt></td>
+    <td>User's username.</td>
+  </tr>
+  <tr>
+    <td><tt>password</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>length: [8, 64]</tt></td>
+    <td>User's password.</td>
+  </tr>
+  <tr>
+    <td><tt>pass_confirm</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>false</tt></td>
+    <td><tt>equals: password</tt></td>
+    <td>User's password confirmation.</td>
+  </tr>
+</table>
+
+<h2 update_profile_example>Example</h2>
+
+<pre>
+curl -X PUT \
+  --oauth2-bearer AUTH_TOKEN \
+  --data-urlencode 'name=ricardog08' \
+  --data-urlencode 'username=ricardogj08' \
+  --data-urlencode 'email=ricardogj08@riseup.net' \
+  --data-urlencode 'password=12345678' \
+  --data-urlencode 'pass_confirm=12345678' \
+  http://localhost:8080/api/v1/profile
+</pre>
+
+<h2 update_profile_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "username": "ricardogj08",
+    "email": "ricardogj08@riseup.net",
+    "active": 1,
+    "is_admin": 0,
+    "created_at": "2024-11-23 21:00:33",
+    "updated_at": "2025-03-12 19:49:30"
+  }
+}
+</pre>

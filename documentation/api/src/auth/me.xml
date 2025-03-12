@@ -1,6 +1,6 @@
 <h1 authenticated_user>Authenticated user</h1>
 
-<p>Show the authenticated user information.</p>
+<p>Shows the authenticated user information.</p>
 
 <pre>[GET] <hl>/api/v1/me</hl></pre>
 

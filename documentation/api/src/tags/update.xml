@@ -2,6 +2,8 @@
 
 <p>Modify tag information.</p>
 
+<pre>[PUT] <hl>http://localhost:8080/api/v1/tag/:id</hl></pre>
+
 <h2 update_tag_example>Example</h2>
 
 <pre>

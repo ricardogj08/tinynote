@@ -1,6 +1,6 @@
 <h1 create_tag>Create a tag</h1>
 
-<p>Register tag information.</p>
+<p>Registers tag information.</p>
 
 <pre>[POST] <hl>/api/v1/tags</hl></pre>
 
