@@ -38,11 +38,6 @@ foreach (\App\Utils\Config::getFromFilename('logs') as $key => $value) {
 }
 
 /*
- * Establece todas las funciones de fecha de PHP a UTC.
- */
-date_default_timezone_set('UTC');
-
-/*
  * Configura e inicia una nueva sesión.
  */
 session_start(['save_path' => __DIR__ . '/writable/sessions']);
@@ -70,8 +65,8 @@ $app->param('wildcard', '.*');
  * Se pasa la variable $app dentro de los archivos
  * para registrar rutas y middlewares.
  */
-require_once __DIR__ . '/routes/api.php';
-require_once __DIR__ . '/routes/web.php';
+require __DIR__ . '/routes/api.php';
+require __DIR__ . '/routes/web.php';
 
 /*
  * Ejecuta la aplicación.

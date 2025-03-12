@@ -15,12 +15,17 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Carga variables de entorno desde el archivo ".env".
 \App\Utils\Env::loadDotEnv();
+
+// Carga opciones de configuración de la aplicación.
+\App\Utils\Config::getFromFilename('app');
 
 $DB = new \App\Utils\DB();
 
 chdir(__DIR__ . '/../public');
 
+// Obtiene las opciones de configuración de la base de datos.
 $dbConf = [
     'dsn' => $DB->getConnection()->getDsn(),
     'user' => $DB->getConfig()->getUsername(),

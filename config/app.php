@@ -6,6 +6,9 @@ use App\Utils\Env;
  * Opciones de configuración de la aplicación.
  */
 
+// Establece todas las funciones de fecha de PHP a UTC.
+date_default_timezone_set('UTC');
+
 return [
     'environment' => Env::get('APP_ENVIRONMENT', 'production'),
     'name' => Env::get('APP_NAME', 'tinynote'),

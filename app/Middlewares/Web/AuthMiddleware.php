@@ -21,13 +21,11 @@ class AuthMiddleware
 
         Api::setAuth($token);
 
-        $client = Api::client();
-
         /*
          * Realiza la petición de consulta de
          * la información del usuario autenticado.
          */
-        $response = $client->get('v1/auth/me');
+        $response = Api::client()->get('v1/auth/me');
 
         $body = json_decode($response->body ?? '', true);
 

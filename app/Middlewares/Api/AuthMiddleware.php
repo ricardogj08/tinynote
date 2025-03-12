@@ -14,7 +14,7 @@ class AuthMiddleware
      */
     public function verify($req, $res)
     {
-        $header = $req->header('Authorization');
+        $header = $req->header('Authorization') ?? null;
 
         if (empty($header)) {
             $res->status(StatusCode::UNAUTHORIZED)->json([
