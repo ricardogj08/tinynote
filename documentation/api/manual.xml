@@ -16,5 +16,21 @@
   <rval>Return Value</rval>
   <prev>Previous</prev>
   <next>Next</next>
-  <copy>2024 Ricardo García Jiménez (ricardogj08@riseup.net)</copy>
+  <copy>2024-2025 Ricardo García Jiménez (ricardogj08@riseup.net)</copy>
 </doc>
+
+<hello>
+  <include src/welcome.xml>
+</hello>
+
+<cap>Authentication</cap>
+  <include src/auth/login.xml>
+  <include src/auth/me.xml>
+
+<cap>Notes</cap>
+
+<cap>Profile</cap>
+
+<cap>Tags</cap>
+
+<cap>Users</cap>

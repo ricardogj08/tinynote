@@ -1,0 +1,55 @@
+<h1 login>Login</h1>
+
+<p>Generates a JWT authentication token to the API.</p>
+
+<pre>[POST] <hl>/api/v1/login</hl></pre>
+
+<h2 login_request_body>Request body</h2>
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Required</th>
+    <th>Range</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>nickname</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [4, 255]</tt></td>
+    <td>Username or email of the access user.</td>
+  </tr>
+  <tr>
+    <td><tt>password</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [8, 64]</tt></td>
+    <td>Access user password.</td>
+  </tr>
+</table>
+
+<h2 login_example>Example</h2>
+
+<pre>
+curl -X POST \
+  --data-urlencode 'nickname=ricardogj08' \
+  --data-urlencode 'password=12345678' \
+  http://localhost:8080/api/v1/auth/login
+
+curl -X POST \
+  --data-urlencode 'nickname=ricardogj08@riseup.net' \
+  --data-urlencode 'password=12345678' \
+  http://localhost:8080/api/v1/auth/login
+</pre>
+
+<h2 login_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ0aW55bm90ZSIsInN1YiI6ImQ0Njc0YjkwLTVjZWItNDM0OS1iNGMzLWNlN2NkY2Q0ZmZjOCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9pbmRleC5waHAvIiwiZXhwIjoxNzQxODI0MDAwLCJpYXQiOjE3NDE3NjczODJ9.fTB5G4Nr07-ngUuFjw2VSxhvnpUWjwAT50fiFM0-1bXSk8tlAgRYneWVYeQLgzmuFws6gYVC2QLNqGnM8O6v4cjd5Ybp1zf7cZ-0zWrrnBl0V00cFaLikMw70Zp3gp3kXJvEUlFyCF17onCWSw5f8bGXq42DTzNEu6YRcJmCwMTP05aM1KXT0FSScK-8TNdI8GzZ2jfZeDwSW_VL5VQzS8VMJTCgnkDH51SCn16deZZ2DT7hppxgZxOC2G4DU4MWl-n2LWbmlzoBBRyfsypE36KD1zW2VOvjurGnFW2SeOIgqS5hbNSs5jwAKtlqysspL6VGqoMxRXTqspeykrZOaQ"
+  }
+}
+</pre>

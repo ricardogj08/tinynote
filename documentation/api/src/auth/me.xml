@@ -1,0 +1,31 @@
+<h1 authenticated_user>Authenticated user</h1>
+
+<p>Show the authenticated user information.</p>
+
+<pre>[GET] <hl>/api/v1/me</hl></pre>
+
+<h2 authenticated_user_example>Example</h2>
+
+<pre>
+curl -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  --oauth2-bearer AUTH_TOKEN \
+  http://localhost:8080/api/v1/auth/me 
+</pre>
+
+<h2 authenticated_user_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "username": "ricardogj08",
+    "email": "ricardogj08@posteo.net",
+    "active": 1,
+    "is_admin": 0,
+    "created_at": "2024-11-23 21:00:33",
+    "updated_at": "2024-11-23 21:00:42"
+  }
+}
+</pre>

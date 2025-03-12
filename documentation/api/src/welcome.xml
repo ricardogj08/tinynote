@@ -1,0 +1,21 @@
+<h1 welcome>tinynote API documentation</h1>
+
+<pre>[GET] <hl>/api</hl></pre>
+
+<pre>
+{
+  "data": {
+    "name": "tinynote API RESTful",
+    "description": "A simple markdown note taking application with encryption support built in PHP",
+    "documentation": "https://ricardogj08.github.io/tinynote/",
+    "repository": "https://notabug.org/ricardogj08/tinynote/",
+    "license": "AGPL-3.0-or-later",
+    "author": {
+      "fullname": "Ricardo García Jiménez",
+      "email": "ricardogj08@riseup.net",
+      "homepage": "https://ricardogj08.github.io/blog/",
+      "role": "Backend developer"
+    }
+  }
+}
+</pre>
