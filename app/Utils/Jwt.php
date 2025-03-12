@@ -9,8 +9,8 @@ use Exception;
 
 class Jwt
 {
-    private const configFilename = 'jwt';
-    private const algorithm = 'RS256';
+    private const CONFIG_FILENAME = 'jwt';
+    private const ALGORITHM = 'RS256';
 
     private $privateKey;
     private $publicKey;
@@ -22,13 +22,13 @@ class Jwt
 
     private function mount()
     {
-        $config = Config::getFromFilename(self::configFilename);
+        $config = Config::getFromFilename(self::CONFIG_FILENAME);
 
         $this->privateKey = file_get_contents($config['private_key_path']);
         $this->publicKey = file_get_contents($config['public_key_path']);
 
         if ($this->privateKey === false) {
-            throw new Exception(sprinft('JWT private key file "%s" cannot be found.', $config['privateKeyPath']));
+            throw new Exception(sprintf('JWT private key file "%s" cannot be found.', $config['privateKeyPath']));
         }
 
         if ($this->publicKey === false) {
@@ -41,7 +41,7 @@ class Jwt
      */
     public function encode(array $payload)
     {
-        return FirebaseJwt::encode($payload, $this->privateKey, self::algorithm);
+        return FirebaseJwt::encode($payload, $this->privateKey, self::ALGORITHM);
     }
 
     /*
@@ -49,6 +49,6 @@ class Jwt
      */
     public function decode(string $jwt)
     {
-        return FirebaseJwt::decode($jwt, new FirebaseKey($this->publicKey, self::algorithm));
+        return FirebaseJwt::decode($jwt, new FirebaseKey($this->publicKey, self::ALGORITHM));
     }
 }

@@ -31,6 +31,6 @@ class Api
      */
     public static function setAuth(?string $token = '')
     {
-        self::$headers['Authorization'] = 'Bearer ' . $token;
+        self::$headers['Authorization'] = 'Bearer ' . $token ?? '';
     }
 }

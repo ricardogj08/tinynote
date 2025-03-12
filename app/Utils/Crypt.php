@@ -6,14 +6,14 @@ use App\Utils\Config;
 use Spatie\Crypto\Rsa\KeyPair;
 use Spatie\Crypto\Rsa\PrivateKey;
 use Spatie\Crypto\Rsa\PublicKey;
-use Exception;
+use RuntimeException;
 
 class Crypt
 {
-    private const configFilename = 'crypt';
-    private const privateKeyFilename = 'private.key';
-    private const publicKeyFilename = 'public.key';
-    private const privateKeyBits = 4096;
+    private const CONFIG_FILENAME = 'crypt';
+    private const PRIVATE_KEY_FILENAME = 'private.key';
+    private const PUBLIC_KEY_FILENAME = 'public.key';
+    private const PRIVATE_KEY_BITS = 4096;
 
     private $userPathKeys;
     private $privateKey;
@@ -26,12 +26,12 @@ class Crypt
 
     private function mount(string $uuid)
     {
-        $config = Config::getFromFilename(self::configFilename);
+        $config = Config::getFromFilename(self::CONFIG_FILENAME);
 
         $pathKeys = $config['path_keys'];
 
         if (!is_dir($pathKeys)) {
-            throw new Exception(sprintf('Crypt path keys "%s" cannot be found.', $pathKeys));
+            throw new RuntimeException(sprintf('Crypt path keys "%s" cannot be found.', $pathKeys));
         }
 
         $this->userPathKeys = sprintf('%s/%s/', realpath($pathKeys), $uuid);
@@ -39,8 +39,8 @@ class Crypt
         // Crea el directorio de las llaves de cifrado del usuario.
         is_dir($this->userPathKeys) || mkdir($this->userPathKeys);
 
-        $pathToPrivateKey = $this->userPathKeys . self::privateKeyFilename;
-        $pathToPublicKey = $this->userPathKeys . self::publicKeyFilename;
+        $pathToPrivateKey = $this->userPathKeys . self::PRIVATE_KEY_FILENAME;
+        $pathToPublicKey = $this->userPathKeys . self::PUBLIC_KEY_FILENAME;
 
         // Genera las llaves de cifrado si no existen.
         if (!is_file($pathToPrivateKey) && !is_file($pathToPublicKey)) {
@@ -58,7 +58,7 @@ class Crypt
     {
         $encryptedData = '';
 
-        foreach (str_split($data, self::privateKeyBits / 8 - 64) as $part) {
+        foreach (str_split($data, self::PRIVATE_KEY_BITS / 8 - 64) as $part) {
             $encryptedData .= $this->publicKey->encrypt($part);
         }
 
@@ -72,7 +72,7 @@ class Crypt
     {
         $data = '';
 
-        foreach (str_split(base64_decode($encryptedData), self::privateKeyBits * 128 / 1024) as $part) {
+        foreach (str_split(base64_decode($encryptedData), self::PRIVATE_KEY_BITS * 128 / 1024) as $part) {
             $data .= $this->privateKey->decrypt($part);
         }
 

@@ -6,15 +6,15 @@ use Parsedown;
 
 class Html
 {
-    private const encoding = 'UTF-8';
-    private const flags = ENT_QUOTES | ENT_HTML5;
+    private const ENCODING = 'UTF-8';
+    private const FLAGS = ENT_QUOTES | ENT_HTML5;
 
     /*
      * Escapa un texto a HTML 5.
      */
     public static function escape(?string $text = '')
     {
-        return htmlentities($text ?? '', self::flags, self::encoding, true);
+        return htmlentities($text ?? '', self::FLAGS, self::ENCODING, true);
     }
 
     /*
@@ -22,7 +22,7 @@ class Html
      */
     public static function simpleEscape(?string $text = '')
     {
-        return htmlspecialchars($text ?? '', self::flags, self::encoding, true);
+        return htmlspecialchars($text ?? '', self::FLAGS, self::ENCODING, true);
     }
 
     /*

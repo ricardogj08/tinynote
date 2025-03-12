@@ -4,15 +4,15 @@ namespace App\Utils;
 
 class Csrf
 {
-    private const algorithm = 'sha256';
-    private const lengthBytes = 32;
+    private const ALGORITHM = 'sha256';
+    private const LENGTH_BYTES = 32;
 
     /*
      * Genera una llave de cifrado del token.
      */
     static private function generateKey()
     {
-        return bin2hex(random_bytes(self::lengthBytes));
+        return bin2hex(random_bytes(self::LENGTH_BYTES));
     }
 
     /*
@@ -20,7 +20,7 @@ class Csrf
      */
     static public function generateToken(string $data)
     {
-        return hash_hmac(self::algorithm, $data, self::generateKey());
+        return hash_hmac(self::ALGORITHM, $data, self::generateKey());
     }
 
     /*

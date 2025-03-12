@@ -4,14 +4,14 @@ namespace App\Utils;
 
 class Password
 {
-    private const algorithm = PASSWORD_DEFAULT;
+    private const ALGORITHM = PASSWORD_DEFAULT;
 
     /*
      * Encripta una contraseña.
      */
     public static function encrypt(string $password)
     {
-        return password_hash($password, self::algorithm);
+        return password_hash($password, self::ALGORITHM);
     }
 
     /*

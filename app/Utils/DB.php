@@ -9,8 +9,8 @@ use Riverside\Orm\Connection;
 
 class DB
 {
-    private const configFilename = 'database';
-    private const database = 'default';
+    private const CONFIG_FILENAME = 'database';
+    private const DATABASE = 'default';
 
     private $configuration;
     private $connection;
@@ -22,9 +22,9 @@ class DB
 
     private function mount()
     {
-        $config = Config::getFromFilename(self::configFilename);
+        $config = Config::getFromFilename(self::CONFIG_FILENAME);
 
-        $options = $config[self::database];
+        $options = $config[self::DATABASE];
 
         $this->configuration = new Configuration(
             $options['username'],

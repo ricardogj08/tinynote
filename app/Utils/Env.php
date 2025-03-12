@@ -6,15 +6,15 @@ use gullevek\dotEnv\DotEnv;
 
 class Env
 {
-    private const path = __DIR__ . '/../../';
-    private const filename = '.env';
+    private const PATH = __DIR__ . '/../../';
+    private const FILENAME = '.env';
 
     /*
      * Carga variables de entorno desde el archivo .env
      */
     public static function loadDotEnv()
     {
-        DotEnv::readEnvFile(self::path, self::filename);
+        DotEnv::readEnvFile(self::PATH, self::FILENAME);
     }
 
     /*

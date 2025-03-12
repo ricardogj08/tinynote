@@ -2,21 +2,21 @@
 
 namespace App\Utils;
 
-use Exception;
+use RuntimeException;
 
 class Config
 {
-    private const path = __DIR__ . '/../../config/';
+    private const PATH = __DIR__ . '/../../config/';
 
     /*
      * Obtiene opciones de configuración desde un archivo.
      */
     public static function getFromFilename(string $filename)
     {
-        $config = require self::path . $filename . '.php';
+        $config = require self::PATH . $filename . '.php';
 
         if (!is_array($config)) {
-            throw new Exception(sprintf('Config file options "%s" are not an array.', $filename));
+            throw new RuntimeException(sprintf('Config file options "%s" are not an array.', $filename));
         }
 
         return $config;
