@@ -1,0 +1,40 @@
+<h1 show_note>Show a note</h1>
+
+<p>Gets note information.</p>
+
+<pre>[GET] <hl>/api/v1/notes/:id</hl></pre>
+
+<h2 show_note_example>Example</h2>
+
+<pre>
+curl -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  --oauth2-bearer AUTH_TOKEN \
+  http://localhost:8080/api/v1/notes/:id
+</pre>
+
+<h2 show_note_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "c56928b9-e32f-4913-95bf-619faa506dc0",
+    "user_id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "title": "PHP",
+    "body": "# PHP is awesome!",
+    "created_at": "2025-03-12 22:39:49",
+    "updated_at": "2025-03-12 22:39:49",
+    "tags": [
+      {
+        "id": "84eacd98-43e9-425b-8d36-382ef01715e6",
+        "name": "php"
+      },
+      {
+        "id": "9a7ab1a2-5ad2-42dd-872a-dc49a3d3d213",
+        "name": "servidores"
+      }
+    ]
+  }
+}
+</pre>

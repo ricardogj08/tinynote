@@ -2,6 +2,8 @@
 
 A simple [markdown](https://www.markdownguide.org) note taking application with encryption support built in [PHP](https://www.php.net).
 
+* [Documentation.](https://ricardogj08.github.io/tinynote/)
+
 ## Installation
 
 Install dependencies:

@@ -19,7 +19,7 @@
     <td><tt>string</tt></td>
     <td><tt>false</tt></td>
     <td><tt>length: [1, 64]</tt></td>
-    <td>New tag name.</td>
+    <td>New tag's name.</td>
   </tr>
 </table>
 

@@ -1,0 +1,7 @@
+<h1 notes>All notes</h1>
+
+<pre>[GET] <hl>/api/v1/notes</hl></pre>
+
+<h2 notes_example>Example</h2>
+
+<h2 notes_response>Response</h2>

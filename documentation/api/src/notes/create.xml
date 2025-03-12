@@ -1,0 +1,78 @@
+<h1 create_note>Create a note</h1>
+
+<p>Registers note information.</p>
+
+<pre>[POST] <hl>/api/v1/notes</hl></pre>
+
+<h2 create_note_request_body>Request body</h2>
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Required</th>
+    <th>Range</th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>title</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [1, 255]</tt></td>
+    <td></td>
+    <td>Note's title.</td>
+  </tr>
+  <tr>
+    <td><tt>body</tt></td>
+    <td><tt>string</tt></td>
+    <td><tt>true</tt></td>
+    <td><tt>length: [1, pow(16, 2) - 1]</tt></td>
+    <td></td>
+    <td>Note's markdown content.</td>
+  </tr>
+  <tr>
+    <td><tt>tags</tt></td>
+    <td><tt>array[tags]</tt></td>
+    <td><tt>false</tt></td>
+    <td></td>
+    <td><tt>[]</tt></td>
+    <td>A list of tags ids for the note (<a #tags>see</a>).</td>
+  </tr>
+</table>
+
+<h2 create_note_example>Example</h2>
+
+<pre>
+curl -X POST \
+  --oauth2-bearer AUTH_TOKEN \
+  --data-urlencode 'title=PHP' \
+  --data-urlencode 'body=# PHP is awesome!' \
+  --data-urlencode 'tags%5B%5D=84eacd98-43e9-425b-8d36-382ef01715e6' \
+  --data-urlencode 'tags%5B%5D=9a7ab1a2-5ad2-42dd-872a-dc49a3d3d213' \
+  http://localhost:8080/api/v1/notes
+</pre>
+
+<h2 create_note_response>Response</h2>
+
+<pre>
+{
+  "data": {
+    "id": "c56928b9-e32f-4913-95bf-619faa506dc0",
+    "user_id": "d4674b90-5ceb-4349-b4c3-ce7cdcd4ffc8",
+    "title": "PHP",
+    "created_at": "2025-03-12 22:39:49",
+    "updated_at": "2025-03-12 22:39:49",
+    "tags": [
+      {
+        "id": "84eacd98-43e9-425b-8d36-382ef01715e6",
+        "name": "php"
+      },
+      {
+        "id": "9a7ab1a2-5ad2-42dd-872a-dc49a3d3d213",
+        "name": "servidores"
+      }
+    ]
+  }
+}
+</pre>

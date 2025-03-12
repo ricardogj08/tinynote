@@ -28,6 +28,11 @@
   <include src/auth/me.xml>
 
 <cap>Notes</cap>
+  <include src/notes/index.xml>
+  <include src/notes/create.xml>
+  <include src/notes/show.xml>
+  <include src/notes/update.xml>
+  <include src/notes/delete.xml>
 
 <cap>Profile</cap>
   <include src/profile/update.xml>

@@ -19,7 +19,7 @@
     <td><tt>string</tt></td>
     <td><tt>true</tt></td>
     <td><tt>length: [1, 64]</tt></td>
-    <td>Tag name.</td>
+    <td>Tag's name.</td>
   </tr>
 </table>
 
