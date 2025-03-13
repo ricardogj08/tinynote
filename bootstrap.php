@@ -6,7 +6,7 @@ require __DIR__ . '/vendor/autoload.php';
  * Solución temporal si el servidor HTTP
  * no soporta reescritura de rutas.
  */
-$_GET['_path_'] = ltrim($_SERVER['PATH_INFO'] ?? '', '/');
+$_GET['_path_'] ??= ltrim($_SERVER['PATH_INFO'] ?? '', '/');
 
 /*
  * Carga variables de entorno desde el archivo .env
