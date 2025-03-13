@@ -1,12 +1,6 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-
-  RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
-  RewriteRule .* - [F]
-
-  RewriteCond %{ENV:REDIRECT_STATUS} 200
-  RewriteRule .* - [L]
-
+  #RewriteBase /subdir/
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.php?_path_=$1 [QSA,L]
