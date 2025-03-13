@@ -25,4 +25,12 @@ class Url
     {
         return preg_replace('/index\.php\/?/', '', self::build($segments));
     }
+
+    /**
+     * Construye el PATH de las rutas con subdominio.
+     */
+    public static function route(string $path)
+    {
+        return rtrim(Env::get('APP_BASE_URL'), '/') . $path;
+    }
 }
