@@ -22,6 +22,7 @@ class Api
         $session->options['proxy'] = Env::get('APP_HTTP_PROXY');
         $session->options['timeout'] = 60 * 6;
         $session->options['connect_timeout'] = 60 * 6;
+        $session->options['verify'] = false;
 
         return $session;
     }

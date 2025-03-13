@@ -31,6 +31,6 @@ class Url
      */
     public static function route(string $path)
     {
-        return rtrim(Env::get('APP_BASE_URL'), '/') . $path;
+        return ltrim(Env::get('APP_BASE_URL'), '/') . $path;
     }
 }
